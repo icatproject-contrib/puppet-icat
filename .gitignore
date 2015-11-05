@@ -1,0 +1,5 @@
+/.bundle
+/.vagrant
+/.librarian
+/.tmp
+spec/fixtures

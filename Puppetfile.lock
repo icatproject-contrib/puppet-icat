@@ -1,0 +1,16 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    puppetlabs-stdlib (4.9.0)
+
+GIT
+  remote: https://github.com/ITler/fatmcgav-glassfish.git
+  ref: 34d49b2
+  sha: 34d49b243ebdf71e1c3c828470755bc8609be6bf
+  specs:
+    glassfish (0.6.1)
+      puppetlabs-stdlib (>= 3.2.0)
+
+DEPENDENCIES
+  glassfish (>= 0)
+

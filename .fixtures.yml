@@ -1,0 +1,4 @@
+---
+fixtures:
+  symlinks:
+    icat: "#{source_dir}"
