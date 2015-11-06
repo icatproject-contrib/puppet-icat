@@ -11,6 +11,14 @@ GIT
     glassfish (0.6.1)
       puppetlabs-stdlib (>= 3.2.0)
 
+GIT
+  remote: https://github.com/puppetlabs/puppetlabs-stdlib.git
+  ref: 4.9.0
+  sha: 05c6587d852800cc69e3a9381ff466ac3aa630d2
+  specs:
+    stdlib (4.9.0)
+
 DEPENDENCIES
   glassfish (>= 0)
+  stdlib (>= 0)
 

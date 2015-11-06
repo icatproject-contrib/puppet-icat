@@ -9,16 +9,24 @@ apply_manifest_opts = {
   :modulepath     => '/etc/puppetlabs/puppet/modules/',
 }
 
-describe 'icat::init class' do
-  describe 'running puppet code' do
-    it 'should work with no errors' do
-      pp = <<-EOS
-        class { 'icat': }
-      EOS
+default_pp = <<-EOS
+  @package { 'wget': ensure => installed } @file { '/tmp': ensure => 'directory' }
+  class { 'icat': }
+EOS
 
-      # Run it twice and test for idempotency
-      apply_manifest(pp, apply_manifest_opts)
-      expect(apply_manifest(pp, apply_manifest_opts).exit_code).to be_zero
+describe 'the icat class' do
+  describe 'given default params' do
+    before :all do
+      apply_manifest(default_pp, apply_manifest_opts)
+    end
+
+    it 'should be idempotent' do
+      # I.e. we should be able to run it twice without having it fall over.
+      expect(apply_manifest(default_pp, apply_manifest_opts).exit_code).to be_zero
+    end
+
+    it 'should install a jdk' do
+      shell('rpm -q jdk.x86_64', :acceptable_exit_codes => 0)
     end
   end
 end

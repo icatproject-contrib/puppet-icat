@@ -1,12 +1,25 @@
 require 'spec_helper'
 
-# Start to describe glassfish::init class
 describe 'icat' do
+  let :pre_condition do
+    "@package { 'wget': ensure => installed } @file { '/tmp': ensure => 'directory' }"
+  end
+
   describe 'with default param values' do
-    it do
+    it 'should compile' do
       should compile.with_all_deps()
 
       should create_class('icat')
+    end
+  end
+
+  describe 'set to not manage java' do
+    let :params do
+      {'manage_java' => 'false'}
+    end
+
+    it 'should not create icat::java class' do
+      should contain_class('icat::java') == 'false'
     end
   end
 end
