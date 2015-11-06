@@ -9,7 +9,14 @@ describe 'icat' do
     { :osfamily => 'RedHat' }
   end
 
-  describe 'with default param values' do
+  let :params do
+    {
+      'appserver_admin_password'        => 'p4ssw0rd',
+      'appserver_admin_master_password' => 'master_p4ssw0rd',
+    }
+  end
+
+  describe 'with default/reasonable param values' do
     it 'should compile' do
       should compile.with_all_deps()
 

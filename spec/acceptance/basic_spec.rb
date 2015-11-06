@@ -11,7 +11,10 @@ apply_manifest_opts = {
 
 default_pp = <<-EOS
   @package { 'wget': ensure => installed } @file { '/tmp': ensure => 'directory' }
-  class { 'icat': }
+  class { 'icat':
+    appserver_admin_password        => 'p4ssw0rd',
+    appserver_admin_master_password => 'master_p4ssw0rd',
+  }
 EOS
 
 describe 'the icat class' do

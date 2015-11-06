@@ -8,6 +8,7 @@ class icat::appserver (
   $group                 = undef,
   $admin_password        = undef,
   $admin_master_password = undef,
+  $db_type               = undef,
 ) {
   package { 'unzip':
     ensure => 'installed'
@@ -22,7 +23,7 @@ class icat::appserver (
     tmp_dir                 => "${tmp_dir}/glassfish",
     version                 => '4.0',
 
-    # Needs to be a user with permissions to manage home files and folders.
+    # GlassFish account info.
     user                    => $user,
     group                   => $group,
     manage_accounts         => false,
@@ -39,5 +40,23 @@ class icat::appserver (
     asadmin_master_password => $admin_master_password,
     asadmin_password        => $admin_password,
     create_passfile         => true,
+  }
+
+  case $db_type {
+    'oracle' : {
+      glassfish::install_jars { 'ojdbc6.jar':
+        source  => 'puppet:///modules/icat/ojdbc6.jar',
+        require => Class['glassfish'],
+      }
+    }
+    'mysql' : {
+      glassfish::install_jars { 'mysql-connector-java-5.1.36-bin.jar':
+        source  => 'puppet:///modules/icat/mysql-connector-java-5.1.36-bin.jar',
+        require => Class['glassfish'],
+      }
+    }
+    default : {
+      fail("Unknown database type of '${db_type}'. Please use either 'oracle' or 'mysql'.")
+    }
   }
 }
