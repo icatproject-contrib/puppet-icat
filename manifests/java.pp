@@ -1,6 +1,11 @@
 # == Class: java
 #
 # A class to manage Java, if the functionality has been enabled in the icat class.
+#
+# This is necessary since a requirement of ICAT is that an official Oracle JDK is
+# used.  There is an existing Puppetlabs modules that is really nice but we cannot
+# use since it wont give us the Oracle JDK on CentOS, and a similar situation exists
+# for the `manage_java` functionality of the glassfish module from fatmcgav.
 class icat::java (
   $tmp_dir = undef,
 ) {
