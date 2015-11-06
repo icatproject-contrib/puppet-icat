@@ -28,5 +28,10 @@ describe 'the icat class' do
     it 'should install a jdk' do
       shell('rpm -q jdk.x86_64', :acceptable_exit_codes => 0)
     end
+
+    it 'should install glassfish' do
+      # That asadmin exists and is on the PATH is as good a test as any.
+      shell('which asadmin', :acceptable_exit_codes => 0)
+    end
   end
 end
