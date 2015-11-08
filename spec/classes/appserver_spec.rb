@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe 'icat::appserver' do
   let :facts do
-    { :osfamily => 'RedHat' }
+    {
+      :osfamily => 'RedHat',
+      :hostname => 'icat-puppet-test',
+    }
   end
 
   let :default_params do
@@ -41,6 +44,12 @@ describe 'icat::appserver' do
       should contain_glassfish__create_domain('icat').with({
         'create_service' => 'true',
       }).that_requires('Class[glassfish]')
+    end
+
+    it do
+      should contain_class('icat::certs').with({
+        'hostname' => 'icat-puppet-test',
+      }).that_requires('Glassfish::Create_Domain[icat]')
     end
   end
 

@@ -50,5 +50,9 @@ describe 'the icat class' do
       shell('test -d /usr/local/glassfish-4.0/glassfish/domains/icat/', :acceptable_exit_codes => 0)
       shell('test -f /etc/init.d/icat', :acceptable_exit_codes => 0)
     end
+
+    it 'should have created a security cert against the appropriate hostname' do
+      shell('grep "icat-puppet-test" /usr/java/jdk1.7.0_79/jre/lib/security/jssecacerts', :acceptable_exit_codes => 0)
+    end
   end
 end

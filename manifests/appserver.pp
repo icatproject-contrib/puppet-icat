@@ -68,4 +68,13 @@ class icat::appserver (
     domain_user         => $user,
     require             => Class['glassfish'],
   }
+  ->
+  class { 'icat::certs':
+    keystore_path    => "${::icat_domain_path}/config/keystore.jks",
+    cert_path        => "${::icat_domain_path}/config/s1as-export.jks",
+    cacerts_path     => "${::java_security_path}/cacerts",
+    jssecacerts_path => "${::java_security_path}/jssecacerts",
+    keytool_path     => $::java_keytool_path,
+    hostname         => $::hostname,
+  }
 }
