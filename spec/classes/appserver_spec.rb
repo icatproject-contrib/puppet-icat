@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'puppetlabs_spec_helper/puppetlabs_spec/puppet_internals'
 
 describe 'icat::appserver' do
   let :facts do
@@ -41,6 +42,7 @@ describe 'icat::appserver' do
           .that_requires('Class[glassfish]')
       end
     end
+
     describe 'and with an unknown database type' do
       let :params do
         { 'db_type' => 'DBX' }
@@ -49,6 +51,12 @@ describe 'icat::appserver' do
       it 'should raise an error' do
         should compile.and_raise_error(/Unknown database type of 'DBX'/)
       end
+    end
+
+    it 'should create the icat domain and service' do
+      should contain_glassfish__create_domain('icat').with({
+        'create_service' => 'true',
+      }).that_requires('Class[glassfish]')
     end
   end
 end

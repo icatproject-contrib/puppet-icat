@@ -35,10 +35,10 @@ class icat::appserver (
     add_path                => true,
 
     # Asadmin properties.
-    asadmin_user            => $user,
-    asadmin_passfile        => "${tmp_dir}/asadmin.pass",
-    asadmin_master_password => $admin_master_password,
-    asadmin_password        => $admin_password,
+    asadmin_user            => 'admin',      # TODO: Should be $user
+    asadmin_passfile        => "/home/${user}/asadmin.pass",
+    asadmin_master_password => 'changeit',   # TODO: Should be $admin_master_password
+    asadmin_password        => 'adminadmin', # TODO: Should be $admin_password
     create_passfile         => true,
   }
 
@@ -58,5 +58,14 @@ class icat::appserver (
     default : {
       fail("Unknown database type of '${db_type}'. Please use either 'oracle' or 'mysql'.")
     }
+  }
+
+  glassfish::create_domain { 'icat':
+    create_service      => true,
+    service_name        => 'icat',
+    enable_secure_admin => true,
+    start_domain        => true,
+    domain_user         => $user,
+    require             => Class['glassfish'],
   }
 }
