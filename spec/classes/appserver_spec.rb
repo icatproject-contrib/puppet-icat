@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'puppetlabs_spec_helper/puppetlabs_spec/puppet_internals'
 
 describe 'icat::appserver' do
   let :facts do
