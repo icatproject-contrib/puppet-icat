@@ -14,6 +14,14 @@ A Puppet module to download, install and configure an instance of ICAT.
 
 ## Development
 
+### Finding Your Way Around
+
+This module follows the standard conventions for [directory structure as per the official PuppetLabs documentation](https://docs.puppetlabs.com/puppet/latest/reference/modules_fundamentals.html#module-layout).
+
+### Commands
+
+Some typical commands for running the automated tests:
+
 ```bash
 # Install necessary gems for the first time.  I can't get beaker to work properly without using
 # sudo here.  (Even using "--path ~/.gem" only gets me so far.)  This may have something to do
