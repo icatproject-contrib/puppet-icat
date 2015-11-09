@@ -11,9 +11,11 @@ define icat::create_component (
   $version        = undef,
 ) {
   validate_string($component_name)
+  validate_string($group)
   validate_array($maven_repos)
   validate_array($templates)
   validate_absolute_path($tmp_dir)
+  validate_string($user)
   validate_re(
     $version,
     '^(\d+\.\d+\.\d+(\-SNAPSHOT)?)|LATEST|RELEASE$',
