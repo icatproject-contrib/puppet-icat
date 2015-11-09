@@ -35,6 +35,8 @@ describe 'the icat class' do
       # I.e. we should be able to run it twice without having it fall over.
       apply_manifest(default_pp, apply_manifest_opts.merge(
         :acceptable_exit_codes => [success_return_code, changes_occured_return_code]))
+      # TODO: Change this to be more like test at:
+      # https://github.com/gdhbashton/puppet-consul_template/blob/master/spec/acceptance/class_spec.rb
     end
 
     it 'should install a jdk' do
