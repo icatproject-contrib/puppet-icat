@@ -52,5 +52,12 @@ define icat::create_component (
     path    => '/usr/bin/',
     unless  => "test -d ${extracted_path}",
     require => [Package['unzip']],
+  } ->
+  file { $extracted_path :
+    ensure  => 'directory',
+    owner   => $user,
+    group   => $group,
+    mode    => '0600',
+    recurse => true,
   }
 }

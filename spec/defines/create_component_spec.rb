@@ -56,5 +56,15 @@ describe 'icat::create_component' do
         'unless'  => 'test -d /tmp/icat.server-4.5.0-distro',
       }).that_subscribes_to('Maven[/tmp/icat.server-4.5.0-distro.zip]')
     end
+
+    it do
+      should contain_file('/tmp/icat.server-4.5.0-distro').with({
+        'ensure'  => 'directory',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0600',
+        'recurse' => true,
+      }).that_requires('Exec[extract_icat.server]')
+    end
   end
 end
