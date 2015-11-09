@@ -1,6 +1,7 @@
 FORGE
   remote: https://forgeapi.puppetlabs.com
   specs:
+    maestrodev-wget (1.7.1)
     puppetlabs-stdlib (4.9.0)
 
 GIT
@@ -12,6 +13,21 @@ GIT
       puppetlabs-stdlib (>= 3.2.0)
 
 GIT
+  remote: https://github.com/maestrodev/puppet-maven.git
+  ref: v1.4.0
+  sha: ddeb7d342a40e3626820f21000a75714488c92f5
+  specs:
+    maven (1.4.0)
+      maestrodev-wget (>= 1.0.0)
+
+GIT
+  remote: https://github.com/maestrodev/puppet-wget.git
+  ref: v1.7.1
+  sha: ba3b7ea1bcb277a6a8757c57cc56e860abc0f84a
+  specs:
+    wget (1.7.1)
+
+GIT
   remote: https://github.com/puppetlabs/puppetlabs-stdlib.git
   ref: 4.9.0
   sha: 05c6587d852800cc69e3a9381ff466ac3aa630d2
@@ -20,5 +36,7 @@ GIT
 
 DEPENDENCIES
   glassfish (>= 0)
+  maven (>= 0)
   stdlib (>= 0)
+  wget (>= 0)
 

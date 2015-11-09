@@ -6,8 +6,8 @@ class icat (
   $manage_java                     = true,
   $appserver_user                  = 'root',
   $appserver_group                 = 'root',
-  $appserver_admin_password        = undef,
-  $appserver_admin_master_password = undef,
+  $appserver_admin_password        = 'changeit',
+  $appserver_admin_master_password = 'adminadmin',
   $appserver_db_type               = 'oracle',
 ) {
   validate_string($tmp_dir)
