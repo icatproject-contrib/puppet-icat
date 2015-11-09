@@ -2,18 +2,20 @@
 #
 # Create an ICAT component.
 define icat::create_component (
-  $component_name = $name,
-  $group          = $icat::appserver_group,
-  $maven_repos    = ['http://www.icatproject.org/mvn/repo'],
-  $templates      = undef,
-  $tmp_dir        = undef,
-  $user           = $icat::appserver_user,
-  $version        = undef,
+  $component_name  = $name,
+  $group           = $icat::appserver_group,
+  $maven_repos     = ['http://www.icatproject.org/mvn/repo'],
+  $templates       = undef,
+  $template_params = undef,
+  $tmp_dir         = undef,
+  $user            = $icat::appserver_user,
+  $version         = undef,
 ) {
   validate_string($component_name)
   validate_string($group)
   validate_array($maven_repos)
   validate_array($templates)
+  validate_hash($template_params)
   validate_absolute_path($tmp_dir)
   validate_string($user)
   validate_re(
@@ -61,5 +63,20 @@ define icat::create_component (
     group   => $group,
     mode    => '0600',
     recurse => true,
+  }
+
+  $templates.each |String $template_path| {
+    $properties_file_path = construct_icat_comp_prop_file_path(
+      $extracted_path, $inner_comp_name, $template_path
+    )
+
+    file { $properties_file_path:
+      ensure  => 'present',
+      content => epp($template_path, $template_params),
+      owner   => $user,
+      group   => $group,
+      mode    => '0600',
+      require => File[$extracted_path],
+    }
   }
 }

@@ -16,14 +16,15 @@ describe 'icat::create_component' do
 
   let (:default_params) do
     {
-      'component_name' => 'icat.server',
-      'templates'      => [
-        "icat.properties.epp",
-        "icat-setup.properties.epp",
-        "icat.log4j.properties.epp",
+      'component_name'  => 'icat.server',
+      'templates'       => [
+        'icat/test.properties.epp',
       ],
-      'tmp_dir'        => '/tmp',
-      'version'        => '4.5.0',
+      'template_params' => {
+        'param' => 'value',
+      },
+      'tmp_dir'         => '/tmp',
+      'version'         => '4.5.0',
     }
   end
 
@@ -65,6 +66,17 @@ describe 'icat::create_component' do
         'mode'    => '0600',
         'recurse' => true,
       }).that_requires('Exec[extract_icat.server]')
+    end
+
+    it do
+      should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/test.properties').with({
+        'ensure'  => 'present',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0600',
+      }).with_content(/This is a string against which we will test./)
+      .with_content(/value/)
+      .that_requires('File[/tmp/icat.server-4.5.0-distro]')
     end
   end
 end

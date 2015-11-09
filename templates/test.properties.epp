@@ -1,0 +1,8 @@
+>>>This is a string against which we will test.<<<
+
+This is a parameter against which we will test:
+<%= $param %>
+
+If we want to be really strict (in the absence of being able to get parameter tags to work properly),
+then we can validate just as we would in a Puppet class:
+<%= validate_string($param1) %>
