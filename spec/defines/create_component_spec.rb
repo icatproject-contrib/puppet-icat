@@ -6,6 +6,7 @@ describe 'icat::create_component' do
     @class { 'maven::maven': }
     @package { 'wget': ensure => installed }
     @file { '/tmp': ensure => 'directory' }
+    @package { 'python-suds': ensure => installed }
     include icat
     EOS
   end
@@ -88,6 +89,27 @@ describe 'icat::create_component' do
         'unless'  => 'patch -R --dry-run /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py /tmp/patches/icat.server/setup_utils.py.patch',
         'require' => 'File[/tmp/icat.server-4.5.0-distro]',
       })
+    end
+
+    it do
+      should contain_exec('configure_icat.server_setup_script').with({
+        'command' => 'python setup CONFIGURE',
+        'path'    => '/usr/bin/',
+        'cwd'     => '/tmp/icat.server-4.5.0-distro/icat.server',
+        'user'    => 'root',
+        'group'   => 'root',
+      }).that_subscribes_to('File[/tmp/icat.server-4.5.0-distro/icat.server/test.properties]')
+      .that_subscribes_to('Exec[apply_icat.server_setup_utils.py_patch]')
+    end
+
+    it do
+      should contain_exec('run_icat.server_setup_script').with({
+        'command' => 'python setup INSTALL',
+        'path'    => '/usr/bin/',
+        'cwd'     => '/tmp/icat.server-4.5.0-distro/icat.server',
+        'user'    => 'root',
+        'group'   => 'root',
+      }).that_subscribes_to('Exec[configure_icat.server_setup_script]')
     end
   end
 end

@@ -81,6 +81,7 @@ define icat::create_component (
       group   => $group,
       mode    => '0600',
       require => File[$extracted_path],
+      notify  => Exec["configure_${name}_setup_script"],
     }
   }
 
@@ -97,6 +98,26 @@ define icat::create_component (
       # i.e., if the patch can be reversed then there's no need to apply it a second time.
       unless  => "patch -R --dry-run ${original_path} ${patch_path}",
       require => File[$extracted_path],
+      notify  => Exec["configure_${name}_setup_script"],
     }
+  }
+
+  realize( Package['python-suds'] )
+
+  exec { "configure_${component_name}_setup_script":
+    command => 'python setup CONFIGURE',
+    path    => '/usr/bin/',
+    cwd     => "${extracted_path}/${inner_comp_name}",
+    user    => $user,
+    group   => $group,
+    require => [Package['python-suds']],
+  } ~>
+  exec { "run_${component_name}_setup_script":
+    command => 'python setup INSTALL',
+    path    => '/usr/bin/',
+    cwd     => "${extracted_path}/${inner_comp_name}",
+    user    => $user,
+    group   => $group,
+    require => [Exec["configure_${component_name}_setup_script"]],
   }
 }
