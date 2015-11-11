@@ -8,9 +8,10 @@ define icat::create_component (
   $patches         = {},
   $templates       = undef,
   $template_params = undef,
-  $tmp_dir         = undef,
+  $tmp_dir         = '/tmp',
   $user            = $icat::appserver_user,
   $version         = undef,
+  $working_dir     = '/tmp',
 ) {
   validate_string($component_name)
   validate_string($group)
@@ -25,6 +26,7 @@ define icat::create_component (
     '^(\d+\.\d+\.\d+(\-SNAPSHOT)?)|LATEST|RELEASE$',
     'Expected a version string of the form "[MAJOR].[MINOR].[PATCH]" with optional "-SNAPSHOT" suffix, or "LATEST" or "RELEASE".'
   )
+  validate_absolute_path($working_dir)
 
   # TODO: accept optional inner_comp_name as parameter.  Only if not set use the following.
 
@@ -39,7 +41,7 @@ define icat::create_component (
   }
 
   $zip_path = "${tmp_dir}/${component_name}-${version}-distro.zip"
-  $extracted_path = "${tmp_dir}/${component_name}-${version}-distro"
+  $extracted_path = "${working_dir}/${component_name}-${version}-distro"
 
   realize( Class['maven::maven'] )
   realize( Package['unzip'] )
