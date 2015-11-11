@@ -93,17 +93,9 @@ define icat::create_component (
     validate_absolute_path($patch_path)
     validate_string($original_path)
 
-    file { $patch_path:
-      owner => $user,
-      group => $group,
-      mode  => '0600',
-    }
-    ->
     exec { "apply_${component_name}_${original_rel_path}_patch":
       command => "patch ${original_path} ${patch_path}",
       path    => '/usr/bin/',
-      user    => $user,
-      group   => $group,
       # Subtle, but this is the only true test as to whether the patch has already been applied,
       # i.e., if the patch can be reversed then there's no need to apply it a second time.
       unless  => "patch -R --dry-run ${original_path} ${patch_path}",

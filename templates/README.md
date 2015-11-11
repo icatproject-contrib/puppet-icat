@@ -19,3 +19,7 @@ end
 ```
 
 If I ever feel like life is not short enough, or perhaps I just want to prolong the suffering, then a starting point for further investigation may be to download the `puppet-consul_template` module and run the tests, then add a module such as `glassfish` which has it's own templates as see if that has any effect.
+
+# EDIT
+
+I think I may have solved the issue (do a git blame on this line for the commit with the fix.)  TODO: When I have time I should move these templates to the fixtures directory.

@@ -84,22 +84,12 @@ describe 'icat::create_component' do
     end
 
     it do
-      should contain_file('/tmp/patches/icat.server/setup_utils.py.patch').with({
-        'owner' => 'root',
-        'group' => 'root',
-        'mode'  => '0600',
-      })
-    end
-
-    it do
       should contain_exec('apply_icat.server_setup_utils.py_patch').with({
         'command' => 'patch /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py /tmp/patches/icat.server/setup_utils.py.patch',
         'path'    => '/usr/bin/',
-        'user'    => 'root',
-        'group'   => 'root',
         'unless'  => 'patch -R --dry-run /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py /tmp/patches/icat.server/setup_utils.py.patch',
         'require' => 'File[/tmp/icat.server-4.5.0-distro]',
-      }).that_requires('File[/tmp/patches/icat.server/setup_utils.py.patch]')
+      })
     end
 
     it do
