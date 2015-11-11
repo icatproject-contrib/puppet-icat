@@ -43,14 +43,22 @@ class icat::appserver (
   }
 
   case $db_type {
+    # Install a database connector jar based on the chosen DB type.  Using the install_jars definition
+    # inside the glassfish module would seem to be the best thing to do here, but for some reason the
+    # connector jars need to be placed in glassfish/lib rather than glassfish/lib/ext.  See:
+    # http://stackoverflow.com/questions/10965926/deploying-to-glassfish-classpath-not-set-for-com-mysql-jdbc-jdbc2-optional-mysql
+    # Unfortunately, the install_jars definition will only install to lib/ext, so use plain old file
+    # resources instead.
     'oracle' : {
-      glassfish::install_jars { 'ojdbc6.jar':
+      file { "${::appserver_path}/glassfish/lib/ojdbc6.jar":
+        ensure  => 'present',
         source  => 'puppet:///modules/icat/ojdbc6.jar',
         require => Class['glassfish'],
       }
     }
     'mysql' : {
-      glassfish::install_jars { 'mysql-connector-java-5.1.36-bin.jar':
+      file { "${::appserver_path}/glassfish/lib/mysql-connector-java-5.1.36-bin.jar":
+        ensure  => 'present',
         source  => 'puppet:///modules/icat/mysql-connector-java-5.1.36-bin.jar',
         require => Class['glassfish'],
       }

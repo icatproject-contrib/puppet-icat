@@ -3,8 +3,9 @@ require 'spec_helper'
 describe 'icat::appserver' do
   let :facts do
     {
-      :osfamily => 'RedHat',
-      :hostname => 'icat-puppet-test',
+      :osfamily       => 'RedHat',
+      :hostname       => 'icat-puppet-test',
+      :appserver_path => '/usr/local/glassfish-4.0',
     }
   end
 
@@ -35,9 +36,10 @@ describe 'icat::appserver' do
       should contain_class('glassfish')
     end
 
-    it 'should install the Oracle connector jar' do
-      should contain_glassfish__install_jars('ojdbc6.jar')
-        .that_requires('Class[glassfish]')
+    it do
+      should contain_file('/usr/local/glassfish-4.0/glassfish/lib/ojdbc6.jar').with({
+        'ensure' => 'present',
+      }).that_requires('Class[glassfish]')
     end
 
     it 'should create the icat domain and service' do
@@ -60,9 +62,10 @@ describe 'icat::appserver' do
       })
     end
 
-    it 'should install the MySQL connector jar' do
-      should contain_glassfish__install_jars('mysql-connector-java-5.1.36-bin.jar')
-        .that_requires('Class[glassfish]')
+    it do
+      should contain_file('/usr/local/glassfish-4.0/glassfish/lib/mysql-connector-java-5.1.36-bin.jar').with({
+        'ensure' => 'present',
+      }).that_requires('Class[glassfish]')
     end
   end
 
