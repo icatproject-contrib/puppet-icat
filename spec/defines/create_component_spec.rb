@@ -17,6 +17,9 @@ describe 'icat::create_component' do
   let (:default_params) do
     {
       'component_name'  => 'icat.server',
+      'patches'         => {
+        'setup_utils.py' => '/tmp/patches/icat.server/setup_utils.py.patch',
+      },
       'templates'       => [
         'icat/test.properties.epp',
       ],
@@ -77,6 +80,14 @@ describe 'icat::create_component' do
       }).with_content(/This is a string against which we will test./)
       .with_content(/value/)
       .that_requires('File[/tmp/icat.server-4.5.0-distro]')
+    end
+
+    it do
+      should contain_exec('apply_icat.server_setup_utils.py_patch').with({
+        'command' => 'patch /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py /tmp/patches/icat.server/setup_utils.py.patch',
+        'unless'  => 'patch -R --dry-run /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py /tmp/patches/icat.server/setup_utils.py.patch',
+        'require' => 'File[/tmp/icat.server-4.5.0-distro]',
+      })
     end
   end
 end

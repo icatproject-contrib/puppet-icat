@@ -5,6 +5,7 @@ define icat::create_component (
   $component_name  = $name,
   $group           = $icat::appserver_group,
   $maven_repos     = ['http://www.icatproject.org/mvn/repo'],
+  $patches         = {},
   $templates       = undef,
   $template_params = undef,
   $tmp_dir         = undef,
@@ -14,6 +15,7 @@ define icat::create_component (
   validate_string($component_name)
   validate_string($group)
   validate_array($maven_repos)
+  validate_hash($patches)
   validate_array($templates)
   validate_hash($template_params)
   validate_absolute_path($tmp_dir)
@@ -78,6 +80,22 @@ define icat::create_component (
       owner   => $user,
       group   => $group,
       mode    => '0600',
+      require => File[$extracted_path],
+    }
+  }
+
+  $patches.each |String $original_rel_path, String $patch_path| {
+    $original_path = "${extracted_path}/${inner_comp_name}/${original_rel_path}"
+
+    validate_absolute_path($patch_path)
+    validate_string($original_path)
+
+    exec { "apply_${component_name}_${original_rel_path}_patch":
+      command => "patch ${original_path} ${patch_path}",
+      path    => '/usr/bin/',
+      # Subtle, but this is the only true test as to whether the patch has already been applied,
+      # i.e., if the patch can be reversed then there's no need to apply it a second time.
+      unless  => "patch -R --dry-run ${original_path} ${patch_path}",
       require => File[$extracted_path],
     }
   }
