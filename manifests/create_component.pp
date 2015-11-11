@@ -93,6 +93,12 @@ define icat::create_component (
     validate_absolute_path($patch_path)
     validate_string($original_path)
 
+    file { $patch_path:
+      owner => $user,
+      group => $group,
+      mode  => '0600',
+    }
+    ->
     exec { "apply_${component_name}_${original_rel_path}_patch":
       command => "patch ${original_path} ${patch_path}",
       path    => '/usr/bin/',
