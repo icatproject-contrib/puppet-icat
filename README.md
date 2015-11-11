@@ -36,6 +36,10 @@ bundle exec rake test
 export BEAKER_debug=yes
 bundle exec rake acceptance
 
+# Run the acceptance tests, but use a particular version of Puppet.
+export PUPPET_VERSION=4.2.1
+bundle exec rake acceptance
+
 # Run the acceptance tests, but don't destroy any VMs either before or afterwards.  Useful if you
 # want to make quick, successive changes and see how they effect things without having to fully
 # recreate and provision a VM everytime.  Just bear in mind you won't be starting with a "fresh"
