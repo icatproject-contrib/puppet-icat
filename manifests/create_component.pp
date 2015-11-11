@@ -24,6 +24,8 @@ define icat::create_component (
     'Expected a version string of the form "[MAJOR].[MINOR].[PATCH]" with optional "-SNAPSHOT" suffix, or "LATEST" or "RELEASE".'
   )
 
+  # TODO: accept optional inner_comp_name as parameter.  Only if not set use the following.
+
   # Account for non-standard inner directory name of the newest topcat version.
   if $component_name == 'topcat' {
     $inner_comp_name  = 'topcatv2'
