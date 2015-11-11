@@ -104,6 +104,13 @@ define icat::create_component (
 
   realize( Package['python-suds'] )
 
+  # TODO: The following resources DO NOT necessarily wait for the the icat domain service
+  #       to be running before applying themselves.  I have manually stopped the service,
+  #       re-run Puppet and seen the following resource fall over, *then* seen the icat
+  #       service be started by Puppet.  I think there may be example code of how to fix
+  #       this in the glassfish module on GitHub, else "puppet containing" is probably the
+  #       term to Google to investigate this further.
+
   exec { "configure_${component_name}_setup_script":
     command => 'python setup CONFIGURE',
     path    => '/usr/bin/',
