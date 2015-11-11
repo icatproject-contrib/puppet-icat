@@ -6,3 +6,4 @@ spec/fixtures
 # Where are these coming from? :/
 /junit
 /log
+/.idea
