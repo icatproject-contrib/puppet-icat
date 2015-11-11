@@ -16,3 +16,7 @@ mod 'stdlib',
 mod 'wget',
   :git => "https://github.com/maestrodev/puppet-wget.git",
   :ref => "v1.7.1"
+
+mod 'mysql',
+  :git => "https://github.com/puppetlabs/puppetlabs-mysql.git",
+  :ref => "3.6.1"

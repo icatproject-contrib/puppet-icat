@@ -11,13 +11,44 @@ apply_manifest_opts = {
 }
 
 default_pp = <<-EOS
-  @package { 'wget': ensure => installed } @file { '/tmp': ensure => 'directory' }
+  @package { 'wget': ensure => installed }
+  @file { '/tmp': ensure => 'directory' }
+  @class { 'maven::maven': }
+  @package { 'python-suds': ensure => installed }
+
+  include '::mysql::server'
+
+  mysql::db { icat:
+    user     => 'username',
+    password => 'password',
+  }
+  ->
   class { 'icat':
     appserver_user                  => 'vagrant',
     appserver_group                 => 'vagrant',
     appserver_admin_password        => 'p4ssw0rd',
     appserver_admin_master_password => 'master_p4ssw0rd',
     appserver_db_type               => 'mysql',
+  }
+  ->
+  icat::create_component { 'authn_db':
+    patches         => {
+      'setup_utils.py' => '/tmp/icat/spec/fixtures/files/patches/authn_db_setup_utils.patch',
+    },
+    templates       => [
+      'icat/authn_db-setup.properties.epp',
+      'icat/authn_db.properties.epp',
+    ],
+    template_params => {
+      'db_url'                => 'jdbc:mysql://localhost:3306/icat',
+      'db_username'           => 'username',
+      'db_password'           => 'password',
+      'db_name'               => 'icat',
+      'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
+      'glassfish_admin_port'  => '4848',
+    },
+    tmp_dir         => '/tmp',
+    version         => '1.1.2',
   }
 EOS
 

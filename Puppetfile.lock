@@ -2,6 +2,7 @@ FORGE
   remote: https://forgeapi.puppetlabs.com
   specs:
     maestrodev-wget (1.7.1)
+    nanliu-staging (1.0.3)
     puppetlabs-stdlib (4.9.0)
 
 GIT
@@ -28,6 +29,15 @@ GIT
     wget (1.7.1)
 
 GIT
+  remote: https://github.com/puppetlabs/puppetlabs-mysql.git
+  ref: 3.6.1
+  sha: d095721d7059aab4cf73a0f5a816b0ecd92ca5bd
+  specs:
+    mysql (3.6.1)
+      nanliu-staging (< 2.0.0, >= 1.0.1)
+      puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
+
+GIT
   remote: https://github.com/puppetlabs/puppetlabs-stdlib.git
   ref: 4.9.0
   sha: 05c6587d852800cc69e3a9381ff466ac3aa630d2
@@ -37,6 +47,7 @@ GIT
 DEPENDENCIES
   glassfish (>= 0)
   maven (>= 0)
+  mysql (>= 0)
   stdlib (>= 0)
   wget (>= 0)
 

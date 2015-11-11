@@ -1,0 +1,9 @@
+# Driver and connection properties for the MySQL database.
+driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+dbProperties=url="'"<%=$db_url%>"'":user=<%=$db_username%>:password=<%=$db_password%>:databaseName=<%=$db_name%>
+
+# Must contain "glassfish/domains"
+glassfish=<%=$glassfish_install_dir%>
+
+# Port for glassfish admin calls (normally 4848)
+port=<%=$glassfish_admin_port%>
