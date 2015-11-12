@@ -42,7 +42,7 @@ default_pp = <<-EOS
   ->
   icat::create_component { 'authn_db':
     patches         => {
-      'setup_utils.py' => '/tmp/icat/files/patches/authn_db_setup_utils.patch',
+      'setup_utils.py' => '/tmp/icat/spec/fixtures/files/patches/authn_db_setup_utils.patch',
     },
     templates       => [
       'icat/authn_db-setup.properties.epp',
