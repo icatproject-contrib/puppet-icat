@@ -8,7 +8,6 @@ apply_manifest_opts = {
   # workaround, but it's not quite clear exactly what's being worked around...
   :modulepath     => '/etc/puppetlabs/puppet/modules/',
   :debug          => true,
-  :future_parser  => true,
 }
 
 default_pp = <<-EOS

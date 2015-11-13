@@ -31,8 +31,6 @@ RSpec.configure do |c|
     #   librarian_install_modules(module_root, 'icat')
     # end
 
-    install_puppet(:version => '3.8.1')
-
     # And the plot thickens.  For some reason the symlinking functionality of librarian that
     # symlinks [MODULE_DIR] to [MODULE_DIR]/spec/fixtures/modules/icat/ so that the module
     # is available to the acceptance tests seems to link round and round recursively, once
@@ -41,7 +39,6 @@ RSpec.configure do |c|
     icat_symlink = File.join(module_root, 'spec', 'fixtures', 'modules', 'icat')
     FileUtils.rm icat_symlink, :force => true
 
-    install_puppet
     install_librarian
     librarian_install_modules(module_root, 'icat')
   end
