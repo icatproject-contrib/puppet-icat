@@ -31,8 +31,7 @@ RSpec.configure do |c|
     #   librarian_install_modules(module_root, 'icat')
     # end
 
-    version = ENV['PUPPET_VERSION'] || '3.8.1'
-    install_puppet(:version => version)
+    install_puppet(:version => '3.8.1')
 
     # And the plot thickens.  For some reason the symlinking functionality of librarian that
     # symlinks [MODULE_DIR] to [MODULE_DIR]/spec/fixtures/modules/icat/ so that the module

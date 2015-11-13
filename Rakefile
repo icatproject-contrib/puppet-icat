@@ -7,6 +7,7 @@ exclude_paths = [
   "spec/**/*",
 ]
 PuppetSyntax.exclude_paths = exclude_paths
+PuppetSyntax.future_parser = true
 
 # Puppet-Lint 1.1.0
 Rake::Task[:lint].clear
