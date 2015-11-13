@@ -84,12 +84,18 @@ describe 'icat::create_component' do
     end
 
     it do
-      should contain_exec('apply_icat.server_setup_utils.py_patch').with({
-        'command' => 'patch /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py /tmp/patches/icat.server/setup_utils.py.patch',
-        'path'    => '/usr/bin/',
-        'unless'  => 'patch -R --dry-run /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py /tmp/patches/icat.server/setup_utils.py.patch',
+      should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py.patch').with({
+        'source'  => '/tmp/patches/icat.server/setup_utils.py.patch',
         'require' => 'File[/tmp/icat.server-4.5.0-distro]',
       })
+    end
+
+    it do
+      should contain_exec('apply_icat.server_setup_utils.py_patch').with({
+        'command' => 'patch /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py.patch',
+        'path'    => '/usr/bin/',
+        'unless'  => 'patch -R --dry-run /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py /tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py.patch',
+      }).that_subscribes_to('File[/tmp/icat.server-4.5.0-distro/icat.server/setup_utils.py.patch]')
     end
 
     it do

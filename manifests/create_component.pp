@@ -93,13 +93,20 @@ define icat::create_component (
     validate_absolute_path($patch_path)
     validate_string($original_path)
 
+    # To enable us to use the "puppet:///path/to/file" URI syntax when using this
+    # module, we actually have to first create a local version of the patch on the
+    # node.
+    file { "${original_path}.patch":
+      source  => $patch_path,
+      require => File[$extracted_path],
+    }
+    ~>
     exec { "apply_${component_name}_${original_rel_path}_patch":
-      command => "patch ${original_path} ${patch_path}",
+      command => "patch ${original_path} ${original_path}.patch",
       path    => '/usr/bin/',
       # Subtle, but this is the only true test as to whether the patch has already been applied,
       # i.e., if the patch can be reversed then there's no need to apply it a second time.
-      unless  => "patch -R --dry-run ${original_path} ${patch_path}",
-      require => File[$extracted_path],
+      unless  => "patch -R --dry-run ${original_path} ${original_path}.patch",
       notify  => Exec["configure_${name}_setup_script"],
     }
   }
