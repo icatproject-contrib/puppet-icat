@@ -31,8 +31,6 @@ class icat::certs (
     "${keytool_path} -importcert -keystore ${jssecacerts_path} -file ${cert_path} -storepass changeit -alias ${hostname} -noprompt" ,
   ]
 
-  notice($cert_commands.join(' && '))
-
   exec { 'setup_security_certificates':
     command => $cert_commands.join(' && '),
     unless  => "test -f ${jssecacerts_path}",
