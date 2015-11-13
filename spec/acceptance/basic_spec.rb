@@ -1,5 +1,7 @@
 require 'spec_helper_acceptance'
 
+# Possible options are listed here:
+# https://github.com/puppetlabs/beaker/blob/master/lib/beaker/dsl/helpers/puppet_helpers.rb#L325
 apply_manifest_opts = {
   :catch_failures => true,
   # It's really wierd how this is necessary.  If we don't use this option,
