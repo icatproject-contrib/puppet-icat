@@ -90,7 +90,7 @@ define icat::create_component (
   $patches.each |String $original_rel_path, String $patch_path| {
     $original_path = "${extracted_path}/${inner_comp_name}/${original_rel_path}"
 
-    validate_absolute_path($patch_path)
+    validate_string($patch_path)
     validate_string($original_path)
 
     # To enable us to use the "puppet:///path/to/file" URI syntax when using this
