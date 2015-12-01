@@ -1,11 +1,18 @@
 # == Class: java
 #
-# A class to manage Java, if the functionality has been enabled in the icat class.
+# A class that will manage Java if the functionality has been enabled in the
+# ICAT class.
 #
-# This is necessary since a requirement of ICAT is that an official Oracle JDK is
-# used.  There is an existing Puppetlabs modules that is really nice but we cannot
-# use since it wont give us the Oracle JDK on CentOS, and a similar situation exists
-# for the `manage_java` functionality of the glassfish module from fatmcgav.
+# This is necessary since a requirement of ICAT is that an official Oracle JDK
+# is used.  There is an existing Puppetlabs module that is really nice but we
+# cannot use it since it wont give us the Oracle JDK on CentOS.  A similar
+# situation exists for the `manage_java` functionality of the glassfish module.
+#
+# We are therefore left with the problem of navigating Oracle's licence
+# acceptance pages in an automated fashion, which unforunately is non-trivial.
+#
+# See http://stackoverflow.com/questions/10268583/ for more info.
+
 class icat::java (
   $tmp_dir = undef,
 ) {
