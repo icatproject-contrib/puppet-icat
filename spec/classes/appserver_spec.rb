@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe 'icat::appserver' do
+  let :pre_condition do
+    "@package { 'wget': ensure => installed } @file { '/tmp': ensure => 'directory' }"
+  end
+
   let :facts do
     {
       :osfamily       => 'RedHat',
@@ -19,10 +23,10 @@ describe 'icat::appserver' do
     }
   end
 
-  context 'with reasonable param values and db_type of oracle' do
+  context 'with reasonable param values and db_type of mysql' do
     let(:params) do
       default_params.merge({
-        :db_type => 'oracle'
+        :db_type => 'mysql'
       })
     end
 
@@ -37,8 +41,28 @@ describe 'icat::appserver' do
     end
 
     it do
-      should contain_file('/usr/local/glassfish-4.0/glassfish/lib/ojdbc6.jar').with({
-        'ensure' => 'present',
+      should contain_exec('download_mysql_connector').with({
+        'command' => 'wget -v http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.37.zip -O /tmp/mysql-connector-java-5.1.37.zip',
+        'path'    => '/usr/bin/',
+        'creates' => '/tmp/mysql-connector-java-5.1.37.zip',
+      }).that_requires('Package[wget]')
+      .that_requires('File[/tmp]')
+    end
+
+    it do
+      should contain_exec('extract_mysql_connector').with({
+        'command' => 'unzip -q -d /tmp /tmp/mysql-connector-java-5.1.37.zip',
+        'path'    => '/usr/bin/',
+        'unless'  => 'test -d /tmp/mysql-connector-java-5.1.37',
+      }).that_requires('Package[unzip]')
+      .that_subscribes_to('Exec[download_mysql_connector]')
+    end
+
+    it do
+      should contain_exec('install_mysql_connector').with({
+        'command' => 'cp /tmp/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar /usr/local/glassfish-4.0/glassfish/lib/',
+        'path'    => '/usr/bin/',
+        'unless'  => 'test -d /usr/local/glassfish-4.0/glassfish/lib/mysql-connector-java-5.1.37-bin.jar',
       }).that_requires('Class[glassfish]')
     end
 
@@ -55,17 +79,15 @@ describe 'icat::appserver' do
     end
   end
 
-  context 'with a db_type param of mysql' do
+  context 'with a db_type param of oracle' do
     let(:params) do
       default_params.merge({
-        :db_type => 'mysql'
+        :db_type => 'oracle'
       })
     end
 
     it do
-      should contain_file('/usr/local/glassfish-4.0/glassfish/lib/mysql-connector-java-5.1.36-bin.jar').with({
-        'ensure' => 'present',
-      }).that_requires('Class[glassfish]')
+      should compile.and_raise_error(/A database type of 'oracle' is not yet supported./)
     end
   end
 

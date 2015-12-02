@@ -49,17 +49,46 @@ class icat::appserver (
     # http://stackoverflow.com/questions/10965926/deploying-to-glassfish-classpath-not-set-for-com-mysql-jdbc-jdbc2-optional-mysql
     # Unfortunately, the install_jars definition will only install to lib/ext, so use plain old file
     # resources instead.
+    #
+    # Also note that we're trying to avoid just bundling the jars with the code, since there
+    # seems to be licensing issues with doing so (definitely in the case of Oracle, possibly
+    # in the case of MySQL).  Hence the messy execs here.  Perhaps the long term solution is
+    # to allow for Puppet file-server functionality from master.  See this for an example of
+    # how this might work given a Vagrant installation:
+    #
+    # https://theholyjava.wordpress.com/2012/06/14/serving-files-with-puppet-standalone-in-vagrant-from-the-puppet-uris/
+
     'oracle' : {
-      file { "${::appserver_path}/glassfish/lib/ojdbc6.jar":
-        ensure  => 'present',
-        source  => 'puppet:///modules/icat/ojdbc6.jar',
-        require => Class['glassfish'],
-      }
+      fail("A database type of 'oracle' is not yet supported.")
     }
     'mysql' : {
-      file { "${::appserver_path}/glassfish/lib/mysql-connector-java-5.1.36-bin.jar":
-        ensure  => 'present',
-        source  => 'puppet:///modules/icat/mysql-connector-java-5.1.36-bin.jar',
+      realize( Package['wget'] )
+      realize( Package['unzip'] )
+      realize( File[$tmp_dir] )
+
+      $connector_url = 'http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.37.zip'
+      $connector_zip_path = "${tmp_dir}/mysql-connector-java-5.1.37.zip"
+      $connector_extracted_path = "${tmp_dir}/mysql-connector-java-5.1.37"
+
+      exec { 'download_mysql_connector':
+        command => "wget -v ${connector_url} -O ${connector_zip_path}",
+        path    => '/usr/bin/',
+        creates => $connector_zip_path,
+        require => [
+          Package['wget'],
+          File[$tmp_dir],
+        ]
+      } ~>
+      exec { 'extract_mysql_connector':
+        command => "unzip -q -d ${tmp_dir} ${connector_zip_path}",
+        path    => '/usr/bin/',
+        unless  => "test -d ${connector_extracted_path}",
+        require => [Package['unzip']],
+      } ~>
+      exec { 'install_mysql_connector':
+        command => "cp ${connector_extracted_path}/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar ${::appserver_path}/glassfish/lib/",
+        path    => '/usr/bin/',
+        unless  => "test -d ${::appserver_path}/glassfish/lib/mysql-connector-java-5.1.37-bin.jar",
         require => Class['glassfish'],
       }
     }
