@@ -5,9 +5,7 @@ HOSTS:
       - agent
     platform: el-7-x86_64
     box: puppetlabs/centos-7.0-64-puppet
-    # box_url: TODO: Find the url for this.  At the moment we assume it has
-    #          already been downloaded using `vagrant init` on a Vagrantfile
-    #          that contains the name of the box.
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/centos-7.0-64-puppet
     hypervisor: vagrant
 CONFIG:
   log_level: debug
