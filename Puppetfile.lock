@@ -1,16 +1,14 @@
 FORGE
   remote: https://forgeapi.puppetlabs.com
   specs:
-    maestrodev-wget (1.7.1)
     nanliu-staging (1.0.3)
-    puppetlabs-stdlib (4.9.0)
 
 GIT
   remote: https://github.com/ITler/fatmcgav-glassfish.git
   ref: 34d49b2
   sha: 34d49b243ebdf71e1c3c828470755bc8609be6bf
   specs:
-    glassfish (0.6.1)
+    fatmcgav-glassfish (0.6.1)
       puppetlabs-stdlib (>= 3.2.0)
 
 GIT
@@ -18,7 +16,7 @@ GIT
   ref: v1.4.0
   sha: ddeb7d342a40e3626820f21000a75714488c92f5
   specs:
-    maven (1.4.0)
+    puppet-maven (1.4.0)
       maestrodev-wget (>= 1.0.0)
 
 GIT
@@ -26,14 +24,14 @@ GIT
   ref: v1.7.1
   sha: ba3b7ea1bcb277a6a8757c57cc56e860abc0f84a
   specs:
-    wget (1.7.1)
+    maestrodev-wget (1.7.1)
 
 GIT
   remote: https://github.com/puppetlabs/puppetlabs-mysql.git
   ref: 3.6.1
   sha: d095721d7059aab4cf73a0f5a816b0ecd92ca5bd
   specs:
-    mysql (3.6.1)
+    puppetlabs-mysql (3.6.1)
       nanliu-staging (< 2.0.0, >= 1.0.1)
       puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
 
@@ -42,12 +40,12 @@ GIT
   ref: 4.9.0
   sha: 05c6587d852800cc69e3a9381ff466ac3aa630d2
   specs:
-    stdlib (4.9.0)
+    puppetlabs-stdlib (4.9.0)
 
 DEPENDENCIES
-  glassfish (>= 0)
-  maven (>= 0)
-  mysql (>= 0)
-  stdlib (>= 0)
-  wget (>= 0)
+  fatmcgav-glassfish (>= 0)
+  maestrodev-wget (>= 0)
+  puppet-maven (>= 0)
+  puppetlabs-mysql (>= 0)
+  puppetlabs-stdlib (>= 0)
 
