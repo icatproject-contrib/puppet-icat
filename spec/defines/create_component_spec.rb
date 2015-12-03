@@ -100,7 +100,7 @@ describe 'icat::create_component' do
 
     it do
       should contain_exec('configure_icat.server_setup_script').with({
-        'command' => 'python setup CONFIGURE',
+        'command' => 'python setup  CONFIGURE',
         'path'    => '/usr/bin/',
         'cwd'     => '/tmp/icat.server-4.5.0-distro/icat.server',
         'user'    => 'root',
@@ -111,12 +111,29 @@ describe 'icat::create_component' do
 
     it do
       should contain_exec('run_icat.server_setup_script').with({
-        'command' => 'python setup INSTALL',
+        'command' => 'python setup  INSTALL',
         'path'    => '/usr/bin/',
         'cwd'     => '/tmp/icat.server-4.5.0-distro/icat.server',
         'user'    => 'root',
         'group'   => 'root',
       }).that_subscribes_to('Exec[configure_icat.server_setup_script]')
+    end
+  end
+
+  context 'with custom setup options param' do
+    let(:title) { 'icat.server' }
+    let(:params) { default_params.merge('setup_options' => '--binDir ~/icat/bin') }
+
+    it do
+      should contain_exec('configure_icat.server_setup_script').with({
+        'command' => 'python setup --binDir ~/icat/bin CONFIGURE',
+      })
+    end
+
+    it do
+      should contain_exec('run_icat.server_setup_script').with({
+        'command' => 'python setup --binDir ~/icat/bin INSTALL',
+      })
     end
   end
 end

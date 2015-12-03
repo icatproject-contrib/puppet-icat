@@ -6,6 +6,7 @@ define icat::create_component (
   $group           = $icat::appserver_group,
   $maven_repos     = ['http://www.icatproject.org/mvn/repo'],
   $patches         = {},
+  $setup_options   = '',
   $templates       = undef,
   $template_params = undef,
   $tmp_dir         = '/tmp',
@@ -17,6 +18,7 @@ define icat::create_component (
   validate_string($group)
   validate_array($maven_repos)
   validate_hash($patches)
+  validate_string($setup_options)
   validate_array($templates)
   validate_hash($template_params)
   validate_absolute_path($tmp_dir)
@@ -121,7 +123,7 @@ define icat::create_component (
   #       term to Google to investigate this further.
 
   exec { "configure_${component_name}_setup_script":
-    command => 'python setup CONFIGURE',
+    command => "python setup ${setup_options} CONFIGURE",
     path    => '/usr/bin/',
     cwd     => "${extracted_path}/${inner_comp_name}",
     user    => $user,
@@ -129,7 +131,7 @@ define icat::create_component (
     require => [Package['python-suds']],
   } ~>
   exec { "run_${component_name}_setup_script":
-    command => 'python setup INSTALL',
+    command => "python setup ${setup_options} INSTALL",
     path    => '/usr/bin/',
     cwd     => "${extracted_path}/${inner_comp_name}",
     user    => $user,
