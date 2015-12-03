@@ -60,7 +60,7 @@ describe 'icat::appserver' do
 
     it do
       should contain_exec('install_mysql_connector').with({
-        'command' => 'cp /tmp/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar /usr/local/glassfish-4.0/glassfish/lib/',
+        'command' => 'cp /tmp/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar /usr/local/glassfish-4.0/glassfish/lib/',
         'path'    => '/usr/bin/',
         'unless'  => 'test -d /usr/local/glassfish-4.0/glassfish/lib/mysql-connector-java-5.1.37-bin.jar',
       }).that_requires('Class[glassfish]')

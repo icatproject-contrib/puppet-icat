@@ -86,7 +86,7 @@ class icat::appserver (
         require => [Package['unzip']],
       } ~>
       exec { 'install_mysql_connector':
-        command => "cp ${connector_extracted_path}/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar ${::appserver_path}/glassfish/lib/",
+        command => "cp ${connector_extracted_path}/mysql-connector-java-5.1.37-bin.jar ${::appserver_path}/glassfish/lib/",
         path    => '/usr/bin/',
         unless  => "test -d ${::appserver_path}/glassfish/lib/mysql-connector-java-5.1.37-bin.jar",
         require => Class['glassfish'],
