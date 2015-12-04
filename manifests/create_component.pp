@@ -123,19 +123,21 @@ define icat::create_component (
   #       term to Google to investigate this further.
 
   exec { "configure_${component_name}_setup_script":
-    command => "python setup ${setup_options} CONFIGURE",
-    path    => '/usr/bin/',
-    cwd     => "${extracted_path}/${inner_comp_name}",
-    user    => $user,
-    group   => $group,
-    require => [Package['python-suds']],
+    command     => "python setup ${setup_options} CONFIGURE",
+    path        => '/usr/bin/',
+    cwd         => "${extracted_path}/${inner_comp_name}",
+    user        => $user,
+    group       => $group,
+    refreshonly => true,
+    require     => [Package['python-suds']],
   } ~>
   exec { "run_${component_name}_setup_script":
-    command => "python setup ${setup_options} INSTALL",
-    path    => '/usr/bin/',
-    cwd     => "${extracted_path}/${inner_comp_name}",
-    user    => $user,
-    group   => $group,
-    require => [Exec["configure_${component_name}_setup_script"]],
+    command     => "python setup ${setup_options} INSTALL",
+    path        => '/usr/bin/',
+    cwd         => "${extracted_path}/${inner_comp_name}",
+    user        => $user,
+    group       => $group,
+    refreshonly => true,
+    require     => [Exec["configure_${component_name}_setup_script"]],
   }
 }

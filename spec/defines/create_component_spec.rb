@@ -100,22 +100,24 @@ describe 'icat::create_component' do
 
     it do
       should contain_exec('configure_icat.server_setup_script').with({
-        'command' => 'python setup  CONFIGURE',
-        'path'    => '/usr/bin/',
-        'cwd'     => '/tmp/icat.server-4.5.0-distro/icat.server',
-        'user'    => 'root',
-        'group'   => 'root',
+        'command'     => 'python setup  CONFIGURE',
+        'path'        => '/usr/bin/',
+        'cwd'         => '/tmp/icat.server-4.5.0-distro/icat.server',
+        'user'        => 'root',
+        'group'       => 'root',
+        'refreshonly' => true,
       }).that_subscribes_to('File[/tmp/icat.server-4.5.0-distro/icat.server/test.properties]')
       .that_subscribes_to('Exec[apply_icat.server_setup_utils.py_patch]')
     end
 
     it do
       should contain_exec('run_icat.server_setup_script').with({
-        'command' => 'python setup  INSTALL',
-        'path'    => '/usr/bin/',
-        'cwd'     => '/tmp/icat.server-4.5.0-distro/icat.server',
-        'user'    => 'root',
-        'group'   => 'root',
+        'command'     => 'python setup  INSTALL',
+        'path'        => '/usr/bin/',
+        'cwd'         => '/tmp/icat.server-4.5.0-distro/icat.server',
+        'user'        => 'root',
+        'group'       => 'root',
+        'refreshonly' => true,
       }).that_subscribes_to('Exec[configure_icat.server_setup_script]')
     end
   end
