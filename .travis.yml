@@ -7,13 +7,43 @@ rvm:
   - 2.1
 bundler_args: --without development
 before_install: rm Gemfile.lock || true
-script: bundle exec rake test
+script:
+  - bundle exec rake test
+  - bundle exec rake acceptance
 sudo: false
 env:
   - PUPPET_VERSION="~> 3.8.1"
   - PUPPET_VERSION="~> 3.8.1" PARSER="future"
   - PUPPET_VERSION="~> 4.3.0"
 matrix:
+  exclude:
+    # Be extremely limiting in terms of the system tests, which take a
+    # very long time.  Only run the accepance command for rvm 2.1 /
+    # Puppet 4.3.0.
+    - rvm: 1.9.3
+      env: PUPPET_VERSION="~> 3.8.1"
+      script: bundle exec rake acceptance
+    - rvm: 1.9.3
+      env: PUPPET_VERSION="~> 3.8.1" PARSER="future"
+      script: bundle exec rake acceptance
+    - rvm: 1.9.3
+      env: PUPPET_VERSION="~> 4.3.0"
+      script: bundle exec rake acceptance
+    - rvm: 2.0
+      env: PUPPET_VERSION="~> 3.8.1"
+      script: bundle exec rake acceptance
+    - rvm: 2.0
+      env: PUPPET_VERSION="~> 3.8.1" PARSER="future"
+      script: bundle exec rake acceptance
+    - rvm: 2.0
+      env: PUPPET_VERSION="~> 4.3.0"
+      script: bundle exec rake acceptance
+    - rvm: 2.1
+      env: PUPPET_VERSION="~> 3.8.1"
+      script: bundle exec rake acceptance
+    - rvm: 2.1
+      env: PUPPET_VERSION="~> 3.8.1" PARSER="future"
+      script: bundle exec rake acceptance
 notifications:
   email:
     - parkerpg@ornl.gov

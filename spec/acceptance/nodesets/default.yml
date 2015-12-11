@@ -1,11 +1,9 @@
 HOSTS:
-  icat-puppet-test:
-    roles:
-      - master
-      - agent
+  centos-7-x64:
     platform: el-7-x86_64
-    box: puppetlabs/centos-7.0-64-puppet
-    box_url: https://vagrantcloud.com/puppetlabs/boxes/centos-7.0-64-puppet
-    hypervisor: vagrant
+    hypervisor : docker
+    image: centos:7
+    docker_preserve_image: true
 CONFIG:
+  type: foss
   log_level: debug
