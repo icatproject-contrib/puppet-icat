@@ -1,9 +1,8 @@
 forge "https://forgeapi.puppetlabs.com"
 
 mod 'fatmcgav-glassfish',
-  # Checkout a specific commit of a forked version which contains a workaround for issue at: https://github.com/fatmcgav/fatmcgav-glassfish/issues/52
-  :git => "https://github.com/ITler/fatmcgav-glassfish.git",
-  :ref => "34d49b2"
+  :git => "https://github.com/fatmcgav/fatmcgav-glassfish.git",
+  :ref => "v0.7.0"
 
 mod 'puppet-maven',
   :git => "https://github.com/maestrodev/puppet-maven.git",
