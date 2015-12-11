@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 gem 'rake'
-gem 'puppet', '3.8.1'
+gem 'puppet'
 
 gem 'librarian-puppet'
 
