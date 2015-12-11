@@ -11,23 +11,15 @@ before_install: rm Gemfile.lock || true
 script: bundle exec rake test
 sudo: false
 env:
-  - PUPPET_VERSION="~> 3.7.0"
-  - PUPPET_VERSION="~> 3.7.0" PARSER="future"
-  - PUPPET_VERSION="~> 3.8.0"
-  - PUPPET_VERSION="~> 3.8.0" PARSER="future"
-  - PUPPET_VERSION="~> 4.1.0"
-  - PUPPET_VERSION="~> 4.2.0"
+  - PUPPET_VERSION="~> 3.8.1"
+  - PUPPET_VERSION="~> 3.8.1" PARSER="future"
   - PUPPET_VERSION="~> 4.3.0"
 matrix:
   exclude:
   - rvm: 2.2
-    env: PUPPET_VERSION="~> 3.7.0"
+    env: PUPPET_VERSION="~> 3.8.1"
   - rvm: 2.2
-    env: PUPPET_VERSION="~> 3.7.0" PARSER="future"
-  - rvm: 2.2
-    env: PUPPET_VERSION="~> 3.8.0"
-  - rvm: 2.2
-    env: PUPPET_VERSION="~> 3.8.0" PARSER="future"
+    env: PUPPET_VERSION="~> 3.8.1" PARSER="future"
 notifications:
   email:
     - parkerpg@ornl.gov
