@@ -31,8 +31,16 @@ RSpec::Core::RakeTask.new(:acceptance) do |t|
 end
 
 desc "Run syntax, lint, and spec tests."
-task :test => [
-  :syntax,
+
+test_commands = [
   :lint,
   :spec,
 ]
+
+# Note that puppet-syntax does not yet support Puppet 4.0 (though an unmerged
+# fix exists at https://github.com/gds-operations/puppet-syntax/issues/42).
+if Gem.loaded_specs["puppet"].version < Gem::Version.create('4.0')
+  test_commands.push(:syntax)
+end
+
+task :test => test_commands
