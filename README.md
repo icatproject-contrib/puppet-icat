@@ -1,3 +1,5 @@
+# `puppet-icat` ![Build Status](https://travis-ci.org/PeterParker/puppet-icat.svg?branch=master)
+
 ## About
 
 The aim of this Puppet module is to automate the process of downloading, installing and configuring a full ICAT stack.
