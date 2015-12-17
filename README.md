@@ -1,4 +1,4 @@
-# `puppet-icat` [![Build Status](https://travis-ci.org/PeterParker/puppet-icat.svg?branch=master)](https://travis-ci.org/PeterParker/puppet-icat)
+# `puppet-icat` [![Build Status](https://travis-ci.org/profile/icatproject-contrib/puppet-icat.svg?branch=master)](https://travis-ci.org/profile/icatproject-contrib/puppet-icat)
 
 ## About
 
