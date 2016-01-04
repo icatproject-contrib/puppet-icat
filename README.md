@@ -23,7 +23,7 @@ To give you a basic idea of the syntax, however, consider the following manifest
 @file { '/vagrant/.tmp': ensure => 'directory' }
 @file { '/tmp': ensure => 'directory' }
 
-# Make various dependenices are met.
+# Make sure various dependenices are met.
 @package { 'wget': ensure => installed }
 @class { 'maven::maven': }
 @package { 'python-suds': ensure => installed }
