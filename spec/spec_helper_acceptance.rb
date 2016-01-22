@@ -20,6 +20,12 @@ RSpec.configure do |c|
     icat_symlink = File.join(module_root, 'spec', 'fixtures', 'modules', 'icat')
     FileUtils.rm icat_symlink, :force => true
 
+    # See here for possible installation options:
+    # https://github.com/puppetlabs/beaker/blob/master/lib/beaker/dsl/install_utils/foss_utils.rb
+    install_puppet({
+      # TODO: pull this in from env var.
+      :version        => '3.8.1',
+    })
     install_librarian
     librarian_install_modules(module_root, 'icat')
   end
