@@ -15,13 +15,6 @@ apply_manifest_opts = {
 }
 
 default_pp = <<-EOS
-  # By having the tmp directory inside the shared Vagrant directory,
-  # our downloads will persist between runs of the accetance tests
-  # -- even "clean" runs.  This will make them a lot quicker as we
-  # won't have to repeatedly download the JDK, GlassFish, or the ICAT
-  # components ...
-  @file { '/vagrant/.tmp': ensure => 'directory' }
-  # ... We still want to use /tmp as our "working directory", though.
   @file { '/tmp': ensure => 'directory' }
 
   @package { 'wget': ensure => installed }
@@ -41,7 +34,7 @@ default_pp = <<-EOS
     appserver_admin_password        => 'p4ssw0rd',
     appserver_admin_master_password => 'master_p4ssw0rd',
     appserver_db_type               => 'mysql',
-    tmp_dir                         => '/vagrant/.tmp',
+    tmp_dir                         => '/tmp',
   }
   ->
   icat::create_component { 'authn_db':
@@ -60,7 +53,7 @@ default_pp = <<-EOS
       'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
       'glassfish_admin_port'  => '4848',
     },
-    tmp_dir         => '/vagrant/.tmp',
+    tmp_dir         => '/tmp',
     working_dir     => '/tmp',
     version         => '1.1.2',
   }
