@@ -1,3 +1,5 @@
+# `puppet-icat` [![Build Status](https://travis-ci.org/icatproject-contrib/puppet-icat.svg?branch=master)](https://travis-ci.org/icatproject-contrib/puppet-icat)
+
 ## About
 
 The aim of this Puppet module is to automate the process of downloading, installing and configuring a full ICAT stack.
@@ -21,7 +23,7 @@ To give you a basic idea of the syntax, however, consider the following manifest
 @file { '/vagrant/.tmp': ensure => 'directory' }
 @file { '/tmp': ensure => 'directory' }
 
-# Make various dependenices are met.
+# Make sure various dependenices are met.
 @package { 'wget': ensure => installed }
 @class { 'maven::maven': }
 @package { 'python-suds': ensure => installed }
