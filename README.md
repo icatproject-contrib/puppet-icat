@@ -118,8 +118,7 @@ Developers will need the following on their machine:
 
 * Ruby and associated Dev Tools
 * Bundler
-* VirtualBox
-* Vagrant
+* Docker
 
 #### Ubuntu 14.04:
 
@@ -135,20 +134,11 @@ sudo apt-get install build-essential
 # Use Bundler to install all gems needed by the project.
 sudo gem install bundle
 bundle install
+```
 
-# Install Virtualbox.
-sudo apt-get install virtualbox
+Install Docker: https://docs.docker.com/engine/installation/ubuntulinux/.
 
-# Install Vagrant
-#
-# NOTE: when trying this out on a fresh VM recently I had to manually
-# download and install the latest .deb (1.7.4) from the website as a
-# workaround to some strange error I was getting.  This also meant
-# uninstalling the latest version of Bundler which had been installed
-# above and replacing it with 1.10.5, since 1.10.6 and later is not
-# compatible with that version of Vagrant.
-sudo apt-get install vagrant
-
+```
 # Run tests to see if everything is working.
 bundle exec rake test
 bundle exec rake acceptance
@@ -160,14 +150,13 @@ bundle exec rake acceptance
 # Use Bundler to install necessary gems.
 sudo gem install bundle
 sudo bundle install
+```
 
-# Install Vagrant and Virtualbox using homebrew.
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew install caskroom/cask/brew-cask
-brew cask install virtualbox
-brew cask install vagrant
-brew cask install vagrant-manager
+Install Docker using the excellent Docker Machine: https://docs.docker.com/engine/installation/mac/.
 
+Then, open up a Docker Quickstart Terminal and do:
+
+```
 # Run tests to see if everything is working.
 bundle exec rake test
 bundle exec rake acceptance
@@ -190,10 +179,6 @@ bundle exec rake test
 
 # Run all acceptance tests with debugging output enabled.
 export BEAKER_debug=yes
-bundle exec rake acceptance
-
-# Run the acceptance tests, but use a particular version of Puppet.
-export PUPPET_VERSION=4.2.1
 bundle exec rake acceptance
 
 # Run the acceptance tests again, but don't destroy any VMs either before or
