@@ -18,6 +18,7 @@ default_pp = <<-EOS
   @file { '/tmp': ensure => 'directory' }
 
   @package { 'wget': ensure => installed }
+  @package { 'patch': ensure => installed }
   @class { 'maven::maven': }
   @package { 'python-suds': ensure => installed }
 
@@ -29,8 +30,8 @@ default_pp = <<-EOS
   }
   ->
   class { 'icat':
-    appserver_user                  => 'vagrant',
-    appserver_group                 => 'vagrant',
+    appserver_user                  => 'root',
+    appserver_group                 => 'root',
     appserver_admin_password        => 'p4ssw0rd',
     appserver_admin_master_password => 'master_p4ssw0rd',
     appserver_db_type               => 'mysql',

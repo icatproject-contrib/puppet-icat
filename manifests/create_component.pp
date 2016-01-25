@@ -47,6 +47,7 @@ define icat::create_component (
 
   realize( Class['maven::maven'] )
   realize( Package['unzip'] )
+  realize( Package['patch'] )
 
   maven { $zip_path:
     groupid    => 'org.icatproject',

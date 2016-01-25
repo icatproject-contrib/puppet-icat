@@ -36,7 +36,7 @@ class icat::appserver (
 
     # Asadmin properties.
     asadmin_user            => 'admin',      # TODO: Should be $user
-    asadmin_passfile        => "/home/${user}/asadmin.pass",
+    asadmin_passfile        => "${tmp_dir}/asadmin.pass",
     asadmin_master_password => 'changeit',   # TODO: Should be $admin_master_password
     asadmin_password        => 'adminadmin', # TODO: Should be $admin_password
     create_passfile         => true,
