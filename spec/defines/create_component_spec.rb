@@ -4,6 +4,7 @@ describe 'icat::create_component' do
   let :pre_condition do
     <<-EOS
     @class { 'maven::maven': }
+    @package { 'patch': ensure => installed }
     @package { 'wget': ensure => installed }
     @file { '/tmp': ensure => 'directory' }
     @package { 'python-suds': ensure => installed }
