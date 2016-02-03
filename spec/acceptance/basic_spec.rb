@@ -34,23 +34,28 @@ default_pp = <<-EOS
   }
   ->
   class { 'icat':
-    appserver_user                  => 'vagrant',
+    appserver_admin_master_password => 'adminadmin',
+    appserver_admin_password        => 'changeit',
+    appserver_admin_port            => 4848,
+    appserver_install_dir           => '/usr/local/',
     appserver_group                 => 'vagrant',
-    appserver_admin_password        => 'p4ssw0rd',
-    appserver_admin_master_password => 'master_p4ssw0rd',
+    appserver_user                  => 'vagrant',
+
+    components                      => [{
+      name    => 'authn_db',
+      version => '1.1.2',
+    }],
+
+    db_name                         => 'icat',
+    db_password                     => 'password',
     db_type                         => 'mysql',
+    db_url                          => 'jdbc:mysql://localhost:3306/icat',
+    db_username                     => 'username',
+
+    manage_java                     => true,
+
     tmp_dir                         => '/tmp',
     working_dir                     => '/tmp',
-    components                      => [{
-      'name'                  => 'authn_db',
-      'version'               => '1.1.2',
-      'db_url'                => 'jdbc:mysql://localhost:3306/icat',
-      'db_username'           => 'username',
-      'db_password'           => 'password',
-      'db_name'               => 'icat',
-      'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
-      'glassfish_admin_port'  => '4848',
-    }],
   }
 EOS
 
