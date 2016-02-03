@@ -4,6 +4,7 @@
 /.tmp
 spec/fixtures/manifests
 spec/fixtures/modules
+/modules
 # Where are these coming from? :/
 /junit
 /log
