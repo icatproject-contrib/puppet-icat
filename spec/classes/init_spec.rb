@@ -96,6 +96,33 @@ describe 'icat' do
         'version'         => '1.1.2',
       })
     end
+
+    it 'should generate the templated properties files correctly' do
+      should contain_file('/tmp/authn_db-1.1.2-distro/authn_db/authn_db-setup.properties').with_content(
+        "# Driver and connection properties for the MySQL database.\n" \
+        "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
+        "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
+        "\n" \
+        "# Must contain \"glassfish/domains\"\n" \
+        "glassfish=/usr/local/glassfish-4.0/\n" \
+        "\n" \
+        "# Port for glassfish admin calls (normally 4848)\n" \
+        "port=4848\n"
+      )
+      should contain_file('/tmp/authn_db-1.1.2-distro/authn_db/authn_db.properties').with_content(
+        "# Real comments in this file are marked with '#' whereas commented out lines\n" \
+        "# are marked with '!'\n" \
+        "\n" \
+        "# If access to the DB authentication should only be allowed from certain\n" \
+        "# IP addresses then provide a space separated list of allowed values. These \n" \
+        "# take the form of an IPV4 or IPV6 address followed by the number of bits \n" \
+        "# (starting from the most significant) to consider.\n" \
+        "!ip = 130.246.0.0/16   172.16.68.0/24\n" \
+        "\n" \
+        "# The mechanism label to appear before the user name. This may be omitted.\n" \
+        "!mechanism = db"
+      )
+    end
   end
 
   context 'unrecognised component name' do
