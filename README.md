@@ -41,7 +41,7 @@ class { 'icat':
   appserver_group                 => 'vagrant',
   appserver_admin_password        => 'p4ssw0rd',
   appserver_admin_master_password => 'master_p4ssw0rd',
-  appserver_db_type               => 'mysql',
+  db_type                         => 'mysql',
   tmp_dir                         => '/vagrant/.tmp',
 }
 ->
