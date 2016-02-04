@@ -46,32 +46,36 @@ describe 'icat' do
     end
   end
 
+  let (:default_component_params) do
+    {
+      'appserver_admin_master_password' => 'adminadmin',
+      'appserver_admin_password'        => 'changeit',
+      'appserver_admin_port'            => 4848,
+      'appserver_install_dir'           => '/usr/local/',
+      'appserver_group'                 => '',
+      'appserver_user'                  => 'root',
+
+      'db_name'                         => 'icat',
+      'db_password'                     => 'password',
+      'db_type'                         => 'mysql',
+      'db_url'                          => 'jdbc:mysql://localhost:3306/icat',
+      'db_username'                     => 'username',
+
+      'manage_java'                     => true,
+
+      'tmp_dir'                         => '/tmp',
+      'working_dir'                     => '/tmp',
+    }
+  end
+
   context 'authn_db component selected' do
     let(:params) do
-      {
-        'appserver_admin_master_password' => 'adminadmin',
-        'appserver_admin_password'        => 'changeit',
-        'appserver_admin_port'            => 4848,
-        'appserver_install_dir'           => '/usr/local/',
-        'appserver_group'                 => '',
-        'appserver_user'                  => 'root',
-
-        'components'                      => [{
+      default_component_params.merge(
+        'components' => [{
           'name'    => 'authn_db',
           'version' => '1.1.2',
-        }],
-
-        'db_name'                         => 'icat',
-        'db_password'                     => 'password',
-        'db_type'                         => 'mysql',
-        'db_url'                          => 'jdbc:mysql://localhost:3306/icat',
-        'db_username'                     => 'username',
-
-        'manage_java'                     => true,
-
-        'tmp_dir'                         => '/tmp',
-        'working_dir'                     => '/tmp',
-      }
+        }]
+      )
     end
 
     it do
@@ -93,6 +97,8 @@ describe 'icat' do
           'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
           'glassfish_admin_port'  => 4848,
         },
+        'tmp_dir'         => '/tmp',
+        'working_dir'     => '/tmp',
         'version'         => '1.1.2',
       })
     end
@@ -121,6 +127,83 @@ describe 'icat' do
         "\n" \
         "# The mechanism label to appear before the user name. This may be omitted.\n" \
         "!mechanism = db"
+      )
+    end
+  end
+
+  context 'authn_ldap component selected' do
+    let(:params) do
+      default_component_params.merge(
+        'components' => [{
+          'name'               => 'authn_ldap',
+          'version'            => '1.1.0',
+          'provider_url'       => 'ldap://data.sns.gov:389',
+          'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
+        }]
+      )
+    end
+
+    it do
+      should contain_icat__create_component('authn_ldap').with({
+        'component_name'  => 'authn_ldap',
+        'patches'         => {},
+        'templates'       => [
+          'icat/authn_ldap-setup.properties.epp',
+          'icat/authn_ldap.properties.epp',
+        ],
+        'template_params' => {
+          'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
+          'glassfish_admin_port'  => 4848,
+          'provider_url'          => 'ldap://data.sns.gov:389',
+          'security_principal'    => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
+        },
+        'tmp_dir'         => '/tmp',
+        'working_dir'     => '/tmp',
+        'version'         => '1.1.0',
+      })
+    end
+
+    it 'should generate the templated properties files correctly' do
+      should contain_file('/tmp/authn_ldap-1.1.0-distro/authn_ldap/authn_ldap-setup.properties').with_content(
+        "# Must contain \"glassfish/domains\"\n" \
+        "glassfish=/usr/local/glassfish-4.0/\n" \
+        "\n" \
+        "# Port for glassfish admin calls (normally 4848)\n" \
+        "port=4848\n"
+      )
+      should contain_file('/tmp/authn_ldap-1.1.0-distro/authn_ldap/authn_ldap.properties').with_content(
+        "# Real comments in this file are marked with '#' whereas commented out lines\n" \
+        "# are marked with '!'\n" \
+        "\n" \
+        "# The following are needed for ldap authentication. The % character in the \n" \
+        "# security_principal will be replaced by the specified user name. If you \n" \
+        "# just use % then the user must enter a complete security_principal as his \n" \
+        "# user name.\n" \
+        "provider_url ldap://data.sns.gov:389\n" \
+        "security_principal uid=%,ou=Users,dc=sns,dc=ornl,dc=gov\n" \
+        "\n" \
+        "# The following may be provided to override or add to the default context\n" \
+        "!context.props = java.naming.factory.initial java.naming.security.authentication\n" \
+        "!context.props.java.naming.factory.initial = com.sun.jndi.ldap.LdapCtxFactory\n" \
+        "!context.props.java.naming.security.authentication = simple\n" \
+        "\n" \
+        "# To map the provided name to something derived from an LDAP query. The % \n" \
+        "# in the ldap filter will be replaced by the provided user name.\n" \
+        "!ldap.base = DC=fed,DC=cclrc,DC=ac,DC=uk\n" \
+        "!ldap.filter = (&(CN=%)(objectclass=user))\n" \
+        "!ldap.attribute = name\n" \
+        "\n" \
+        "# To force the case to be all lower\n" \
+        "case = lower\n" \
+        "\n" \
+        "# If access to the ldap authentication should only be allowed from certain \n" \
+        "# IP addresses then provide a space separated list of allowed values. These \n" \
+        "# take the form of an IPV4 or IPV6 address followed by the number of bits \n" \
+        "# (starting from the most significant) to consider.\n" \
+        "!ip   130.246.0.0/16   172.16.68.0/24\n" \
+        "\n" \
+        "# The mechanism label to appear before the user name. This may be omitted.\n" \
+        "!mechanism ldap\n"
       )
     end
   end

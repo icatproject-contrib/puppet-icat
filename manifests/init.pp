@@ -90,6 +90,27 @@ class icat (
           version         => $component_info['version'],
         }
       }
+      'authn_ldap' : {
+        unless has_key($component_info, 'provider_url')       { fail('LDAP provider URL required.') }
+        unless has_key($component_info, 'security_principal') { fail('LDAP security principal required.') }
+
+        icat::create_component { $component_info['name']:
+          templates       => [
+            # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
+            'icat/authn_ldap-setup.properties.epp',
+            'icat/authn_ldap.properties.epp',
+          ],
+          template_params => {
+            'glassfish_install_dir' => "${appserver_install_dir}glassfish-4.0/",
+            'glassfish_admin_port'  => $appserver_admin_port,
+            'provider_url'          => $component_info['provider_url'],
+            'security_principal'    => $component_info['security_principal'],
+          },
+          tmp_dir         => $tmp_dir,
+          working_dir     => $working_dir,
+          version         => $component_info['version'],
+        }
+      }
       default : {
         fail("Unrecognised component: ${component_info['name']}")
       }

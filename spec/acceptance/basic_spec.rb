@@ -42,9 +42,15 @@ default_pp = <<-EOS
     appserver_user                  => 'vagrant',
 
     components                      => [{
-      name    => 'authn_db',
-      version => '1.1.2',
-    }],
+        name    => 'authn_db',
+        version => '1.1.2',
+      }, {
+        name               => 'authn_ldap',
+        version            => '1.1.0',
+        provider_url       => 'ldap://data.sns.gov:389',
+        security_principal => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
+      }
+    ],
 
     db_name                         => 'icat',
     db_password                     => 'password',
