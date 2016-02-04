@@ -208,6 +208,82 @@ describe 'icat' do
     end
   end
 
+  context 'authn_simple component selected' do
+    let(:params) do
+      default_component_params.merge(
+        'components' => [{
+          'name'        => 'authn_simple',
+          'version'     => '1.0.1',
+          'credentials' => {
+            'user_a' => 'password_a',
+            'user_b' => 'password_b',
+          },
+        }]
+      )
+    end
+
+    it do
+      should contain_icat__create_component('authn_simple').with({
+        'component_name'  => 'authn_simple',
+        'patches'         => {},
+        'templates'       => [
+          'icat/authn_simple-setup.properties.epp',
+          'icat/authn_simple.properties.epp',
+        ],
+        'template_params' => {
+          'credentials' => {
+            'user_a' => 'password_a',
+            'user_b' => 'password_b',
+          },
+          'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
+          'glassfish_admin_port'  => 4848,
+        },
+        'tmp_dir'         => '/tmp',
+        'working_dir'     => '/tmp',
+        'version'         => '1.0.1',
+      })
+    end
+
+    it 'should generate the templated properties files correctly' do
+      should contain_file('/tmp/authn_simple-1.0.1-distro/authn_simple/authn_simple-setup.properties').with_content(
+        "# Must contain \"glassfish/domains\"\n" \
+        "glassfish=/usr/local/glassfish-4.0/\n" \
+        "\n" \
+        "# Port for glassfish admin calls (normally 4848)\n" \
+        "port=4848\n"
+      )
+      should contain_file('/tmp/authn_simple-1.0.1-distro/authn_simple/authn_simple.properties').with_content(
+        "# Real comments in this file are marked with '#' whereas commented out lines\n" \
+        "# are marked with '!'\n" \
+        "\n" \
+        "# Space separated list of user names that this plugin authenticates.\n" \
+        "user.list = user_a user_b\n" \
+        "\n" \
+        "# Password for each user.  This may either be a clear text password or\n" \
+        "# a cryptographic hash of a password.\n" \
+        "#\n" \
+        "# A password hash must start with a '$' character and be in the same\n" \
+        "# form as found in the shadow(5) password file.  It may be created\n" \
+        "# using the mkpasswd(1) utility on Debian systems or grub-crypt on \n" \
+        "# Red Hat derived systems or the python crypt module.  The supported hash\n" \
+        "# algorithms are MD5, SHA-256, and SHA-512.\n" \
+        "#\n" \
+        "# A clear text password must not start with a '$' character.\n" \
+        "user.user_a.password = password_a\n" \
+        "user.user_b.password = password_b\n" \
+        "\n" \
+        "# If access to the simple authentication should only be allowed from certain \n" \
+        "# IP addresses then provide a space separated list of allowed values. These \n" \
+        "# take the form of an IPV4 or IPV6 address followed by the number of bits \n" \
+        "# (starting from the most significant) to consider.\n" \
+        "!ip = 130.246.0.0/16   172.16.68.0/24\n" \
+        "\n" \
+        "# The mechanism label to appear before the user name. This may be omitted.\n" \
+        "!mechanism = simple\n"
+      )
+    end
+  end
+
   context 'unrecognised component name' do
     let(:params) do
       {

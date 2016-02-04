@@ -49,6 +49,13 @@ default_pp = <<-EOS
         version            => '1.1.0',
         provider_url       => 'ldap://data.sns.gov:389',
         security_principal => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
+      }, {
+        'name'        => 'authn_simple',
+        'version'     => '1.0.1',
+        'credentials' => {
+          'user_a' => 'password_a',
+          'user_b' => 'password_b',
+        },
       }
     ],
 
