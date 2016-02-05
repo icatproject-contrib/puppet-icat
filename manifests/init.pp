@@ -130,6 +130,31 @@ class icat (
           version         => $component_info['version'],
         }
       }
+      'icat.server' : {
+        icat::create_component { $component_info['name']:
+          templates       => [
+            # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
+            'icat/icat-setup.properties.epp',
+            'icat/icat.log4j.properties.epp',
+            'icat/icat.properties.epp',
+          ],
+          template_params => {
+            'authn_plugins'         => join(get_all_authenticators($components), ' '),
+            'authn_jndi_entries'    => construct_authenticator_jndi_entries($components),
+            'crud_access_usernames' => join($component_info['crud_access_usernames'], ' '),
+            'db_name'               => $db_name,
+            'db_password'           => $db_password,
+            'db_type'               => $db_type,
+            'db_url'                => $db_url,
+            'db_username'           => $db_username,
+            'glassfish_install_dir' => "${appserver_install_dir}glassfish-4.0/",
+            'glassfish_admin_port'  => $appserver_admin_port,
+          },
+          tmp_dir         => $tmp_dir,
+          working_dir     => $working_dir,
+          version         => $component_info['version'],
+        }
+      }
       default : {
         fail("Unrecognised component: ${component_info['name']}")
       }

@@ -56,6 +56,10 @@ default_pp = <<-EOS
           'user_a' => 'password_a',
           'user_b' => 'password_b',
         },
+      }, {
+        'name'        => 'icat.server',
+        'version'     => '4.5.0',
+        'crud_access_usernames' => ['user_a', 'user_b'],
       }
     ],
 

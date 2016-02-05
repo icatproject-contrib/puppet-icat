@@ -284,6 +284,141 @@ describe 'icat' do
     end
   end
 
+  context 'icat.server and three authenticator components selected' do
+    let(:params) do
+      default_component_params.merge(
+        'components' => [{
+            'name'    => 'authn_db',
+            'version' => '1.1.2',
+          }, {
+            'name'               => 'authn_ldap',
+            'version'            => '1.1.0',
+            'provider_url'       => 'ldap://data.sns.gov:389',
+            'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
+          }, {
+            'name'        => 'authn_simple',
+            'version'     => '1.0.1',
+            'credentials' => {
+              'user_a' => 'password_a',
+              'user_b' => 'password_b',
+            },
+          }, {
+            'name'                  => 'icat.server',
+            'version'               => '4.5.0',
+            'crud_access_usernames' => ['user_a', 'user_b'],
+          }
+        ]
+      )
+    end
+
+    it do
+      should contain_icat__create_component('icat.server').with({
+        'component_name'  => 'icat.server',
+        'patches'         => {},
+        'templates'       => [
+          'icat/icat-setup.properties.epp',
+          'icat/icat.log4j.properties.epp',
+          'icat/icat.properties.epp',
+        ],
+        'template_params' => {
+          'authn_plugins'         => "db ldap simple",
+          'authn_jndi_entries'    => [
+            "authn.db.jndi java:global/authn_db-1.1.2/DB_Authenticator",
+            "authn.ldap.jndi java:global/authn_ldap-1.1.0/LDAP_Authenticator",
+            "authn.simple.jndi java:global/authn_simple-1.0.1/SIMPLE_Authenticator",
+            ],
+          'crud_access_usernames' => "user_a user_b",
+          'db_name'               => 'icat',
+          'db_password'           => 'password',
+          'db_type'               => 'mysql',
+          'db_url'                => 'jdbc:mysql://localhost:3306/icat',
+          'db_username'           => 'username',
+          'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
+          'glassfish_admin_port'  => 4848,
+        },
+        'tmp_dir'         => '/tmp',
+        'working_dir'     => '/tmp',
+        'version'         => '4.5.0',
+      })
+    end
+
+    it 'should generate the templated properties files correctly' do
+      should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/icat-setup.properties').with_content(
+        "# Driver and connection properties for the MySQL database.\n" \
+        "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
+        "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
+        "\n" \
+        "# Must contain \"glassfish/domains\"\n" \
+        "glassfish=/usr/local/glassfish-4.0/\n" \
+        "\n" \
+        "# Port for glassfish admin calls (normally 4848)\n" \
+        "port=4848\n"
+      )
+    end
+
+    it 'should generate the templated properties files correctly' do
+      should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/icat.log4j.properties').with_content(
+        "log4j.rootLogger=DEBUG, logfile\n" \
+        "\n" \
+        "log4j.appender.logfile=org.apache.log4j.DailyRollingFileAppender\n" \
+        "log4j.appender.logfile.Threshold=TRACE\n" \
+        "log4j.appender.logfile.file=../logs/icat.log\n" \
+        "log4j.appender.logfile.layout=org.apache.log4j.PatternLayout\n" \
+        "log4j.appender.logfile.layout.ConversionPattern=%d [%t] %-5p %C{1} - %m%n\n"
+      )
+    end
+
+    it 'should generate the templated properties files correctly' do
+      should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/icat.properties').with_content(
+        "# Real comments in this file are marked with '#' whereas commented out lines\n" \
+        "# are marked with '!'\n" \
+        "\n" \
+        "# The lifetime of a session\n" \
+        "lifetimeMinutes 120\n" \
+        "\n" \
+        "# Provide CRUD access to authz tables\n" \
+        "rootUserNames user_a user_b\n" \
+        "\n" \
+        "# Restrict total number of entities to return in a search call\n" \
+        "maxEntities 1000\n" \
+        "\n" \
+        "# Maximum ids in a list - this must not exceed 1000 for Oracle\n" \
+        "maxIdsInQuery 500\n" \
+        "\n" \
+        "# Size of cache to be used when importing data into ICAT\n" \
+        "importCacheSize 50\n" \
+        "\n" \
+        "# Size of cache to be used when exporting data from ICAT\n" \
+        "exportCacheSize 50\n" \
+        "\n" \
+        "# Desired authentication plugin mnemonics\n" \
+        "authn.list db ldap simple\n" \
+        "\n" \
+        "# JNDI for each plugin\n" \
+        "authn.db.jndi java:global/authn_db-1.1.2/DB_Authenticator\n" \
+        "authn.ldap.jndi java:global/authn_ldap-1.1.0/LDAP_Authenticator\n" \
+        "authn.simple.jndi java:global/authn_simple-1.0.1/SIMPLE_Authenticator\n" \
+        "\n" \
+        "!log4j.properties icat.log4j.properties\n" \
+        "\n" \
+        "# Notification setup\n" \
+        "notification.list = Dataset Datafile\n" \
+        "notification.Dataset = CUD\n" \
+        "notification.Datafile = CUD\n" \
+        "\n" \
+        "# Call logging setup\n" \
+        "log.list = file table\n" \
+        "log.file = S\n" \
+        "log.table = S\n" \
+        "\n" \
+        "# Lucene\n" \
+        "!lucene.directory = ../data/icat/lucene\n" \
+        "lucene.commitSeconds = 1\n" \
+        "lucene.commitCount = 1000\n"
+      )
+    end
+  end
+
   context 'unrecognised component name' do
     let(:params) do
       {
