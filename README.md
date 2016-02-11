@@ -14,9 +14,7 @@ testing of ICAT itself.
 
 ## Usage Example
 
-Complete usage examples are to follow at a later date.  (I am working on a manifest to create a full ICAT stack to be used for local development and testing purposes, and this will probably serve as the best possible usage example.  I will likely upload it to a separate repository.)
-
-To give you a basic idea of the syntax, however, consider the following manifest which installs Java and GlassFish, creates an `icat` GlassFish domain, and then installs a single ICAT component (`authn_db`):
+The following manifest installs a local MySQL database, Java and GlassFish, creates an `icat` GlassFish domain, and then installs several ICAT components:
 
 ```puppet
 # Declare necessary directories used by the provisioning process.
@@ -78,38 +76,6 @@ class { 'icat':
   working_dir                     => '/tmp',
 }
 ```
-
-Note that templates and optional patch files are passed in to the component creation process where necessary.
-
-### Patch Files
-
-Patch files are a way to fix any problems with the setup scripts where a fix has not been released yet.  They are of the standard diff/patch format, for example:
-
-```patch
-# '/path/to/patches/authn_db_setup_utils.patch'
-212c212
-<             result += " --validateatmostonceperiod=60 --validationtable=dual --creationretryattempts=10 --isconnectvalidatereq=true"
----
->             dProps += " --validateatmostonceperiod=60 --validationtable=dual --creationretryattempts=10 --isconnectvalidatereq=true"
-```
-
-### Template Files
-
-Template files are a way to populate the `.properties` files used in the ICAT component setup process with values from inside the Puppet manifest.  They are basically plain old `.properties` files with bits of [Embedded Puppet Syntax (EPP)](https://docs.puppetlabs.com/puppet/latest/reference/lang_template_epp.html) embedded in them:
-
-```
-# Driver and connection properties for the MySQL database.
-driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-dbProperties=url="'"<%=$db_url%>"'":user=<%=$db_username%>:password=<%=$db_password%>:databaseName=<%=$db_name%>
-
-# Must contain "glassfish/domains"
-glassfish=<%=$glassfish_install_dir%>
-
-# Port for glassfish admin calls (normally 4848)
-port=<%=$glassfish_admin_port%>
-```
-
-Variables referenced within the EPP are then populated with corresponding name / value pairs passed as a hash to the `template_params` parameter.
 
 ## Current Limitations
 
