@@ -29,42 +29,53 @@ To give you a basic idea of the syntax, however, consider the following manifest
 @package { 'python-suds': ensure => installed }
 
 # Create an empty MySQL server.
-include '::mysql::server'
 mysql::db { icat:
   user     => 'username',
   password => 'password',
 }
 ->
-# Set up GlassFish and the `icat` domain.
+# Set up GlassFish, the `icat` domain, and then install authn_db,
+# authn_simple, authn_ldap and icat.server.
 class { 'icat':
-  appserver_user                  => 'vagrant',
+  appserver_admin_master_password => 'adminadmin',
+  appserver_admin_password        => 'changeit',
+  appserver_admin_port            => 4848,
+  appserver_install_dir           => '/usr/local/',
   appserver_group                 => 'vagrant',
-  appserver_admin_password        => 'p4ssw0rd',
-  appserver_admin_master_password => 'master_p4ssw0rd',
-  db_type                         => 'mysql',
-  tmp_dir                         => '/vagrant/.tmp',
-}
-->
-# Deploy the `authn_db` component to the `icat` domain.
-icat::create_component { 'authn_db':
-  patches         => {
-    'setup_utils.py' => '/path/to/patches/authn_db_setup_utils.patch',
-  },
-  templates       => [
-    '/path/to/templates/authn_db-setup.properties.epp',
-    '/path/to/templates/authn_db.properties.epp',
+  appserver_user                  => 'vagrant',
+
+  components                      => [{
+      name    => 'authn_db',
+      version => '1.1.2',
+    }, {
+      name               => 'authn_ldap',
+      version            => '1.1.0',
+      provider_url       => 'ldap://data.sns.gov:389',
+      security_principal => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
+    }, {
+      'name'        => 'authn_simple',
+      'version'     => '1.0.1',
+      'credentials' => {
+        'user_a' => 'password_a',
+        'user_b' => 'password_b',
+      },
+    }, {
+      'name'        => 'icat.server',
+      'version'     => '4.5.0',
+      'crud_access_usernames' => ['user_a', 'user_b'],
+    }
   ],
-  template_params => {
-    'db_url'                => 'jdbc:mysql://localhost:3306/icat',
-    'db_username'           => 'username',
-    'db_password'           => 'password',
-    'db_name'               => 'icat',
-    'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
-    'glassfish_admin_port'  => '4848',
-  },
-  tmp_dir         => '/vagrant/.tmp',
-  working_dir     => '/tmp',
-  version         => '1.1.2',
+
+  db_name                         => 'icat',
+  db_password                     => 'password',
+  db_type                         => 'mysql',
+  db_url                          => 'jdbc:mysql://localhost:3306/icat',
+  db_username                     => 'username',
+
+  manage_java                     => true,
+
+  tmp_dir                         => '/tmp',
+  working_dir                     => '/tmp',
 }
 ```
 
