@@ -28,6 +28,18 @@ default_pp = <<-EOS
 
   include '::mysql::server'
 
+  file { '/home/vagrant/icat':
+    ensure => 'directory',
+    owner  => 'vagrant',
+    group  => 'vagrant',
+  }
+  ->
+  file { '/home/vagrant/icat/bin':
+    ensure => 'directory',
+    owner  => 'vagrant',
+    group  => 'vagrant',
+  }
+  ->
   mysql::db { icat:
     user     => 'username',
     password => 'password',
@@ -40,6 +52,8 @@ default_pp = <<-EOS
     appserver_install_dir           => '/usr/local/',
     appserver_group                 => 'vagrant',
     appserver_user                  => 'vagrant',
+
+    bin_dir                         => '/home/vagrant/icat/bin',
 
     components                      => [{
         name    => 'authn_db',
@@ -71,7 +85,7 @@ default_pp = <<-EOS
 
     manage_java                     => true,
 
-    tmp_dir                         => '/tmp',
+    tmp_dir                         => '/vagrant/.tmp',
     working_dir                     => '/tmp',
   }
 EOS

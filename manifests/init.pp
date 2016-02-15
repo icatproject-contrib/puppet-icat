@@ -9,6 +9,8 @@ class icat (
   $appserver_group                 = 'root',
   $appserver_user                  = 'root',
 
+  $bin_dir                         = undef,
+
   $components                      = [],
 
   $db_name                         = 'icat',
@@ -132,6 +134,7 @@ class icat (
       }
       'icat.server' : {
         icat::create_component { $component_info['name']:
+          setup_options   => "--binDir ${bin_dir}",
           templates       => [
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
             'icat/icat-setup.properties.epp',

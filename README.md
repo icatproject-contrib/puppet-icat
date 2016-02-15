@@ -26,6 +26,18 @@ The following manifest installs a local MySQL database, Java and GlassFish, crea
 @class { 'maven::maven': }
 @package { 'python-suds': ensure => installed }
 
+file { '/home/vagrant/icat':
+  ensure => 'directory',
+  owner  => 'vagrant',
+  group  => 'vagrant',
+}
+->
+file { '/home/vagrant/icat/bin':
+  ensure => 'directory',
+  owner  => 'vagrant',
+  group  => 'vagrant',
+}
+->
 # Create an empty MySQL server.
 mysql::db { icat:
   user     => 'username',
@@ -41,6 +53,8 @@ class { 'icat':
   appserver_install_dir           => '/usr/local/',
   appserver_group                 => 'vagrant',
   appserver_user                  => 'vagrant',
+
+  bin_dir                         => '/home/vagrant/icat/bin',
 
   components                      => [{
       name    => 'authn_db',
@@ -72,7 +86,7 @@ class { 'icat':
 
   manage_java                     => true,
 
-  tmp_dir                         => '/tmp',
+  tmp_dir                         => '/vagrant/.tmp',
   working_dir                     => '/tmp',
 }
 ```

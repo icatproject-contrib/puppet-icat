@@ -55,6 +55,8 @@ describe 'icat' do
       'appserver_group'                 => '',
       'appserver_user'                  => 'root',
 
+      'bin_dir'                         => '/usr/local/bin',
+
       'db_name'                         => 'icat',
       'db_password'                     => 'password',
       'db_type'                         => 'mysql',
@@ -315,6 +317,7 @@ describe 'icat' do
       should contain_icat__create_component('icat.server').with({
         'component_name'  => 'icat.server',
         'patches'         => {},
+        'setup_options'   => '--binDir /usr/local/bin',
         'templates'       => [
           'icat/icat-setup.properties.epp',
           'icat/icat.log4j.properties.epp',
