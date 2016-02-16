@@ -28,6 +28,14 @@ default_pp = <<-EOS
 
   include '::mysql::server'
 
+  firewall { '100 allow glassfish':
+    chain   => 'INPUT',
+    state   => ['NEW'],
+    dport   => ['4848', '4880', '4881'],
+    proto   => 'tcp',
+    action  => 'accept',
+  }
+
   file { '/home/vagrant/icat':
     ensure => 'directory',
     owner  => 'vagrant',

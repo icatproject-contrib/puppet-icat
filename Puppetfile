@@ -19,3 +19,7 @@ mod 'maestrodev-wget',
 mod 'puppetlabs-mysql',
   :git => "https://github.com/puppetlabs/puppetlabs-mysql.git",
   :ref => "3.6.1"
+
+mod 'puppetlabs-firewall',
+  :git => "https://github.com/puppetlabs/puppetlabs-firewall.git",
+  :ref => "1.7.2"
