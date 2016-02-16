@@ -106,6 +106,48 @@ class icat::appserver (
     require             => Class['glassfish'],
   }
   ->
+  set { 'server.http-service.access-log.format':
+    asadminuser => $asadmin_user,
+    ensure      => 'present',
+    user        => $user,
+    value       => '"common"',
+  }
+  ->
+  set { 'server.http-service.access-logging-enabled':
+    asadminuser => $asadmin_user,
+    ensure      => 'present',
+    user        => $user,
+    value       => 'true',
+  }
+  ->
+  set { 'server.thread-pools.thread-pool.http-thread-pool.max-thread-pool-size':
+    asadminuser => $asadmin_user,
+    ensure      => 'present',
+    user        => $user,
+    value       => '128',
+  }
+  ->
+  set { 'configs.config.server-config.cdi-service.enable-implicit-cdi':
+    asadminuser => $asadmin_user,
+    ensure      => 'present',
+    user        => $user,
+    value       => 'false',
+  }
+  ->
+  set { 'server.ejb-container.property.disable-nonportable-jndi-names':
+    asadminuser => $asadmin_user,
+    ensure      => 'present',
+    user        => $user,
+    value       => 'true',
+  }
+  ->
+  set { 'configs.config.server-config.network-config.protocols.protocol.http-listener-2.http.request-timeout-seconds':
+    asadminuser => $asadmin_user,
+    ensure      => 'present',
+    user        => $user,
+    value       => '-1',
+  }
+  ->
   class { 'icat::certs':
     keystore_path    => "${::icat_domain_path}/config/keystore.jks",
     cert_path        => "${::icat_domain_path}/config/s1as-export.jks",
