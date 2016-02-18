@@ -1,8 +1,8 @@
 forge "https://forgeapi.puppetlabs.com"
 
 mod 'fatmcgav-glassfish',
-  :git => "https://github.com/fatmcgav/fatmcgav-glassfish.git",
-  :ref => "v0.7.0"
+  :git => "https://github.com/PeterParker/fatmcgav-glassfish.git",
+  :ref => 'develop'
 
 mod 'puppet-maven',
   :git => "https://github.com/maestrodev/puppet-maven.git",

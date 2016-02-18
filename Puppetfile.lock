@@ -4,12 +4,12 @@ FORGE
     nanliu-staging (1.0.3)
 
 GIT
-  remote: https://github.com/fatmcgav/fatmcgav-glassfish.git
-  ref: v0.7.0
-  sha: 542bc23e0d5189b2121033fda751c415342a521c
+  remote: https://github.com/PeterParker/fatmcgav-glassfish.git
+  ref: develop
+  sha: eaa8dd1e415f80d5a0e7d9ac738b247805488344
   specs:
-    fatmcgav-glassfish (0.7.0)
-      puppetlabs-stdlib (>= 3.2.0)
+    fatmcgav-glassfish (0.7.1)
+      puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
 
 GIT
   remote: https://github.com/maestrodev/puppet-maven.git
