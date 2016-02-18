@@ -420,6 +420,43 @@ describe 'icat' do
         "lucene.commitCount = 1000\n"
       )
     end
+
+    it 'should make sure the icat.server module depends on all three authn modules' do
+      should contain_icat__create_component('icat.server')
+        .that_requires('ICAT::Create_Component[authn_simple]')
+      should contain_icat__create_component('icat.server')
+        .that_requires('ICAT::Create_Component[authn_ldap]')
+      should contain_icat__create_component('icat.server')
+        .that_requires('ICAT::Create_Component[authn_db]')
+    end
+  end
+
+  context 'icat.server and only two authenticator components selected' do
+    let(:params) do
+      default_component_params.merge(
+        'components' => [{
+            'name'    => 'authn_db',
+            'version' => '1.1.2',
+          }, {
+            'name'               => 'authn_ldap',
+            'version'            => '1.1.0',
+            'provider_url'       => 'ldap://data.sns.gov:389',
+            'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
+          }, {
+            'name'                  => 'icat.server',
+            'version'               => '4.5.0',
+            'crud_access_usernames' => ['user_a', 'user_b'],
+          }
+        ]
+      )
+    end
+
+    it 'should make sure the icat.server module depends on those two authn modules' do
+      should contain_icat__create_component('icat.server')
+        .that_requires('ICAT::Create_Component[authn_db]')
+      should contain_icat__create_component('icat.server')
+        .that_requires('ICAT::Create_Component[authn_ldap]')
+    end
   end
 
   context 'unrecognised component name' do

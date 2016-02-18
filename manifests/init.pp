@@ -133,6 +133,9 @@ class icat (
         }
       }
       'icat.server' : {
+        # https://docs.puppetlabs.com/puppet/latest/reference/lang_collectors.html
+        Icat::Create_Component <| title == 'authn_simple' or title == 'authn_ldap' or title == 'authn_db' |>
+        ->
         icat::create_component { $component_info['name']:
           setup_options   => "--binDir ${bin_dir}",
           templates       => [
