@@ -73,9 +73,16 @@ describe 'icat::appserver' do
     end
 
     it do
+      should contain_class('icat::options').with({
+        'asadmin_user' => 'admin',
+        'user'         => 'username',
+      }).that_requires('Glassfish::Create_Domain[icat]')
+    end
+
+    it do
       should contain_class('icat::certs').with({
         'hostname' => 'icat-puppet-test',
-      }).that_requires('Glassfish::Create_Domain[icat]')
+      }).that_requires('Class[icat::options]')
     end
   end
 

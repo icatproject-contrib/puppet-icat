@@ -10,6 +10,7 @@ class icat::appserver (
   $admin_master_password = undef,
   $db_type               = undef,
 ) {
+  $asadmin_user = 'admin'
   package { 'unzip':
     ensure => 'installed'
   }
@@ -35,7 +36,7 @@ class icat::appserver (
     add_path                => true,
 
     # Asadmin properties.
-    asadmin_user            => 'admin',      # TODO: Should be $user
+    asadmin_user            => $asadmin_user, # TODO: Should be $user?
     asadmin_passfile        => "/home/${user}/asadmin.pass",
     asadmin_master_password => 'changeit',   # TODO: Should be $admin_master_password
     asadmin_password        => 'adminadmin', # TODO: Should be $admin_password
@@ -106,46 +107,9 @@ class icat::appserver (
     require             => Class['glassfish'],
   }
   ->
-  set { 'server.http-service.access-log.format':
-    asadminuser => $asadmin_user,
-    ensure      => 'present',
-    user        => $user,
-    value       => '"common"',
-  }
-  ->
-  set { 'server.http-service.access-logging-enabled':
-    asadminuser => $asadmin_user,
-    ensure      => 'present',
-    user        => $user,
-    value       => 'true',
-  }
-  ->
-  set { 'server.thread-pools.thread-pool.http-thread-pool.max-thread-pool-size':
-    asadminuser => $asadmin_user,
-    ensure      => 'present',
-    user        => $user,
-    value       => '128',
-  }
-  ->
-  set { 'configs.config.server-config.cdi-service.enable-implicit-cdi':
-    asadminuser => $asadmin_user,
-    ensure      => 'present',
-    user        => $user,
-    value       => 'false',
-  }
-  ->
-  set { 'server.ejb-container.property.disable-nonportable-jndi-names':
-    asadminuser => $asadmin_user,
-    ensure      => 'present',
-    user        => $user,
-    value       => 'true',
-  }
-  ->
-  set { 'configs.config.server-config.network-config.protocols.protocol.http-listener-2.http.request-timeout-seconds':
-    asadminuser => $asadmin_user,
-    ensure      => 'present',
-    user        => $user,
-    value       => '-1',
+  class { 'icat::options':
+    asadmin_user => $asadmin_user,  # TODO: Should be $user?
+    user         => $user,
   }
   ->
   class { 'icat::certs':
