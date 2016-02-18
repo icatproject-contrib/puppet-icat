@@ -27,6 +27,13 @@ GIT
     maestrodev-wget (1.7.1)
 
 GIT
+  remote: https://github.com/puppetlabs/puppetlabs-firewall.git
+  ref: 1.7.2
+  sha: 71c659faf38d5e0cf19cfc16bb690b4c450fbd2a
+  specs:
+    puppetlabs-firewall (1.7.2)
+
+GIT
   remote: https://github.com/puppetlabs/puppetlabs-mysql.git
   ref: 3.6.1
   sha: d095721d7059aab4cf73a0f5a816b0ecd92ca5bd
@@ -46,6 +53,7 @@ DEPENDENCIES
   fatmcgav-glassfish (>= 0)
   maestrodev-wget (>= 0)
   puppet-maven (>= 0)
+  puppetlabs-firewall (>= 0)
   puppetlabs-mysql (>= 0)
   puppetlabs-stdlib (>= 0)
 
