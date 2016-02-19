@@ -13,8 +13,10 @@ define icat::create_component (
   $user            = $icat::appserver_user,
   $version         = undef,
   $working_dir     = '/tmp',
+  $deployment_order = 100,
 ) {
   validate_string($component_name)
+  validate_integer($deployment_order)
   validate_string($group)
   validate_array($maven_repos)
   validate_hash($patches)
@@ -140,4 +142,13 @@ define icat::create_component (
     refreshonly => true,
     require     => [Exec["configure_${component_name}_setup_script"]],
   }
+  ~>
+  # lint:ignore:ensure_first_param
+  set { "applications.application.${component_name}-${version}.deployment-order":
+    asadminuser => 'admin', # TODO: should be $user?
+    ensure      => 'present',
+    user        => $user,
+    value       => $deployment_order,
+  }
+  # lint:endignore
 }

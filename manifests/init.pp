@@ -83,6 +83,7 @@ class icat (
       'authn_db' : {
         icat::create_component { $component_info['name']:
           patches         => {
+          deployment_order => 80,
             # See: https://docs.puppetlabs.com/guides/file_serving.html#serving-module-files
             'setup_utils.py' => 'puppet:///modules/icat/patches/authn_db_setup_utils.patch',
           },
@@ -111,6 +112,7 @@ class icat (
 
         icat::create_component { $component_info['name']:
           templates       => [
+          deployment_order => 80,
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
             'icat/authn_ldap-setup.properties.epp',
             'icat/authn_ldap.properties.epp',
@@ -131,6 +133,7 @@ class icat (
 
         icat::create_component { $component_info['name']:
           templates       => [
+          deployment_order => 80,
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
             'icat/authn_simple-setup.properties.epp',
             'icat/authn_simple.properties.epp',
@@ -152,6 +155,7 @@ class icat (
         icat::create_component { $component_info['name']:
           setup_options   => "--binDir ${bin_dir}",
           templates       => [
+          deployment_order => 100,
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
             'icat/icat-setup.properties.epp',
             'icat/icat.log4j.properties.epp',

@@ -204,6 +204,7 @@ describe 'icat' do
         'component_name'  => 'authn_ldap',
         'patches'         => {},
         'templates'       => [
+        'deployment_order' => 80,
           'icat/authn_ldap-setup.properties.epp',
           'icat/authn_ldap.properties.epp',
         ],
@@ -283,6 +284,7 @@ describe 'icat' do
         'component_name'  => 'authn_simple',
         'patches'         => {},
         'templates'       => [
+        'deployment_order' => 80,
           'icat/authn_simple-setup.properties.epp',
           'icat/authn_simple.properties.epp',
         ],
@@ -373,6 +375,7 @@ describe 'icat' do
         'patches'         => {},
         'setup_options'   => '--binDir /usr/local/bin',
         'templates'       => [
+        'deployment_order' => 100,
           'icat/icat-setup.properties.epp',
           'icat/icat.log4j.properties.epp',
           'icat/icat.properties.epp',

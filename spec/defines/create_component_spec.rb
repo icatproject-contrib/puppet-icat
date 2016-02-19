@@ -120,6 +120,15 @@ describe 'icat::create_component' do
         'refreshonly' => true,
       }).that_subscribes_to('Exec[configure_icat.server_setup_script]')
     end
+
+    it do
+      should contain_set('applications.application.icat.server-4.5.0.deployment-order').with({
+        'asadminuser' => 'admin',
+        'ensure'      => 'present',
+        'user'        => 'root',
+        'value'       => 100,
+      }).that_subscribes_to('Exec[run_icat.server_setup_script]')
+    end
   end
 
   context 'with custom setup options param' do
@@ -136,6 +145,16 @@ describe 'icat::create_component' do
       should contain_exec('run_icat.server_setup_script').with({
         'command' => 'python setup --binDir ~/icat/bin INSTALL',
       })
+    end
+  end
+
+  context 'with custom deployment order param' do
+    let(:title) { 'icat.server' }
+    let(:params) { default_params.merge('deployment_order' => 120) }
+
+    it do
+      should contain_set('applications.application.icat.server-4.5.0.deployment-order')
+      .with({'value' => 120})
     end
   end
 end
