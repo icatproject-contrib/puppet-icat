@@ -133,9 +133,11 @@ describe 'icat' do
 
     it 'should generate the templated properties files correctly' do
       should contain_file('/tmp/authn_db-1.1.2-distro/authn_db/authn_db-setup.properties').with_content(
+        "\n" \
         "# Driver and connection properties for the MySQL database.\n" \
         "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
         "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
+        "\n" \
         "\n" \
         "# Must contain \"glassfish/domains\"\n" \
         "glassfish=/usr/local/glassfish-4.0/\n" \
@@ -170,9 +172,11 @@ describe 'icat' do
     end
     it 'should generate the templated properties files correctly' do
       should contain_file('/tmp/authn_db-1.1.2-distro/authn_db/authn_db-setup.properties').with_content(
+        "\n" \
         "# Driver and connection properties for the Oracle database.\n" \
         "driver=oracle.jdbc.pool.OracleDataSource\n" \
         "dbProperties=url=\"'\"jdbc:oracle:thin:@//localhost:1521/scdevl\"'\":ImplicitCachingEnabled=true:MaxStatements=200:user=username:password=password\n" \
+        "\n" \
         "\n" \
         "# Must contain \"glassfish/domains\"\n" \
         "glassfish=/usr/local/glassfish-4.0/\n" \
@@ -397,9 +401,11 @@ describe 'icat' do
 
     it 'should generate the templated properties files correctly' do
       should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/icat-setup.properties').with_content(
+        "\n" \
         "# Driver and connection properties for the MySQL database.\n" \
         "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
         "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
+        "\n" \
         "\n" \
         "# Must contain \"glassfish/domains\"\n" \
         "glassfish=/usr/local/glassfish-4.0/\n" \
