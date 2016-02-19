@@ -133,5 +133,9 @@ describe 'the icat class' do
     it 'should have created a security cert against the appropriate hostname' do
       shell('grep "icat-puppet-test" /usr/java/jdk1.7.0_79/jre/lib/security/jssecacerts', :acceptable_exit_codes => 0)
     end
+
+    it 'should enable testicat to pass without problems' do
+      shell('/home/vagrant/icat/bin/testicat https://localhost:4881 simple username user_a password password_a', :acceptable_exit_codes => 0)
+    end
   end
 end
