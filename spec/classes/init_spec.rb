@@ -108,15 +108,16 @@ describe 'icat' do
 
     it do
       should contain_icat__create_component('authn_db').with({
-        'component_name'  => 'authn_db',
-        'patches'         => {
+        'component_name'   => 'authn_db',
+        'deployment_order' => 80,
+        'patches'          => {
           'setup_utils.py' => 'puppet:///modules/icat/patches/authn_db_setup_utils.patch',
         },
-        'templates'       => [
+        'templates'        => [
           'icat/authn_db-setup.properties.epp',
           'icat/authn_db.properties.epp',
         ],
-        'template_params' => {
+        'template_params'  => {
           'db_name'               => 'icat',
           'db_password'           => 'password',
           'db_type'               => 'mysql',
@@ -125,9 +126,9 @@ describe 'icat' do
           'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
           'glassfish_admin_port'  => 4848,
         },
-        'tmp_dir'         => '/tmp',
-        'working_dir'     => '/tmp',
-        'version'         => '1.1.2',
+        'tmp_dir'          => '/tmp',
+        'working_dir'      => '/tmp',
+        'version'          => '1.1.2',
       }).that_requires('icat::appserver')
     end
 
@@ -201,22 +202,22 @@ describe 'icat' do
 
     it do
       should contain_icat__create_component('authn_ldap').with({
-        'component_name'  => 'authn_ldap',
-        'patches'         => {},
-        'templates'       => [
+        'component_name'   => 'authn_ldap',
         'deployment_order' => 80,
+        'patches'          => {},
+        'templates'        => [
           'icat/authn_ldap-setup.properties.epp',
           'icat/authn_ldap.properties.epp',
         ],
-        'template_params' => {
+        'template_params'  => {
           'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
           'glassfish_admin_port'  => 4848,
           'provider_url'          => 'ldap://data.sns.gov:389',
           'security_principal'    => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
         },
-        'tmp_dir'         => '/tmp',
-        'working_dir'     => '/tmp',
-        'version'         => '1.1.0',
+        'tmp_dir'          => '/tmp',
+        'working_dir'      => '/tmp',
+        'version'          => '1.1.0',
       }).that_requires('icat::appserver')
     end
 
@@ -281,14 +282,14 @@ describe 'icat' do
 
     it do
       should contain_icat__create_component('authn_simple').with({
-        'component_name'  => 'authn_simple',
-        'patches'         => {},
-        'templates'       => [
+        'component_name'   => 'authn_simple',
         'deployment_order' => 80,
+        'patches'          => {},
+        'templates'        => [
           'icat/authn_simple-setup.properties.epp',
           'icat/authn_simple.properties.epp',
         ],
-        'template_params' => {
+        'template_params'  => {
           'credentials' => {
             'user_a' => 'password_a',
             'user_b' => 'password_b',
@@ -296,9 +297,9 @@ describe 'icat' do
           'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
           'glassfish_admin_port'  => 4848,
         },
-        'tmp_dir'         => '/tmp',
-        'working_dir'     => '/tmp',
-        'version'         => '1.0.1',
+        'tmp_dir'          => '/tmp',
+        'working_dir'      => '/tmp',
+        'version'          => '1.0.1',
       }).that_requires('icat::appserver')
     end
 
@@ -371,16 +372,16 @@ describe 'icat' do
 
     it do
       should contain_icat__create_component('icat.server').with({
-        'component_name'  => 'icat.server',
-        'patches'         => {},
-        'setup_options'   => '--binDir /usr/local/bin',
-        'templates'       => [
+        'component_name'   => 'icat.server',
         'deployment_order' => 100,
+        'patches'          => {},
+        'setup_options'    => '--binDir /usr/local/bin',
+        'templates'        => [
           'icat/icat-setup.properties.epp',
           'icat/icat.log4j.properties.epp',
           'icat/icat.properties.epp',
         ],
-        'template_params' => {
+        'template_params'  => {
           'authn_plugins'         => "db ldap simple",
           'authn_jndi_entries'    => [
             "authn.db.jndi java:global/authn_db-1.1.2/DB_Authenticator",
@@ -396,9 +397,9 @@ describe 'icat' do
           'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
           'glassfish_admin_port'  => 4848,
         },
-        'tmp_dir'         => '/tmp',
-        'working_dir'     => '/tmp',
-        'version'         => '4.5.0',
+        'tmp_dir'          => '/tmp',
+        'working_dir'      => '/tmp',
+        'version'          => '4.5.0',
       }).that_requires('icat::appserver')
     end
 

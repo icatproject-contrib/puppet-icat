@@ -82,17 +82,17 @@ class icat (
     case $component_info['name'] {
       'authn_db' : {
         icat::create_component { $component_info['name']:
-          patches         => {
           deployment_order => 80,
+          patches          => {
             # See: https://docs.puppetlabs.com/guides/file_serving.html#serving-module-files
             'setup_utils.py' => 'puppet:///modules/icat/patches/authn_db_setup_utils.patch',
           },
-          templates       => [
+          templates        => [
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
             'icat/authn_db-setup.properties.epp',
             'icat/authn_db.properties.epp',
           ],
-          template_params => {
+          template_params  => {
             'db_name'               => $db_name,
             'db_password'           => $db_password,
             'db_type'               => $db_type,
@@ -101,9 +101,9 @@ class icat (
             'glassfish_install_dir' => "${appserver_install_dir}glassfish-4.0/",
             'glassfish_admin_port'  => $appserver_admin_port,
           },
-          tmp_dir         => $tmp_dir,
-          working_dir     => $working_dir,
-          version         => $component_info['version'],
+          tmp_dir          => $tmp_dir,
+          working_dir      => $working_dir,
+          version          => $component_info['version'],
         }
       }
       'authn_ldap' : {
@@ -111,41 +111,41 @@ class icat (
         unless has_key($component_info, 'security_principal') { fail('LDAP security principal required.') }
 
         icat::create_component { $component_info['name']:
-          templates       => [
           deployment_order => 80,
+          templates        => [
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
             'icat/authn_ldap-setup.properties.epp',
             'icat/authn_ldap.properties.epp',
           ],
-          template_params => {
+          template_params  => {
             'glassfish_install_dir' => "${appserver_install_dir}glassfish-4.0/",
             'glassfish_admin_port'  => $appserver_admin_port,
             'provider_url'          => $component_info['provider_url'],
             'security_principal'    => $component_info['security_principal'],
           },
-          tmp_dir         => $tmp_dir,
-          working_dir     => $working_dir,
-          version         => $component_info['version'],
+          tmp_dir          => $tmp_dir,
+          working_dir      => $working_dir,
+          version          => $component_info['version'],
         }
       }
       'authn_simple' : {
         unless has_key($component_info, 'credentials') { fail('Simple credentials required.') }
 
         icat::create_component { $component_info['name']:
-          templates       => [
           deployment_order => 80,
+          templates        => [
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
             'icat/authn_simple-setup.properties.epp',
             'icat/authn_simple.properties.epp',
           ],
-          template_params => {
+          template_params  => {
             'credentials'           => $component_info['credentials'],
             'glassfish_install_dir' => "${appserver_install_dir}glassfish-4.0/",
             'glassfish_admin_port'  => $appserver_admin_port,
           },
-          tmp_dir         => $tmp_dir,
-          working_dir     => $working_dir,
-          version         => $component_info['version'],
+          tmp_dir          => $tmp_dir,
+          working_dir      => $working_dir,
+          version          => $component_info['version'],
         }
       }
       'icat.server' : {
@@ -153,15 +153,15 @@ class icat (
         Icat::Create_Component <| title == 'authn_simple' or title == 'authn_ldap' or title == 'authn_db' |>
         ->
         icat::create_component { $component_info['name']:
-          setup_options   => "--binDir ${bin_dir}",
-          templates       => [
           deployment_order => 100,
+          setup_options    => "--binDir ${bin_dir}",
+          templates        => [
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
             'icat/icat-setup.properties.epp',
             'icat/icat.log4j.properties.epp',
             'icat/icat.properties.epp',
           ],
-          template_params => {
+          template_params  => {
             'authn_plugins'         => join(get_all_authenticators($components), ' '),
             'authn_jndi_entries'    => construct_authenticator_jndi_entries($components),
             'crud_access_usernames' => join($component_info['crud_access_usernames'], ' '),
@@ -173,9 +173,9 @@ class icat (
             'glassfish_install_dir' => "${appserver_install_dir}glassfish-4.0/",
             'glassfish_admin_port'  => $appserver_admin_port,
           },
-          tmp_dir         => $tmp_dir,
-          working_dir     => $working_dir,
-          version         => $component_info['version'],
+          tmp_dir          => $tmp_dir,
+          working_dir      => $working_dir,
+          version          => $component_info['version'],
         }
       }
       default : {

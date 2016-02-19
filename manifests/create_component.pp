@@ -2,18 +2,18 @@
 #
 # Create an ICAT component.
 define icat::create_component (
-  $component_name  = $name,
-  $group           = $icat::appserver_group,
-  $maven_repos     = ['http://www.icatproject.org/mvn/repo'],
-  $patches         = {},
-  $setup_options   = '',
-  $templates       = undef,
-  $template_params = undef,
-  $tmp_dir         = '/tmp',
-  $user            = $icat::appserver_user,
-  $version         = undef,
-  $working_dir     = '/tmp',
+  $component_name   = $name,
   $deployment_order = 100,
+  $group            = $icat::appserver_group,
+  $maven_repos      = ['http://www.icatproject.org/mvn/repo'],
+  $patches          = {},
+  $setup_options    = '',
+  $templates        = undef,
+  $template_params  = undef,
+  $tmp_dir          = '/tmp',
+  $user             = $icat::appserver_user,
+  $version          = undef,
+  $working_dir      = '/tmp',
 ) {
   validate_string($component_name)
   validate_integer($deployment_order)
