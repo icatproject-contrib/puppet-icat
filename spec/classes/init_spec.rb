@@ -111,6 +111,7 @@ describe 'icat' do
         "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
         "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
         "\n" \
+        "\n" \
         "# Must contain \"glassfish/domains\"\n" \
         "glassfish=/usr/local/glassfish-4.0/\n" \
         "\n" \
@@ -350,6 +351,7 @@ describe 'icat' do
         "# Driver and connection properties for the MySQL database.\n" \
         "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
         "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
+        "\n" \
         "\n" \
         "# Must contain \"glassfish/domains\"\n" \
         "glassfish=/usr/local/glassfish-4.0/\n" \
