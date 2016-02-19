@@ -69,6 +69,8 @@ class icat (
     db_type               => $db_type,
     connector_jar_path    => $connector_jar_path,
   }
+  ->
+  Icat::Create_Component <| |>
 
   # lint:ignore:variable_scope
   $components.each |Integer $index, Hash $component_info| {

@@ -128,7 +128,7 @@ describe 'icat' do
         'tmp_dir'         => '/tmp',
         'working_dir'     => '/tmp',
         'version'         => '1.1.2',
-      })
+      }).that_requires('icat::appserver')
     end
 
     it 'should generate the templated properties files correctly' do
@@ -216,7 +216,7 @@ describe 'icat' do
         'tmp_dir'         => '/tmp',
         'working_dir'     => '/tmp',
         'version'         => '1.1.0',
-      })
+      }).that_requires('icat::appserver')
     end
 
     it 'should generate the templated properties files correctly' do
@@ -297,7 +297,7 @@ describe 'icat' do
         'tmp_dir'         => '/tmp',
         'working_dir'     => '/tmp',
         'version'         => '1.0.1',
-      })
+      }).that_requires('icat::appserver')
     end
 
     it 'should generate the templated properties files correctly' do
@@ -396,7 +396,7 @@ describe 'icat' do
         'tmp_dir'         => '/tmp',
         'working_dir'     => '/tmp',
         'version'         => '4.5.0',
-      })
+      }).that_requires('icat::appserver')
     end
 
     it 'should generate the templated properties files correctly' do
