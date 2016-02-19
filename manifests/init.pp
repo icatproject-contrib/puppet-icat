@@ -35,7 +35,7 @@ class icat (
   validate_array($components)
 
   if $db_type == 'oracle' {
-    validate_absolute_path($connector_jar_path)
+    validate_string($connector_jar_path)
   }
 
   unless $db_type =~ /^(oracle|mysql)$/ {

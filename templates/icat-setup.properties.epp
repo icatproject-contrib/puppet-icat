@@ -8,7 +8,6 @@ driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 dbProperties=url="'"<%=$db_url%>"'":user=<%=$db_username%>:password=<%=$db_password%>:databaseName=<%=$db_name%>
 <%- } -%>
 
-
 # Must contain "glassfish/domains"
 glassfish=<%=$glassfish_install_dir%>
 

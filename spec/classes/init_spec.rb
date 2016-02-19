@@ -70,6 +70,32 @@ describe 'icat' do
     }
   end
 
+  let (:oracle_alternative_component_params) do
+    {
+      'appserver_admin_master_password' => 'adminadmin',
+      'appserver_admin_password'        => 'changeit',
+      'appserver_admin_port'            => 4848,
+      'appserver_install_dir'           => '/usr/local/',
+      'appserver_group'                 => '',
+      'appserver_user'                  => 'root',
+
+      'bin_dir'                         => '/usr/local/bin',
+
+      'connector_jar_path'              => 'puppet:///modules/icat/dummy_connector/ojdbc6.jar',
+
+      'db_name'                         => 'icat',
+      'db_password'                     => 'password',
+      'db_type'                         => 'oracle',
+      'db_url'                          => 'jdbc:oracle:thin:@//localhost:1521/scdevl',
+      'db_username'                     => 'username',
+
+      'manage_java'                     => true,
+
+      'tmp_dir'                         => '/tmp',
+      'working_dir'                     => '/tmp',
+    }
+  end
+
   context 'authn_db component selected' do
     let(:params) do
       default_component_params.merge(
@@ -111,7 +137,6 @@ describe 'icat' do
         "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
         "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
         "\n" \
-        "\n" \
         "# Must contain \"glassfish/domains\"\n" \
         "glassfish=/usr/local/glassfish-4.0/\n" \
         "\n" \
@@ -130,6 +155,30 @@ describe 'icat' do
         "\n" \
         "# The mechanism label to appear before the user name. This may be omitted.\n" \
         "!mechanism = db"
+      )
+    end
+  end
+
+  context 'authn_db component selected with oracle' do
+    let(:params) do
+      oracle_alternative_component_params.merge(
+        'components' => [{
+          'name'    => 'authn_db',
+          'version' => '1.1.2',
+        }]
+      )
+    end
+    it 'should generate the templated properties files correctly' do
+      should contain_file('/tmp/authn_db-1.1.2-distro/authn_db/authn_db-setup.properties').with_content(
+        "# Driver and connection properties for the Oracle database.\n" \
+        "driver=oracle.jdbc.pool.OracleDataSource\n" \
+        "dbProperties=url=\"'\"jdbc:oracle:thin:@//localhost:1521/scdevl\"'\":ImplicitCachingEnabled=true:MaxStatements=200:user=username:password=password\n" \
+        "\n" \
+        "# Must contain \"glassfish/domains\"\n" \
+        "glassfish=/usr/local/glassfish-4.0/\n" \
+        "\n" \
+        "# Port for glassfish admin calls (normally 4848)\n" \
+        "port=4848\n"
       )
     end
   end
@@ -351,7 +400,6 @@ describe 'icat' do
         "# Driver and connection properties for the MySQL database.\n" \
         "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
         "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
-        "\n" \
         "\n" \
         "# Must contain \"glassfish/domains\"\n" \
         "glassfish=/usr/local/glassfish-4.0/\n" \
