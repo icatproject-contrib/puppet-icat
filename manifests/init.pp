@@ -13,6 +13,8 @@ class icat (
 
   $components                      = [],
 
+  $connector_jar_path              = undef,
+
   $db_name                         = 'icat',
   $db_password                     = 'password',
   $db_type                         = 'mysql',
@@ -31,6 +33,14 @@ class icat (
   validate_string($appserver_user)
 
   validate_array($components)
+
+  if $db_type == 'oracle' {
+    validate_absolute_path($connector_jar_path)
+  }
+
+  unless $db_type =~ /^(oracle|mysql)$/ {
+    fail("Unknown database type of '${db_type}'. Please use either 'oracle' or 'mysql'.")
+  }
 
   validate_string($db_name)
   validate_string($db_password)
@@ -57,6 +67,7 @@ class icat (
     admin_password        => $appserver_admin_password,
     admin_master_password => $appserver_admin_master_password,
     db_type               => $db_type,
+    connector_jar_path    => $connector_jar_path,
   }
 
   # lint:ignore:variable_scope

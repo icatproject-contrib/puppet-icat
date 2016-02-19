@@ -86,7 +86,7 @@ describe 'icat::appserver' do
     end
   end
 
-  context 'with a db_type param of oracle' do
+  context 'with a db_type param of oracle and no connector_jar_path set' do
     let(:params) do
       default_params.merge({
         :db_type => 'oracle'
@@ -94,7 +94,23 @@ describe 'icat::appserver' do
     end
 
     it do
-      should compile.and_raise_error(/A database type of 'oracle' is not yet supported./)
+      should compile.and_raise_error(/If \"oracle\" is specified as a db_type/)
+    end
+  end
+
+  context 'with any db_type param and a connector_jar_path set' do
+    let(:params) do
+      default_params.merge({
+        :db_type            => 'oracle',
+        :connector_jar_path => 'puppet:///modules/icat/dummy_connector/ojdbc6.jar',
+      })
+    end
+
+    it do
+      should contain_file('/usr/local/glassfish-4.0/glassfish/lib/ojdbc6.jar').with({
+        'ensure' => 'file',
+        'source' => 'puppet:///modules/icat/dummy_connector/ojdbc6.jar',
+      })
     end
   end
 

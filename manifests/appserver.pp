@@ -9,6 +9,7 @@ class icat::appserver (
   $admin_password        = undef,
   $admin_master_password = undef,
   $db_type               = undef,
+  $connector_jar_path    = undef,
 ) {
   $asadmin_user = 'admin'
   package { 'unzip':
@@ -43,58 +44,54 @@ class icat::appserver (
     create_passfile         => true,
   }
 
-  case $db_type {
-    # Install a database connector jar based on the chosen DB type.  Using the install_jars definition
-    # inside the glassfish module would seem to be the best thing to do here, but for some reason the
-    # connector jars need to be placed in glassfish/lib rather than glassfish/lib/ext.  See:
-    # http://stackoverflow.com/questions/10965926/deploying-to-glassfish-classpath-not-set-for-com-mysql-jdbc-jdbc2-optional-mysql
-    # Unfortunately, the install_jars definition will only install to lib/ext, so use plain old file
-    # resources instead.
-    #
-    # Also note that we're trying to avoid just bundling the jars with the code, since there
-    # seems to be licensing issues with doing so (definitely in the case of Oracle, possibly
-    # in the case of MySQL).  Hence the messy execs here.  Perhaps the long term solution is
-    # to allow for Puppet file-server functionality from master.  See this for an example of
-    # how this might work given a Vagrant installation:
-    #
-    # https://theholyjava.wordpress.com/2012/06/14/serving-files-with-puppet-standalone-in-vagrant-from-the-puppet-uris/
+  if $connector_jar_path == undef {
+    case $db_type {
+      # MySQL is the only DB type supported where you don't have to specify your own connector jar.
+      'mysql' : {
+        realize( Package['wget'] )
+        realize( Package['unzip'] )
+        realize( File[$tmp_dir] )
 
-    'oracle' : {
-      fail("A database type of 'oracle' is not yet supported.")
-    }
-    'mysql' : {
-      realize( Package['wget'] )
-      realize( Package['unzip'] )
-      realize( File[$tmp_dir] )
+        $connector_url = 'http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.37.zip'
+        $connector_zip_path = "${tmp_dir}/mysql-connector-java-5.1.37.zip"
+        $connector_extracted_path = "${tmp_dir}/mysql-connector-java-5.1.37"
 
-      $connector_url = 'http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.37.zip'
-      $connector_zip_path = "${tmp_dir}/mysql-connector-java-5.1.37.zip"
-      $connector_extracted_path = "${tmp_dir}/mysql-connector-java-5.1.37"
+        exec { 'download_mysql_connector':
+          command => "wget -v ${connector_url} -O ${connector_zip_path}",
+          path    => '/usr/bin/',
+          creates => $connector_zip_path,
+          require => [
+            Package['wget'],
+            File[$tmp_dir],
+          ]
+        } ~>
+        exec { 'extract_mysql_connector':
+          command => "unzip -q -d ${tmp_dir} ${connector_zip_path}",
+          path    => '/usr/bin/',
+          unless  => "test -d ${connector_extracted_path}",
+          require => [Package['unzip']],
+        } ~>
+        exec { 'install_mysql_connector':
+          command => "cp ${connector_extracted_path}/mysql-connector-java-5.1.37-bin.jar ${::appserver_path}/glassfish/lib/",
+          path    => '/usr/bin/',
+          unless  => "test -f ${::appserver_path}/glassfish/lib/mysql-connector-java-5.1.37-bin.jar",
+          require => Class['glassfish'],
+        }
+      }
 
-      exec { 'download_mysql_connector':
-        command => "wget -v ${connector_url} -O ${connector_zip_path}",
-        path    => '/usr/bin/',
-        creates => $connector_zip_path,
-        require => [
-          Package['wget'],
-          File[$tmp_dir],
-        ]
-      } ~>
-      exec { 'extract_mysql_connector':
-        command => "unzip -q -d ${tmp_dir} ${connector_zip_path}",
-        path    => '/usr/bin/',
-        unless  => "test -d ${connector_extracted_path}",
-        require => [Package['unzip']],
-      } ~>
-      exec { 'install_mysql_connector':
-        command => "cp ${connector_extracted_path}/mysql-connector-java-5.1.37-bin.jar ${::appserver_path}/glassfish/lib/",
-        path    => '/usr/bin/',
-        unless  => "test -f ${::appserver_path}/glassfish/lib/mysql-connector-java-5.1.37-bin.jar",
-        require => Class['glassfish'],
+      'oracle' : {
+        fail('If "oracle" is specified as a db_type, you *must* also specify a path to a connector jar.')
+      }
+
+      default : {
+        fail("Unknown database type of '${db_type}'. Please use either 'oracle' or 'mysql'.")
       }
     }
-    default : {
-      fail("Unknown database type of '${db_type}'. Please use either 'oracle' or 'mysql'.")
+  } else {
+    $connector_basename = basename($connector_jar_path)
+    file { "${::appserver_path}/glassfish/lib/${connector_basename}":
+      ensure => 'file',
+      source => $connector_jar_path
     }
   }
 
