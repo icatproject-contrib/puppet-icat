@@ -8,10 +8,10 @@ class icat::appserver (
   $group                 = undef,
   $admin_password        = undef,
   $admin_master_password = undef,
+  $admin_user            = undef,
   $db_type               = undef,
   $connector_jar_path    = undef,
 ) {
-  $asadmin_user = 'admin'
   package { 'unzip':
     ensure => 'installed'
   }
@@ -37,7 +37,7 @@ class icat::appserver (
     add_path                => true,
 
     # Asadmin properties.
-    asadmin_user            => $asadmin_user, # TODO: Should be $user?
+    asadmin_user            => $admin_user,
     asadmin_passfile        => "/home/${user}/asadmin.pass",
     asadmin_master_password => 'changeit',   # TODO: Should be $admin_master_password
     asadmin_password        => 'adminadmin', # TODO: Should be $admin_password
@@ -105,7 +105,7 @@ class icat::appserver (
   }
   ->
   class { 'icat::options':
-    asadmin_user => $asadmin_user,  # TODO: Should be $user?
+    asadmin_user => $admin_user,
     user         => $user,
   }
   ->

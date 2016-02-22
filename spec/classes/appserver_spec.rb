@@ -20,6 +20,7 @@ describe 'icat::appserver' do
       'group'                 => 'groupname',
       'admin_password'        => 'p4ssw0rd',
       'admin_master_password' => 'master_p4ssw0rd',
+      'admin_user'            => 'user_admin',
     }
   end
 
@@ -74,7 +75,7 @@ describe 'icat::appserver' do
 
     it do
       should contain_class('icat::options').with({
-        'asadmin_user' => 'admin',
+        'asadmin_user' => 'user_admin',
         'user'         => 'username',
       }).that_requires('Glassfish::Create_Domain[icat]')
     end

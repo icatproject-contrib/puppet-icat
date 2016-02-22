@@ -145,7 +145,7 @@ define icat::create_component (
   ~>
   # lint:ignore:ensure_first_param
   set { "applications.application.${component_name}-${version}.deployment-order":
-    asadminuser => 'admin', # TODO: should be $user?
+    asadminuser => $icat::appserver_admin_user,
     ensure      => 'present',
     user        => $user,
     value       => $deployment_order,

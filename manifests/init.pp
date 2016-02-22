@@ -5,6 +5,7 @@ class icat (
   $appserver_admin_master_password = 'adminadmin',
   $appserver_admin_password        = 'changeit',
   $appserver_admin_port            = 4848,
+  $appserver_admin_user            = 'admin',
   $appserver_install_dir           = '/usr/local/',
   $appserver_group                 = 'root',
   $appserver_user                  = 'root',
@@ -29,6 +30,7 @@ class icat (
   validate_string($appserver_admin_master_password)
   validate_string($appserver_admin_password)
   validate_integer($appserver_admin_port)
+  validate_string($appserver_admin_user)
   validate_string($appserver_group)
   validate_string($appserver_user)
 
@@ -66,6 +68,7 @@ class icat (
     group                 => $appserver_group,
     admin_password        => $appserver_admin_password,
     admin_master_password => $appserver_admin_master_password,
+    admin_user            => $appserver_admin_user,
     db_type               => $db_type,
     connector_jar_path    => $connector_jar_path,
   }

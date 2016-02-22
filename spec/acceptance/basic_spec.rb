@@ -54,9 +54,10 @@ default_pp = <<-EOS
   }
   ->
   class { 'icat':
-    appserver_admin_master_password => 'adminadmin',
-    appserver_admin_password        => 'changeit',
+    appserver_admin_master_password => 'admin_master_password',
+    appserver_admin_password        => 'admin_password',
     appserver_admin_port            => 4848,
+    appserver_admin_user            => 'admin_user',
     appserver_install_dir           => '/usr/local/',
     appserver_group                 => 'vagrant',
     appserver_user                  => 'vagrant',
