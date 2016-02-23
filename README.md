@@ -10,8 +10,6 @@ that require an instance of ICAT to be developed against.  Local VMs
 provisioned by Puppet could also be used to automate full end-to-end
 testing of ICAT itself.
 
-**NOTE: This is a work in progress and as such provisioning actual ICAT deployments in production with this module is not currently possible.  It is, however, certainly a goal of the project.**
-
 ## Usage Example
 
 The following manifest installs a local MySQL database, Java and GlassFish, creates an `icat` GlassFish domain, and then installs several ICAT components:
@@ -90,12 +88,6 @@ class { 'icat':
   working_dir                     => '/tmp',
 }
 ```
-
-## Current Limitations
-
-* Getting the GlassFish module to accept non-default admin passwords was   problematic and so I skipped over this.  Need to revisit before this is ever used in production.
-
-* Oracle databases are not yet supported given the fact that scripting the download of the connector jar directly from Oracle is impossible, and I'm not sure of the legality of redistributing it ourselves.  We therefore need to find a sensible way for the module user to feed it to the module (given that the module has to work in a master/agent setting as well as within a Vagrant VM).
 
 ## Development
 
