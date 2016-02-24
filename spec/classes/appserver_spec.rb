@@ -111,6 +111,8 @@ describe 'icat::appserver' do
       should contain_file('/usr/local/glassfish-4.0/glassfish/lib/ojdbc6.jar').with({
         'ensure' => 'file',
         'source' => 'puppet:///modules/icat/dummy_connector/ojdbc6.jar',
+        'owner'  => 'username',
+        'group'  => 'groupname',
       })
     end
   end
