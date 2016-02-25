@@ -118,5 +118,6 @@ class icat::appserver (
     jssecacerts_path => "${::java_security_path}/jssecacerts",
     keytool_path     => $::java_keytool_path,
     hostname         => $::hostname,
+    password         => $admin_master_password,
   }
 }

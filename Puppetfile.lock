@@ -6,7 +6,7 @@ FORGE
 GIT
   remote: https://github.com/PeterParker/fatmcgav-glassfish.git
   ref: develop
-  sha: c613a377b6bee8c7ebba5ffc3a8fe5318973e4ce
+  sha: 7a6043b1248b67a6cb6ff1190b7fce8d2464126c
   specs:
     fatmcgav-glassfish (0.7.1)
       puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
