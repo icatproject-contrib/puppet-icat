@@ -8,7 +8,9 @@
 # Using keytool" example at:
 # https://glassfish.java.net/docs/4.0/security-guide.pdf
 #
-# More info: https://docs.oracle.com/cd/E19798-01/821-1751/gczen/index.html
+# More info:
+# - https://docs.oracle.com/cd/E19798-01/821-1751/gczen/index.html
+# - http://www.cloudera.com/documentation/enterprise/5-2-x/topics/cm_sg_create_key_trust.html
 class icat::certs (
   $keystore_path    = undef,
   $cert_path        = undef,
