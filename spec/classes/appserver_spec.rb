@@ -18,6 +18,7 @@ describe 'icat::appserver' do
       'tmp_dir'               => '/tmp',
       'user'                  => 'username',
       'group'                 => 'groupname',
+      'admin_password'        => '/home/pp4/asadmin.pass',
       'admin_password'        => 'p4ssw0rd',
       'admin_master_password' => 'master_p4ssw0rd',
       'admin_user'            => 'user_admin',

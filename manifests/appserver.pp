@@ -6,6 +6,7 @@ class icat::appserver (
   $tmp_dir               = undef,
   $user                  = undef,
   $group                 = undef,
+  $admin_passfile        = undef,
   $admin_password        = undef,
   $admin_master_password = undef,
   $admin_user            = undef,
@@ -38,7 +39,7 @@ class icat::appserver (
 
     # Asadmin properties.
     asadmin_user            => $admin_user,
-    asadmin_passfile        => "/home/${user}/asadmin.pass",
+    asadmin_passfile        => $admin_passfile,
     asadmin_master_password => $admin_master_password,
     asadmin_password        => $admin_password,
     create_passfile         => true,

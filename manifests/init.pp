@@ -3,6 +3,7 @@
 # This module manages an entire installation of ICAT.
 class icat (
   $appserver_admin_master_password = 'adminadmin',
+  $appserver_admin_passfile        = '/tmp/asadmin.pass',
   $appserver_admin_password        = 'changeit',
   $appserver_admin_port            = 4848,
   $appserver_admin_user            = 'admin',
@@ -28,6 +29,7 @@ class icat (
   $working_dir                     = '/tmp',
 ) {
   validate_string($appserver_admin_master_password)
+  validate_absolute_path($appserver_admin_passfile)
   validate_string($appserver_admin_password)
   validate_integer($appserver_admin_port)
   validate_string($appserver_admin_user)
@@ -66,6 +68,7 @@ class icat (
     tmp_dir               => $tmp_dir,
     user                  => $appserver_user,
     group                 => $appserver_group,
+    admin_passfile        => $appserver_admin_passfile,
     admin_password        => $appserver_admin_password,
     admin_master_password => $appserver_admin_master_password,
     admin_user            => $appserver_admin_user,

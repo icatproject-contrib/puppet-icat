@@ -49,6 +49,7 @@ describe 'icat' do
   let (:default_component_params) do
     {
       'appserver_admin_master_password' => 'adminadmin',
+      'appserver_admin_passfile'        => '/tmp/asadmin.pass',
       'appserver_admin_password'        => 'changeit',
       'appserver_admin_port'            => 4848,
       'appserver_admin_user'            => 'admin',
@@ -74,6 +75,7 @@ describe 'icat' do
   let (:oracle_alternative_component_params) do
     {
       'appserver_admin_master_password' => 'adminadmin',
+      'appserver_admin_passfile'        => '/tmp/asadmin.pass',
       'appserver_admin_password'        => 'changeit',
       'appserver_admin_port'            => 4848,
       'appserver_admin_user'            => 'admin',
