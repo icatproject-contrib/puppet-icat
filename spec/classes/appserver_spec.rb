@@ -114,6 +114,7 @@ describe 'icat::appserver' do
         'owner'  => 'username',
         'group'  => 'groupname',
       })
+      .that_requires('Class[glassfish]')
     end
   end
 

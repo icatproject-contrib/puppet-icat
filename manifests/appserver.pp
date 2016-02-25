@@ -90,10 +90,11 @@ class icat::appserver (
   } else {
     $connector_basename = basename($connector_jar_path)
     file { "${::appserver_path}/glassfish/lib/${connector_basename}":
-      ensure => 'file',
-      source => $connector_jar_path,
-      owner  => $user,
-      group  => $group,
+      ensure  => 'file',
+      source  => $connector_jar_path,
+      owner   => $user,
+      group   => $group,
+      require => Class['glassfish'],
     }
   }
 
