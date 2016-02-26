@@ -23,7 +23,20 @@ describe 'icat::java' do
     it 'should download and install a jdk package' do
       should contain_package('jdk.x86_64').with({
         'ensure' => 'installed',
+        'source' => '/tmp/jdk-7u79-linux-x64.rpm',
       }).that_requires('Exec[download_jdk]')
+    end
+  end
+  context 'with local jdk rpm specified' do
+    let :params do
+      { 'jdk_rpm_path' => 'puppet:///modules/icatfiles/jdk-7u79-linux-x64.rpm' }
+    end
+
+    it do
+      should contain_package('jdk.x86_64').with({
+        'ensure' => 'installed',
+        'source' => 'puppet:///modules/icatfiles/jdk-7u79-linux-x64.rpm',
+      })
     end
   end
 end

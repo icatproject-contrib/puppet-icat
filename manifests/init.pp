@@ -23,6 +23,8 @@ class icat (
   $db_url                          = 'jdbc:mysql://localhost:3306/icat',
   $db_username                     = 'username',
 
+  $jdk_rpm_path                    = undef,
+
   $manage_java                     = true,
 
   $tmp_dir                         = '/tmp',
@@ -59,8 +61,9 @@ class icat (
 
   if $manage_java {
     class { 'icat::java':
-      tmp_dir => $tmp_dir,
-      before  => Class['icat::appserver'],
+      jdk_rpm_path => $jdk_rpm_path,
+      tmp_dir      => $tmp_dir,
+      before       => Class['icat::appserver'],
     }
   }
 
