@@ -14,14 +14,25 @@
 # See http://stackoverflow.com/questions/10268583/ for more info.
 
 class icat::java (
+  $group        = undef,
   $jdk_rpm_path = undef,
   $tmp_dir      = undef,
+  $user         = undef,
 ) {
   if $jdk_rpm_path != undef {
+    $jdk_rpm_basename = basename($jdk_rpm_path)
+    $tmp_jdk_rpm = "${tmp_dir}/${jdk_rpm_basename}"
+    file { $tmp_jdk_rpm:
+      ensure => 'file',
+      source => $jdk_rpm_basename,
+      owner  => $user,
+      group  => $group,
+    }
+    ->
     package { 'jdk.x86_64' :
       ensure   => 'installed',
       provider => 'rpm',
-      source   => $jdk_rpm_path,
+      source   => $tmp_jdk_rpm,
     }
   }
   else {

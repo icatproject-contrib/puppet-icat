@@ -61,8 +61,10 @@ class icat (
 
   if $manage_java {
     class { 'icat::java':
+      group        => $appserver_group,
       jdk_rpm_path => $jdk_rpm_path,
       tmp_dir      => $tmp_dir,
+      user         => $appserver_user,
       before       => Class['icat::appserver'],
     }
   }
