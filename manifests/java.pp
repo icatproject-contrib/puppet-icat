@@ -24,7 +24,7 @@ class icat::java (
     $tmp_jdk_rpm = "${tmp_dir}/${jdk_rpm_basename}"
     file { $tmp_jdk_rpm:
       ensure => 'file',
-      source => $jdk_rpm_basename,
+      source => $jdk_rpm_path,
       owner  => $user,
       group  => $group,
     }

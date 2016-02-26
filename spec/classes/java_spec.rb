@@ -30,16 +30,24 @@ describe 'icat::java' do
   context 'with local jdk rpm specified' do
     let :params do
       {
+        'group'        => 'group',
         'jdk_rpm_path' => 'puppet:///modules/icatfiles/jdk-7u79-linux-x64.rpm',
         'tmp_dir'      => '/tmp',
+        'user'         => 'user',
       }
     end
 
     it do
+      should contain_file('/tmp/jdk-7u79-linux-x64.rpm').with({
+        'ensure' => 'file',
+        'source' => 'puppet:///modules/icatfiles/jdk-7u79-linux-x64.rpm',
+        'owner'  => 'user',
+        'group'  => 'group',
+      })
       should contain_package('jdk.x86_64').with({
         'ensure' => 'installed',
         'source' => '/tmp/jdk-7u79-linux-x64.rpm',
-      })
+      }).that_requires('File[/tmp/jdk-7u79-linux-x64.rpm]')
     end
   end
 end
