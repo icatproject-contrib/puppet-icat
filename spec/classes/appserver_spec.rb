@@ -22,6 +22,7 @@ describe 'icat::appserver' do
       'admin_password'        => 'p4ssw0rd',
       'admin_master_password' => 'master_p4ssw0rd',
       'admin_user'            => 'user_admin',
+      'portbase'              => '4800',
     }
   end
 

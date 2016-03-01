@@ -5,10 +5,10 @@ class icat (
   $appserver_admin_master_password = 'adminadmin',
   $appserver_admin_passfile        = '/tmp/asadmin.pass',
   $appserver_admin_password        = 'changeit',
-  $appserver_admin_port            = 4848,
   $appserver_admin_user            = 'admin',
   $appserver_install_dir           = '/usr/local/',
   $appserver_group                 = 'root',
+  $appserver_portbase              = 2200,
   $appserver_user                  = 'root',
 
   $bin_dir                         = undef,
@@ -33,9 +33,14 @@ class icat (
   validate_string($appserver_admin_master_password)
   validate_absolute_path($appserver_admin_passfile)
   validate_string($appserver_admin_password)
-  validate_integer($appserver_admin_port)
   validate_string($appserver_admin_user)
   validate_string($appserver_group)
+
+  validate_integer($appserver_portbase)
+  unless $appserver_portbase % 100 == 0 {
+    fail("Expected a portbase of the form XX00, but got '${appserver_portbase}'.")
+  }
+
   validate_string($appserver_user)
 
   validate_array($components)
@@ -59,6 +64,8 @@ class icat (
   validate_string($tmp_dir)
   validate_string($working_dir)
 
+  $appserver_admin_port = $appserver_portbase + 48
+
   if $manage_java {
     class { 'icat::java':
       group        => $appserver_group,
@@ -79,6 +86,7 @@ class icat (
     admin_user            => $appserver_admin_user,
     db_type               => $db_type,
     connector_jar_path    => $connector_jar_path,
+    portbase              => $appserver_portbase,
   }
   ->
   Icat::Create_Component <| |>

@@ -12,6 +12,7 @@ class icat::appserver (
   $admin_user            = undef,
   $db_type               = undef,
   $connector_jar_path    = undef,
+  $portbase              = undef,
 ) {
   package { 'unzip':
     ensure => 'installed'
@@ -43,6 +44,9 @@ class icat::appserver (
     asadmin_master_password => $admin_master_password,
     asadmin_password        => $admin_password,
     create_passfile         => true,
+    # lint:ignore:only_variable_string
+    portbase                => "${portbase}",
+    # lint:endignore
   }
 
   if $connector_jar_path == undef {

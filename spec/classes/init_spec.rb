@@ -51,10 +51,10 @@ describe 'icat' do
       'appserver_admin_master_password' => 'adminadmin',
       'appserver_admin_passfile'        => '/tmp/asadmin.pass',
       'appserver_admin_password'        => 'changeit',
-      'appserver_admin_port'            => 4848,
       'appserver_admin_user'            => 'admin',
       'appserver_install_dir'           => '/usr/local/',
       'appserver_group'                 => '',
+      'appserver_portbase'              => 4800,
       'appserver_user'                  => 'root',
 
       'bin_dir'                         => '/usr/local/bin',
@@ -77,10 +77,10 @@ describe 'icat' do
       'appserver_admin_master_password' => 'adminadmin',
       'appserver_admin_passfile'        => '/tmp/asadmin.pass',
       'appserver_admin_password'        => 'changeit',
-      'appserver_admin_port'            => 4848,
       'appserver_admin_user'            => 'admin',
       'appserver_install_dir'           => '/usr/local/',
       'appserver_group'                 => '',
+      'appserver_portbase'              => 4800,
       'appserver_user'                  => 'root',
 
       'bin_dir'                         => '/usr/local/bin',
