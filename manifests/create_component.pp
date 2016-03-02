@@ -7,6 +7,7 @@ define icat::create_component (
   $group            = $icat::appserver_group,
   $maven_repos      = ['http://www.icatproject.org/mvn/repo'],
   $patches          = {},
+  $portbase         = 2000,
   $setup_options    = '',
   $templates        = undef,
   $template_params  = undef,
@@ -144,11 +145,14 @@ define icat::create_component (
   }
   ~>
   # lint:ignore:ensure_first_param
+  # lint:ignore:only_variable_string
   set { "applications.application.${component_name}-${version}.deployment-order":
     asadminuser => $icat::appserver_admin_user,
     ensure      => 'present',
+    portbase    => "${portbase}",
     user        => $user,
     value       => $deployment_order,
   }
+  # lint:endignore
   # lint:endignore
 }

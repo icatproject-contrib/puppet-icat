@@ -125,6 +125,7 @@ describe 'icat::create_component' do
       should contain_set('applications.application.icat.server-4.5.0.deployment-order').with({
         'asadminuser' => 'admin',
         'ensure'      => 'present',
+        'portbase'    => '2000',
         'user'        => 'root',
         'value'       => 100,
       }).that_subscribes_to('Exec[run_icat.server_setup_script]')
