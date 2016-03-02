@@ -5,6 +5,7 @@ describe 'icat::options' do
     {
       'asadmin_user' => 'admin',
       'user'         => 'user',
+      'portbase'     => '4800',
     }
   end
 
@@ -15,24 +16,28 @@ describe 'icat::options' do
         'asadminuser' => 'asadmin',
         'ensure'      => 'absent',
         'option'      => '-Xmx512m',
+        'portbase'    => '4800',
         'user'        => 'user',
       })
       should contain_jvmoption('Add new -Xmx').with({
         'asadminuser' => 'asadmin',
         'ensure'      => 'present',
         'option'      => '-Xmx1024m',
+        'portbase'    => '4800',
         'user'        => 'user',
       })
       should contain_jvmoption('Add -XX:PermSize').with({
         'asadminuser' => 'asadmin',
         'ensure'      => 'present',
         'option'      => '-XX:PermSize=64m',
+        'portbase'    => '4800',
         'user'        => 'user',
       })
       should contain_jvmoption('Add -XX:OnOutOfMemoryError').with({
         'asadminuser' => 'asadmin',
         'ensure'      => 'present',
         'option'      => '-XX:OnOutOfMemoryError=\"kill -9 %p\"',
+        'portbase'    => '4800',
         'user'        => 'user',
       })
     end
@@ -41,36 +46,42 @@ describe 'icat::options' do
       should contain_set('server.http-service.access-log.format').with({
         'asadminuser' => 'admin',
         'ensure'      => 'present',
+        'portbase'    => '4800',
         'user'        => 'user',
         'value'       => '"common"',
       })
       should contain_set('server.http-service.access-logging-enabled').with({
         'asadminuser' => 'admin',
         'ensure'      => 'present',
+        'portbase'    => '4800',
         'user'        => 'user',
         'value'       => 'true',
       })
       should contain_set('server.thread-pools.thread-pool.http-thread-pool.max-thread-pool-size').with({
         'asadminuser' => 'admin',
         'ensure'      => 'present',
+        'portbase'    => '4800',
         'user'        => 'user',
         'value'       => '128',
       })
       should contain_set('configs.config.server-config.cdi-service.enable-implicit-cdi').with({
         'asadminuser' => 'admin',
         'ensure'      => 'present',
+        'portbase'    => '4800',
         'user'        => 'user',
         'value'       => 'false',
       })
       should contain_set('server.ejb-container.property.disable-nonportable-jndi-names').with({
         'asadminuser' => 'admin',
         'ensure'      => 'present',
+        'portbase'    => '4800',
         'user'        => 'user',
         'value'       => 'true',
       })
       should contain_set('configs.config.server-config.network-config.protocols.protocol.http-listener-2.http.request-timeout-seconds').with({
         'asadminuser' => 'admin',
         'ensure'      => 'present',
+        'portbase'    => '4800',
         'user'        => 'user',
         'value'       => '-1',
       })

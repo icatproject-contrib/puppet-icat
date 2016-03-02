@@ -5,71 +5,84 @@
 class icat::options (
   $asadmin_user = undef,
   $user         = undef,
+  $portbase     = undef,
 ) {
   # lint:ignore:variable_scope
   # lint:ignore:quoted_booleans
   # lint:ignore:ensure_first_param
+  # lint:ignore:only_variable_string
   jvmoption { 'Remove default -Xmx' :
     asadminuser => $asadmin_user,
     ensure      => 'absent',
     option      => '-Xmx512m',
+    portbase    => "${portbase}",
     user        => $user,
   }
   jvmoption { 'Add new -Xmx' :
     asadminuser => $asadmin_user,
     ensure      => 'present',
     option      => '-Xmx1024m',
+    portbase    => "${portbase}",
     user        => $user,
   }
   jvmoption { 'Add -XX:PermSize' :
     asadminuser => $asadmin_user,
     ensure      => 'present',
     option      => '-XX:PermSize=64m',
+    portbase    => "${portbase}",
     user        => $user,
   }
   jvmoption { 'Add -XX:OnOutOfMemoryError' :
     asadminuser => $asadmin_user,
     ensure      => 'present',
     option      => '-XX:OnOutOfMemoryError=\"kill -9 %p\"',
+    portbase    => "${portbase}",
     user        => $user,
   }
 
   set { 'server.http-service.access-log.format':
     asadminuser => $asadmin_user,
     ensure      => 'present',
+    portbase    => "${portbase}",
     user        => $user,
     value       => '"common"',
   }
   set { 'server.http-service.access-logging-enabled':
     asadminuser => $asadmin_user,
     ensure      => 'present',
+    portbase    => "${portbase}",
     user        => $user,
     value       => 'true',
   }
   set { 'server.thread-pools.thread-pool.http-thread-pool.max-thread-pool-size':
     asadminuser => $asadmin_user,
     ensure      => 'present',
+    portbase    => "${portbase}",
     user        => $user,
     value       => '128',
   }
   set { 'configs.config.server-config.cdi-service.enable-implicit-cdi':
     asadminuser => $asadmin_user,
     ensure      => 'present',
+    portbase    => "${portbase}",
     user        => $user,
     value       => 'false',
   }
   set { 'server.ejb-container.property.disable-nonportable-jndi-names':
     asadminuser => $asadmin_user,
     ensure      => 'present',
+    portbase    => "${portbase}",
     user        => $user,
     value       => 'true',
   }
   set { 'configs.config.server-config.network-config.protocols.protocol.http-listener-2.http.request-timeout-seconds':
     asadminuser => $asadmin_user,
     ensure      => 'present',
+    portbase    => "${portbase}",
     user        => $user,
     value       => '-1',
   }
+  # lint:endignore
   # lint:endignore
   # lint:endignore
   # lint:endignore

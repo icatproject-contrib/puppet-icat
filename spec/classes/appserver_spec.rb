@@ -79,6 +79,7 @@ describe 'icat::appserver' do
       should contain_class('icat::options').with({
         'asadmin_user' => 'user_admin',
         'user'         => 'username',
+        'portbase'     => '4800'
       }).that_requires('Glassfish::Create_Domain[icat]')
     end
 

@@ -115,6 +115,7 @@ class icat::appserver (
   class { 'icat::options':
     asadmin_user => $admin_user,
     user         => $user,
+    portbase     => $portbase,
   }
   ->
   class { 'icat::certs':
