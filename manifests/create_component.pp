@@ -28,10 +28,16 @@ define icat::create_component (
   validate_string($user)
   validate_re(
     $version,
-    '^(\d+\.\d+\.\d+(\-SNAPSHOT)?)|LATEST|RELEASE$',
-    'Expected a version string of the form "[MAJOR].[MINOR].[PATCH]" with optional "-SNAPSHOT" suffix, or "LATEST" or "RELEASE".'
+    '^(\d+\.\d+\.\d+(\-SNAPSHOT)?)$',
+    'Expected a version string of the form "[MAJOR].[MINOR].[PATCH]" with optional "-SNAPSHOT" suffix.'
   )
   validate_absolute_path($working_dir)
+
+  # This monstrosity trims "-SNAPSHOT" from the version string if it exists.
+  $trimmed_version = $version ? {
+    /^\d+\.\d+\.\d+-SNAPSHOT$/ => inline_template("<%='${version}'[/^(.*)-SNAPSHOT$/, 1]%>"),
+    default                    => $version,
+  }
 
   # TODO: accept optional inner_comp_name as parameter.  Only if not set use the following.
 
@@ -146,7 +152,7 @@ define icat::create_component (
   ~>
   # lint:ignore:ensure_first_param
   # lint:ignore:only_variable_string
-  set { "applications.application.${component_name}-${version}.deployment-order":
+  set { "applications.application.${component_name}-${trimmed_version}.deployment-order":
     asadminuser => $icat::appserver_admin_user,
     ensure      => 'present',
     portbase    => "${portbase}",
