@@ -120,6 +120,7 @@ describe 'icat::create_component' do
         'cwd'         => '/tmp/icat.server-4.5.0-distro/icat.server',
         'user'        => 'root',
         'group'       => 'root',
+        'logoutput'   => true,
         'refreshonly' => true,
       }).that_subscribes_to('File[/tmp/icat.server-4.5.0-distro/icat.server/test.properties]')
       .that_subscribes_to('Exec[apply_icat.server_setup_utils.py_patch]')
@@ -132,6 +133,7 @@ describe 'icat::create_component' do
         'cwd'         => '/tmp/icat.server-4.5.0-distro/icat.server',
         'user'        => 'root',
         'group'       => 'root',
+        'logoutput'   => true,
         'refreshonly' => true,
       }).that_subscribes_to('Exec[configure_icat.server_setup_script]')
     end

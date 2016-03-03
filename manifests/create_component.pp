@@ -137,6 +137,7 @@ define icat::create_component (
     cwd         => "${extracted_path}/${inner_comp_name}",
     user        => $user,
     group       => $group,
+    logoutput   => true,
     refreshonly => true,
     require     => [Package['python-suds']],
   } ~>
@@ -146,6 +147,7 @@ define icat::create_component (
     cwd         => "${extracted_path}/${inner_comp_name}",
     user        => $user,
     group       => $group,
+    logoutput   => true,
     refreshonly => true,
     require     => [Exec["configure_${component_name}_setup_script"]],
   }
