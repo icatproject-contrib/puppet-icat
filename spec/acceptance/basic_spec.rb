@@ -31,7 +31,7 @@ default_pp = <<-EOS
   firewall { '100 allow glassfish':
     chain   => 'INPUT',
     state   => ['NEW'],
-    dport   => ['4848', '4880', '4881'],
+    dport   => ['2048', '2080', '2081'],
     proto   => 'tcp',
     action  => 'accept',
   }
@@ -56,10 +56,10 @@ default_pp = <<-EOS
   class { 'icat':
     appserver_admin_master_password => 'admin_master_password',
     appserver_admin_password        => 'admin_password',
-    appserver_admin_port            => 4848,
     appserver_admin_user            => 'admin_user',
     appserver_install_dir           => '/usr/local/',
     appserver_group                 => 'vagrant',
+    appserver_portbase              => 2000,
     appserver_user                  => 'vagrant',
 
     bin_dir                         => '/home/vagrant/icat/bin',
