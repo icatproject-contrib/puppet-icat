@@ -1,0 +1,16 @@
+secure         = true
+container      = glassfish
+home           = <%=$glassfish_install_dir%>
+port           = <%=$glassfish_admin_port%>
+
+db.vendor      = <%=$db_type%>
+
+<% if $db_type == "oracle" { %>
+db.driver      = oracle.jdbc.pool.OracleDataSource
+<% } elsif $db_type == "mysql" { %>
+db.driver      = com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+<% } %>
+
+db.url         = <%=$db_url%>
+db.username    = <%=$db_username%>
+db.password    = <%=$db_password%>

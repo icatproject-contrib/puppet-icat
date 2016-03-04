@@ -66,15 +66,15 @@ default_pp = <<-EOS
 
     components                      => [{
         name    => 'authn.db',
-        version => '1.1.2',
+        version => '1.2.0',
       }, {
         name               => 'authn.ldap',
-        version            => '1.1.0',
+        version            => '1.2.0',
         provider_url       => 'ldap://data.sns.gov:389',
         security_principal => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
       }, {
         'name'        => 'authn.simple',
-        'version'     => '1.0.1',
+        'version'     => '1.1.0',
         'credentials' => {
           'user_a' => 'password_a',
           'user_b' => 'password_b',

@@ -105,7 +105,7 @@ describe 'icat' do
       default_component_params.merge(
         'components' => [{
           'name'    => 'authn.db',
-          'version' => '1.1.2',
+          'version' => '1.2.0',
         }]
       )
     end
@@ -114,12 +114,9 @@ describe 'icat' do
       should contain_icat__create_component('authn.db').with({
         'component_name'   => 'authn.db',
         'deployment_order' => 80,
-        'patches'          => {
-          'setup_utils.py' => 'puppet:///modules/icat/patches/authn.db_setup_utils.patch',
-        },
         'templates'        => [
-          'icat/authn.db-setup.properties.epp',
-          'icat/authn.db.properties.epp',
+          'icat/authn_db-setup.properties.epp',
+          'icat/authn_db.properties.epp',
         ],
         'template_params'  => {
           'db_name'               => 'icat',
@@ -132,25 +129,28 @@ describe 'icat' do
         },
         'tmp_dir'          => '/tmp',
         'working_dir'      => '/tmp',
-        'version'          => '1.1.2',
+        'version'          => '1.2.0',
       }).that_requires('icat::appserver')
     end
 
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/authn.db-1.1.2-distro/authn.db/authn.db-setup.properties').with_content(
+      should contain_file('/tmp/authn.db-1.2.0-distro/authn.db/authn_db-setup.properties').with_content(
+        "secure         = true\n" \
+        "container      = glassfish\n" \
+        "home           = /usr/local/glassfish-4.0/\n" \
+        "port           = 4848\n" \
         "\n" \
-        "# Driver and connection properties for the MySQL database.\n" \
-        "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
-        "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
+        "db.vendor      = mysql\n" \
         "\n" \
         "\n" \
-        "# Must contain \"glassfish/domains\"\n" \
-        "glassfish=/usr/local/glassfish-4.0/\n" \
+        "db.driver      = com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
         "\n" \
-        "# Port for glassfish admin calls (normally 4848)\n" \
-        "port=4848\n"
+        "\n" \
+        "db.url         = jdbc:mysql://localhost:3306/icat\n" \
+        "db.username    = username\n" \
+        "db.password    = password\n"
       )
-      should contain_file('/tmp/authn.db-1.1.2-distro/authn.db/authn.db.properties').with_content(
+      should contain_file('/tmp/authn.db-1.2.0-distro/authn.db/authn_db.properties').with_content(
         "# Real comments in this file are marked with '#' whereas commented out lines\n" \
         "# are marked with '!'\n" \
         "\n" \
@@ -171,23 +171,26 @@ describe 'icat' do
       oracle_alternative_component_params.merge(
         'components' => [{
           'name'    => 'authn.db',
-          'version' => '1.1.2',
+          'version' => '1.2.0',
         }]
       )
     end
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/authn.db-1.1.2-distro/authn.db/authn.db-setup.properties').with_content(
+      should contain_file('/tmp/authn.db-1.2.0-distro/authn.db/authn_db-setup.properties').with_content(
+        "secure         = true\n" \
+        "container      = glassfish\n" \
+        "home           = /usr/local/glassfish-4.0/\n" \
+        "port           = 4848\n" \
         "\n" \
-        "# Driver and connection properties for the Oracle database.\n" \
-        "driver=oracle.jdbc.pool.OracleDataSource\n" \
-        "dbProperties=url=\"'\"jdbc:oracle:thin:@//localhost:1521/scdevl\"'\":ImplicitCachingEnabled=true:MaxStatements=200:user=username:password=password\n" \
+        "db.vendor      = oracle\n" \
         "\n" \
         "\n" \
-        "# Must contain \"glassfish/domains\"\n" \
-        "glassfish=/usr/local/glassfish-4.0/\n" \
+        "db.driver      = oracle.jdbc.pool.OracleDataSource\n" \
         "\n" \
-        "# Port for glassfish admin calls (normally 4848)\n" \
-        "port=4848\n"
+        "\n" \
+        "db.url         = jdbc:oracle:thin:@//localhost:1521/scdevl\n" \
+        "db.username    = username\n" \
+        "db.password    = password\n"
       )
     end
   end
@@ -197,7 +200,7 @@ describe 'icat' do
       default_component_params.merge(
         'components' => [{
           'name'               => 'authn.ldap',
-          'version'            => '1.1.0',
+          'version'            => '1.2.0',
           'provider_url'       => 'ldap://data.sns.gov:389',
           'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
         }]
@@ -210,8 +213,8 @@ describe 'icat' do
         'deployment_order' => 80,
         'patches'          => {},
         'templates'        => [
-          'icat/authn.ldap-setup.properties.epp',
-          'icat/authn.ldap.properties.epp',
+          'icat/authn_ldap-setup.properties.epp',
+          'icat/authn_ldap.properties.epp',
         ],
         'template_params'  => {
           'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
@@ -221,19 +224,18 @@ describe 'icat' do
         },
         'tmp_dir'          => '/tmp',
         'working_dir'      => '/tmp',
-        'version'          => '1.1.0',
+        'version'          => '1.2.0',
       }).that_requires('icat::appserver')
     end
 
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/authn.ldap-1.1.0-distro/authn.ldap/authn.ldap-setup.properties').with_content(
-        "# Must contain \"glassfish/domains\"\n" \
-        "glassfish=/usr/local/glassfish-4.0/\n" \
-        "\n" \
-        "# Port for glassfish admin calls (normally 4848)\n" \
-        "port=4848\n"
+      should contain_file('/tmp/authn.ldap-1.2.0-distro/authn.ldap/authn_ldap-setup.properties').with_content(
+        "secure         = true\n" \
+        "container      = glassfish\n" \
+        "home           = /usr/local/glassfish-4.0/\n" \
+        "port           = 4848\n"
       )
-      should contain_file('/tmp/authn.ldap-1.1.0-distro/authn.ldap/authn.ldap.properties').with_content(
+      should contain_file('/tmp/authn.ldap-1.2.0-distro/authn.ldap/authn_ldap.properties').with_content(
         "# Real comments in this file are marked with '#' whereas commented out lines\n" \
         "# are marked with '!'\n" \
         "\n" \
@@ -275,7 +277,7 @@ describe 'icat' do
       default_component_params.merge(
         'components' => [{
           'name'        => 'authn.simple',
-          'version'     => '1.0.1',
+          'version'     => '1.1.0',
           'credentials' => {
             'user_a' => 'password_a',
             'user_b' => 'password_b',
@@ -290,8 +292,8 @@ describe 'icat' do
         'deployment_order' => 80,
         'patches'          => {},
         'templates'        => [
-          'icat/authn.simple-setup.properties.epp',
-          'icat/authn.simple.properties.epp',
+          'icat/authn_simple-setup.properties.epp',
+          'icat/authn_simple.properties.epp',
         ],
         'template_params'  => {
           'credentials' => {
@@ -303,19 +305,18 @@ describe 'icat' do
         },
         'tmp_dir'          => '/tmp',
         'working_dir'      => '/tmp',
-        'version'          => '1.0.1',
+        'version'          => '1.1.0',
       }).that_requires('icat::appserver')
     end
 
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/authn.simple-1.0.1-distro/authn.simple/authn.simple-setup.properties').with_content(
-        "# Must contain \"glassfish/domains\"\n" \
-        "glassfish=/usr/local/glassfish-4.0/\n" \
-        "\n" \
-        "# Port for glassfish admin calls (normally 4848)\n" \
-        "port=4848\n"
+      should contain_file('/tmp/authn.simple-1.1.0-distro/authn.simple/authn_simple-setup.properties').with_content(
+        "secure         = true\n" \
+        "container      = glassfish\n" \
+        "home           = /usr/local/glassfish-4.0/\n" \
+        "port           = 4848\n"
       )
-      should contain_file('/tmp/authn.simple-1.0.1-distro/authn.simple/authn.simple.properties').with_content(
+      should contain_file('/tmp/authn.simple-1.1.0-distro/authn.simple/authn_simple.properties').with_content(
         "# Real comments in this file are marked with '#' whereas commented out lines\n" \
         "# are marked with '!'\n" \
         "\n" \
@@ -352,15 +353,15 @@ describe 'icat' do
       default_component_params.merge(
         'components' => [{
             'name'    => 'authn.db',
-            'version' => '1.1.2',
+            'version' => '1.2.0',
           }, {
             'name'               => 'authn.ldap',
-            'version'            => '1.1.0',
+            'version'            => '1.2.0',
             'provider_url'       => 'ldap://data.sns.gov:389',
             'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
           }, {
             'name'        => 'authn.simple',
-            'version'     => '1.0.1',
+            'version'     => '1.1.0',
             'credentials' => {
               'user_a' => 'password_a',
               'user_b' => 'password_b',
@@ -388,9 +389,9 @@ describe 'icat' do
         'template_params'  => {
           'authn_plugins'         => "db ldap simple",
           'authn_jndi_entries'    => [
-            "authn.db.jndi java:global/authn.db-1.1.2/DB_Authenticator",
-            "authn.ldap.jndi java:global/authn.ldap-1.1.0/LDAP_Authenticator",
-            "authn.simple.jndi java:global/authn.simple-1.0.1/SIMPLE_Authenticator",
+            "authn.db.jndi java:global/authn.db-1.2.0/DB_Authenticator",
+            "authn.ldap.jndi java:global/authn.ldap-1.2.0/LDAP_Authenticator",
+            "authn.simple.jndi java:global/authn.simple-1.1.0/SIMPLE_Authenticator",
             ],
           'crud_access_usernames' => "user_a user_b",
           'db_name'               => 'icat',
@@ -465,9 +466,9 @@ describe 'icat' do
         "authn.list db ldap simple\n" \
         "\n" \
         "# JNDI for each plugin\n" \
-        "authn.db.jndi java:global/authn.db-1.1.2/DB_Authenticator\n" \
-        "authn.ldap.jndi java:global/authn.ldap-1.1.0/LDAP_Authenticator\n" \
-        "authn.simple.jndi java:global/authn.simple-1.0.1/SIMPLE_Authenticator\n" \
+        "authn.db.jndi java:global/authn.db-1.2.0/DB_Authenticator\n" \
+        "authn.ldap.jndi java:global/authn.ldap-1.2.0/LDAP_Authenticator\n" \
+        "authn.simple.jndi java:global/authn.simple-1.1.0/SIMPLE_Authenticator\n" \
         "\n" \
         "!log4j.properties icat.log4j.properties\n" \
         "\n" \
@@ -503,10 +504,10 @@ describe 'icat' do
       default_component_params.merge(
         'components' => [{
             'name'    => 'authn.db',
-            'version' => '1.1.2',
+            'version' => '1.2.0',
           }, {
             'name'               => 'authn.ldap',
-            'version'            => '1.1.0',
+            'version'            => '1.2.0',
             'provider_url'       => 'ldap://data.sns.gov:389',
             'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
           }, {
@@ -531,7 +532,7 @@ describe 'icat' do
       default_component_params.merge(
         'components' => [{
             'name'        => 'authn.simple',
-            'version'     => '1.0.1',
+            'version'     => '1.1.0',
             'credentials' => {
               'user_a' => 'password_a',
               'user_b' => 'password_b',
@@ -558,7 +559,7 @@ describe 'icat' do
       {
         'components' => [{
           'name'    => 'does_not_exist',
-          'version' => '1.1.2',
+          'version' => '1.2.0',
         }],
       }
     end

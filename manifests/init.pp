@@ -100,16 +100,15 @@ class icat (
 
     case $component_info['name'] {
       'authn.db' : {
+        if versioncmp($component_info['version'], '1.2.0') < 0 {
+          fail('Versions of authn.db less than 1.2.0 are no longer supported by this module.')
+        }
         icat::create_component { $component_info['name']:
           deployment_order => 80,
-          patches          => {
-            # See: https://docs.puppetlabs.com/guides/file_serving.html#serving-module-files
-            'setup_utils.py' => 'puppet:///modules/icat/patches/authn.db_setup_utils.patch',
-          },
           templates        => [
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
-            'icat/authn.db-setup.properties.epp',
-            'icat/authn.db.properties.epp',
+            'icat/authn_db-setup.properties.epp',
+            'icat/authn_db.properties.epp',
           ],
           template_params  => {
             'db_name'               => $db_name,
@@ -126,6 +125,9 @@ class icat (
         }
       }
       'authn.ldap' : {
+        if versioncmp($component_info['version'], '1.2.0') < 0 {
+          fail('Versions of authn.ldap less than 1.2.0 are no longer supported by this module.')
+        }
         unless has_key($component_info, 'provider_url')       { fail('LDAP provider URL required.') }
         unless has_key($component_info, 'security_principal') { fail('LDAP security principal required.') }
 
@@ -133,8 +135,8 @@ class icat (
           deployment_order => 80,
           templates        => [
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
-            'icat/authn.ldap-setup.properties.epp',
-            'icat/authn.ldap.properties.epp',
+            'icat/authn_ldap-setup.properties.epp',
+            'icat/authn_ldap.properties.epp',
           ],
           template_params  => {
             'glassfish_install_dir' => "${appserver_install_dir}glassfish-4.0/",
@@ -148,14 +150,17 @@ class icat (
         }
       }
       'authn.simple' : {
+        if versioncmp($component_info['version'], '1.1.0') < 0 {
+          fail('Versions of authn.simple less than 1.1.0 are no longer supported by this module.')
+        }
         unless has_key($component_info, 'credentials') { fail('Simple credentials required.') }
 
         icat::create_component { $component_info['name']:
           deployment_order => 80,
           templates        => [
             # See: https://docs.puppetlabs.com/puppet/latest/reference/lang_template.html#referencing-files
-            'icat/authn.simple-setup.properties.epp',
-            'icat/authn.simple.properties.epp',
+            'icat/authn_simple-setup.properties.epp',
+            'icat/authn_simple.properties.epp',
           ],
           template_params  => {
             'credentials'           => $component_info['credentials'],

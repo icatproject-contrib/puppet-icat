@@ -1,5 +1,0 @@
-# Must contain "glassfish/domains"
-glassfish=<%=$glassfish_install_dir%>
-
-# Port for glassfish admin calls (normally 4848)
-port=<%=$glassfish_admin_port%>
