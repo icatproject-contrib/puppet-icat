@@ -118,7 +118,7 @@ describe 'the icat class' do
     end
 
     it 'should install a jdk' do
-      shell('rpm -q jdk.x86_64', :acceptable_exit_codes => 0)
+      shell('rpm -q jdk1.8.0_74-2000:1.8.0_74-fcs.x86_64', :acceptable_exit_codes => 0)
     end
 
     it 'should install glassfish' do
@@ -132,11 +132,11 @@ describe 'the icat class' do
     end
 
     it 'should have created a security cert against the appropriate hostname' do
-      shell('grep "icat-puppet-test" /usr/java/jdk1.7.0_79/jre/lib/security/jssecacerts', :acceptable_exit_codes => 0)
+      shell('grep "icat-puppet-test" /usr/java/jdk1.8.0_74/jre/lib/security/jssecacerts', :acceptable_exit_codes => 0)
     end
 
     it 'should enable testicat to pass without problems' do
-      shell('/home/vagrant/icat/bin/testicat https://localhost:4881 simple username user_a password password_a', :acceptable_exit_codes => 0)
+      shell('/home/vagrant/icat/bin/testicat https://localhost:2081 simple username user_a password password_a', :acceptable_exit_codes => 0)
     end
   end
 end

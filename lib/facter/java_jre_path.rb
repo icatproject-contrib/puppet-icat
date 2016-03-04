@@ -3,6 +3,6 @@
 # Purpose: get the path to the jre
 Facter.add(:java_jre_path) do
   setcode do
-    '/usr/java/jdk1.7.0_79/jre'
+    '/usr/java/jdk1.8.0_74/jre'
   end
 end

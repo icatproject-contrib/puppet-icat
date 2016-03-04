@@ -21,9 +21,9 @@ describe 'icat::java' do
     end
 
     it 'should download and install a jdk package' do
-      should contain_package('jdk.x86_64').with({
+      should contain_package('jdk1.8.0_74-2000:1.8.0_74-fcs.x86_64').with({
         'ensure' => 'installed',
-        'source' => '/tmp/jdk-7u79-linux-x64.rpm',
+        'source' => '/tmp/jdk-8u74-linux-x64.rpm',
       }).that_requires('Exec[download_jdk]')
     end
   end
@@ -31,23 +31,23 @@ describe 'icat::java' do
     let :params do
       {
         'group'        => 'group',
-        'jdk_rpm_path' => 'puppet:///modules/icatfiles/jdk-7u79-linux-x64.rpm',
+        'jdk_rpm_path' => 'puppet:///modules/icatfiles/jdk-8u74-linux-x64.rpm',
         'tmp_dir'      => '/tmp',
         'user'         => 'user',
       }
     end
 
     it do
-      should contain_file('/tmp/jdk-7u79-linux-x64.rpm').with({
+      should contain_file('/tmp/jdk-8u74-linux-x64.rpm').with({
         'ensure' => 'file',
-        'source' => 'puppet:///modules/icatfiles/jdk-7u79-linux-x64.rpm',
+        'source' => 'puppet:///modules/icatfiles/jdk-8u74-linux-x64.rpm',
         'owner'  => 'user',
         'group'  => 'group',
       })
-      should contain_package('jdk.x86_64').with({
+      should contain_package('jdk1.8.0_74-2000:1.8.0_74-fcs.x86_64').with({
         'ensure' => 'installed',
-        'source' => '/tmp/jdk-7u79-linux-x64.rpm',
-      }).that_requires('File[/tmp/jdk-7u79-linux-x64.rpm]')
+        'source' => '/tmp/jdk-8u74-linux-x64.rpm',
+      }).that_requires('File[/tmp/jdk-8u74-linux-x64.rpm]')
     end
   end
 end

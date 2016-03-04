@@ -13,7 +13,7 @@ describe Facter::Util::Fact do
         # java module has some nice example code:
         #
         # https://github.com/puppetlabs/puppetlabs-java/blob/master/spec/unit/facter/java_version_spec.rb
-        expect(Facter.value(:java_jre_path)).to eq('/usr/java/jdk1.7.0_79/jre')
+        expect(Facter.value(:java_jre_path)).to eq('/usr/java/jdk1.8.0_74/jre')
       end
     end
   end

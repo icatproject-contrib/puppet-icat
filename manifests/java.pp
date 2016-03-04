@@ -29,14 +29,14 @@ class icat::java (
       group  => $group,
     }
     ->
-    package { 'jdk.x86_64' :
+    package { 'jdk1.8.0_74-2000:1.8.0_74-fcs.x86_64' :
       ensure   => 'installed',
       provider => 'rpm',
       source   => $tmp_jdk_rpm,
     }
   }
   else {
-    $oracle_jdk_url         = 'http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.rpm'
+    $oracle_jdk_url         = 'http://download.oracle.com/otn-pub/java/jdk/8u74-b02/jdk-8u74-linux-x64.rpm'
     $jdk_installer_filename = basename($oracle_jdk_url)
     $jdk_installer_path     = "${tmp_dir}/${jdk_installer_filename}"
     $accept_licence_flags   = "--no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie'"
@@ -55,7 +55,7 @@ class icat::java (
       ]
     }
     ->
-    package { 'jdk.x86_64' :
+    package { 'jdk1.8.0_74-2000:1.8.0_74-fcs.x86_64' :
       ensure   => 'installed',
       provider => 'rpm',
       source   => $jdk_installer_path,
