@@ -154,7 +154,7 @@ define icat::create_component (
   ~>
   # lint:ignore:ensure_first_param
   # lint:ignore:only_variable_string
-  set { "applications.application.${component_name}-${trimmed_version}.deployment-order":
+  set { "applications.application.${component_name}-${version}.deployment-order":
     asadminuser => $icat::appserver_admin_user,
     ensure      => 'present',
     portbase    => "${portbase}",
