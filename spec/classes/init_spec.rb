@@ -367,7 +367,7 @@ describe 'icat' do
             },
           }, {
             'name'                  => 'icat.server',
-            'version'               => '4.5.0',
+            'version'               => '4.6.0',
             'crud_access_usernames' => ['user_a', 'user_b'],
           }
         ]
@@ -403,12 +403,12 @@ describe 'icat' do
         },
         'tmp_dir'          => '/tmp',
         'working_dir'      => '/tmp',
-        'version'          => '4.5.0',
+        'version'          => '4.6.0',
       }).that_requires('icat::appserver')
     end
 
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/icat-setup.properties').with_content(
+      should contain_file('/tmp/icat.server-4.6.0-distro/icat.server/icat-setup.properties').with_content(
         "secure         = true\n" \
         "container      = glassfish\n" \
         "home           = /usr/local/glassfish-4.0/\n" \
@@ -427,7 +427,7 @@ describe 'icat' do
     end
 
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/icat.log4j.properties').with_content(
+      should contain_file('/tmp/icat.server-4.6.0-distro/icat.server/icat.log4j.properties').with_content(
         "log4j.rootLogger=DEBUG, logfile\n" \
         "\n" \
         "log4j.appender.logfile=org.apache.log4j.DailyRollingFileAppender\n" \
@@ -439,7 +439,7 @@ describe 'icat' do
     end
 
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/icat.properties').with_content(
+      should contain_file('/tmp/icat.server-4.6.0-distro/icat.server/icat.properties').with_content(
         "# Real comments in this file are marked with '#' whereas commented out lines\n" \
         "# are marked with '!'\n" \
         "\n" \
@@ -511,7 +511,7 @@ describe 'icat' do
             'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
           }, {
             'name'                  => 'icat.server',
-            'version'               => '4.5.0',
+            'version'               => '4.6.0',
             'crud_access_usernames' => ['user_a', 'user_b'],
           }
         ]
@@ -524,6 +524,33 @@ describe 'icat' do
       should contain_icat__create_component('icat.server')
         .that_requires('ICAT::Create_Component[authn_ldap]')
     end
+  end
+
+  context 'out-of-date icat.server and an authenticator component' do
+    let(:params) do
+      default_component_params.merge(
+        'components' => [{
+            'name'        => 'authn_simple',
+            'version'     => '1.0.1',
+            'credentials' => {
+              'user_a' => 'password_a',
+              'user_b' => 'password_b',
+            },
+          }, {
+            'name'                  => 'icat.server',
+            'version'               => '4.5.0',
+            'crud_access_usernames' => ['user_a', 'user_b'],
+          }
+        ]
+      )
+    end
+
+    it do
+      expect {
+        should compile
+      }.to raise_error(/Versions of icat.server/)
+    end
+
   end
 
   context 'unrecognised component name' do

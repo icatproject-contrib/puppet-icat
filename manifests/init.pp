@@ -168,6 +168,9 @@ class icat (
         }
       }
       'icat.server' : {
+        if versioncmp($component_info['version'], '4.6.0') < 0 {
+          fail('Versions of icat.server less than 4.6.0 are no longer supported by this module.')
+        }
         # https://docs.puppetlabs.com/puppet/latest/reference/lang_collectors.html
         Icat::Create_Component <| title == 'authn_simple' or title == 'authn_ldap' or title == 'authn_db' |>
         ->
