@@ -37,7 +37,7 @@ describe 'icat::create_component' do
     let(:params) { default_params.merge({'version' => '4.5.0-SNAPSHOT'}) }
 
     it do
-      should contain_set('applications.application.icat.server-4.5.0.deployment-order').with({
+      should contain_set('applications.application.icat.server-4.5.0-SNAPSHOT.deployment-order').with({
         'asadminuser' => 'admin',
         'ensure'      => 'present',
         'portbase'    => '2000',
