@@ -42,8 +42,8 @@ mysql::db { icat:
   password => 'password',
 }
 ->
-# Set up GlassFish, the `icat` domain, and then install authn_db,
-# authn_simple, authn_ldap and icat.server.
+# Set up GlassFish, the `icat` domain, and then install authn.db,
+# authn.simple, authn.ldap and icat.server.
 class { 'icat':
   appserver_admin_master_password => 'adminadmin',
   appserver_admin_password        => 'changeit',
@@ -55,15 +55,15 @@ class { 'icat':
   bin_dir                         => '/home/vagrant/icat/bin',
 
   components                      => [{
-      name    => 'authn_db',
+      name    => 'authn.db',
       version => '1.1.2',
     }, {
-      name               => 'authn_ldap',
+      name               => 'authn.ldap',
       version            => '1.1.0',
       provider_url       => 'ldap://data.sns.gov:389',
       security_principal => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
     }, {
-      name        => 'authn_simple',
+      name        => 'authn.simple',
       version     => '1.0.1',
       credentials => {
         'user_a' => 'password_a',

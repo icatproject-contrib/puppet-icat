@@ -100,26 +100,26 @@ describe 'icat' do
     }
   end
 
-  context 'authn_db component selected' do
+  context 'authn.db component selected' do
     let(:params) do
       default_component_params.merge(
         'components' => [{
-          'name'    => 'authn_db',
+          'name'    => 'authn.db',
           'version' => '1.1.2',
         }]
       )
     end
 
     it do
-      should contain_icat__create_component('authn_db').with({
-        'component_name'   => 'authn_db',
+      should contain_icat__create_component('authn.db').with({
+        'component_name'   => 'authn.db',
         'deployment_order' => 80,
         'patches'          => {
-          'setup_utils.py' => 'puppet:///modules/icat/patches/authn_db_setup_utils.patch',
+          'setup_utils.py' => 'puppet:///modules/icat/patches/authn.db_setup_utils.patch',
         },
         'templates'        => [
-          'icat/authn_db-setup.properties.epp',
-          'icat/authn_db.properties.epp',
+          'icat/authn.db-setup.properties.epp',
+          'icat/authn.db.properties.epp',
         ],
         'template_params'  => {
           'db_name'               => 'icat',
@@ -137,7 +137,7 @@ describe 'icat' do
     end
 
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/authn_db-1.1.2-distro/authn_db/authn_db-setup.properties').with_content(
+      should contain_file('/tmp/authn.db-1.1.2-distro/authn.db/authn.db-setup.properties').with_content(
         "\n" \
         "# Driver and connection properties for the MySQL database.\n" \
         "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
@@ -150,7 +150,7 @@ describe 'icat' do
         "# Port for glassfish admin calls (normally 4848)\n" \
         "port=4848\n"
       )
-      should contain_file('/tmp/authn_db-1.1.2-distro/authn_db/authn_db.properties').with_content(
+      should contain_file('/tmp/authn.db-1.1.2-distro/authn.db/authn.db.properties').with_content(
         "# Real comments in this file are marked with '#' whereas commented out lines\n" \
         "# are marked with '!'\n" \
         "\n" \
@@ -166,17 +166,17 @@ describe 'icat' do
     end
   end
 
-  context 'authn_db component selected with oracle' do
+  context 'authn.db component selected with oracle' do
     let(:params) do
       oracle_alternative_component_params.merge(
         'components' => [{
-          'name'    => 'authn_db',
+          'name'    => 'authn.db',
           'version' => '1.1.2',
         }]
       )
     end
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/authn_db-1.1.2-distro/authn_db/authn_db-setup.properties').with_content(
+      should contain_file('/tmp/authn.db-1.1.2-distro/authn.db/authn.db-setup.properties').with_content(
         "\n" \
         "# Driver and connection properties for the Oracle database.\n" \
         "driver=oracle.jdbc.pool.OracleDataSource\n" \
@@ -192,11 +192,11 @@ describe 'icat' do
     end
   end
 
-  context 'authn_ldap component selected' do
+  context 'authn.ldap component selected' do
     let(:params) do
       default_component_params.merge(
         'components' => [{
-          'name'               => 'authn_ldap',
+          'name'               => 'authn.ldap',
           'version'            => '1.1.0',
           'provider_url'       => 'ldap://data.sns.gov:389',
           'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
@@ -205,13 +205,13 @@ describe 'icat' do
     end
 
     it do
-      should contain_icat__create_component('authn_ldap').with({
-        'component_name'   => 'authn_ldap',
+      should contain_icat__create_component('authn.ldap').with({
+        'component_name'   => 'authn.ldap',
         'deployment_order' => 80,
         'patches'          => {},
         'templates'        => [
-          'icat/authn_ldap-setup.properties.epp',
-          'icat/authn_ldap.properties.epp',
+          'icat/authn.ldap-setup.properties.epp',
+          'icat/authn.ldap.properties.epp',
         ],
         'template_params'  => {
           'glassfish_install_dir' => '/usr/local/glassfish-4.0/',
@@ -226,14 +226,14 @@ describe 'icat' do
     end
 
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/authn_ldap-1.1.0-distro/authn_ldap/authn_ldap-setup.properties').with_content(
+      should contain_file('/tmp/authn.ldap-1.1.0-distro/authn.ldap/authn.ldap-setup.properties').with_content(
         "# Must contain \"glassfish/domains\"\n" \
         "glassfish=/usr/local/glassfish-4.0/\n" \
         "\n" \
         "# Port for glassfish admin calls (normally 4848)\n" \
         "port=4848\n"
       )
-      should contain_file('/tmp/authn_ldap-1.1.0-distro/authn_ldap/authn_ldap.properties').with_content(
+      should contain_file('/tmp/authn.ldap-1.1.0-distro/authn.ldap/authn.ldap.properties').with_content(
         "# Real comments in this file are marked with '#' whereas commented out lines\n" \
         "# are marked with '!'\n" \
         "\n" \
@@ -270,11 +270,11 @@ describe 'icat' do
     end
   end
 
-  context 'authn_simple component selected' do
+  context 'authn.simple component selected' do
     let(:params) do
       default_component_params.merge(
         'components' => [{
-          'name'        => 'authn_simple',
+          'name'        => 'authn.simple',
           'version'     => '1.0.1',
           'credentials' => {
             'user_a' => 'password_a',
@@ -285,13 +285,13 @@ describe 'icat' do
     end
 
     it do
-      should contain_icat__create_component('authn_simple').with({
-        'component_name'   => 'authn_simple',
+      should contain_icat__create_component('authn.simple').with({
+        'component_name'   => 'authn.simple',
         'deployment_order' => 80,
         'patches'          => {},
         'templates'        => [
-          'icat/authn_simple-setup.properties.epp',
-          'icat/authn_simple.properties.epp',
+          'icat/authn.simple-setup.properties.epp',
+          'icat/authn.simple.properties.epp',
         ],
         'template_params'  => {
           'credentials' => {
@@ -308,14 +308,14 @@ describe 'icat' do
     end
 
     it 'should generate the templated properties files correctly' do
-      should contain_file('/tmp/authn_simple-1.0.1-distro/authn_simple/authn_simple-setup.properties').with_content(
+      should contain_file('/tmp/authn.simple-1.0.1-distro/authn.simple/authn.simple-setup.properties').with_content(
         "# Must contain \"glassfish/domains\"\n" \
         "glassfish=/usr/local/glassfish-4.0/\n" \
         "\n" \
         "# Port for glassfish admin calls (normally 4848)\n" \
         "port=4848\n"
       )
-      should contain_file('/tmp/authn_simple-1.0.1-distro/authn_simple/authn_simple.properties').with_content(
+      should contain_file('/tmp/authn.simple-1.0.1-distro/authn.simple/authn.simple.properties').with_content(
         "# Real comments in this file are marked with '#' whereas commented out lines\n" \
         "# are marked with '!'\n" \
         "\n" \
@@ -351,15 +351,15 @@ describe 'icat' do
     let(:params) do
       default_component_params.merge(
         'components' => [{
-            'name'    => 'authn_db',
+            'name'    => 'authn.db',
             'version' => '1.1.2',
           }, {
-            'name'               => 'authn_ldap',
+            'name'               => 'authn.ldap',
             'version'            => '1.1.0',
             'provider_url'       => 'ldap://data.sns.gov:389',
             'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
           }, {
-            'name'        => 'authn_simple',
+            'name'        => 'authn.simple',
             'version'     => '1.0.1',
             'credentials' => {
               'user_a' => 'password_a',
@@ -388,9 +388,9 @@ describe 'icat' do
         'template_params'  => {
           'authn_plugins'         => "db ldap simple",
           'authn_jndi_entries'    => [
-            "authn.db.jndi java:global/authn_db-1.1.2/DB_Authenticator",
-            "authn.ldap.jndi java:global/authn_ldap-1.1.0/LDAP_Authenticator",
-            "authn.simple.jndi java:global/authn_simple-1.0.1/SIMPLE_Authenticator",
+            "authn.db.jndi java:global/authn.db-1.1.2/DB_Authenticator",
+            "authn.ldap.jndi java:global/authn.ldap-1.1.0/LDAP_Authenticator",
+            "authn.simple.jndi java:global/authn.simple-1.0.1/SIMPLE_Authenticator",
             ],
           'crud_access_usernames' => "user_a user_b",
           'db_name'               => 'icat',
@@ -465,9 +465,9 @@ describe 'icat' do
         "authn.list db ldap simple\n" \
         "\n" \
         "# JNDI for each plugin\n" \
-        "authn.db.jndi java:global/authn_db-1.1.2/DB_Authenticator\n" \
-        "authn.ldap.jndi java:global/authn_ldap-1.1.0/LDAP_Authenticator\n" \
-        "authn.simple.jndi java:global/authn_simple-1.0.1/SIMPLE_Authenticator\n" \
+        "authn.db.jndi java:global/authn.db-1.1.2/DB_Authenticator\n" \
+        "authn.ldap.jndi java:global/authn.ldap-1.1.0/LDAP_Authenticator\n" \
+        "authn.simple.jndi java:global/authn.simple-1.0.1/SIMPLE_Authenticator\n" \
         "\n" \
         "!log4j.properties icat.log4j.properties\n" \
         "\n" \
@@ -490,11 +490,11 @@ describe 'icat' do
 
     it 'should make sure the icat.server module depends on all three authn modules' do
       should contain_icat__create_component('icat.server')
-        .that_requires('ICAT::Create_Component[authn_simple]')
+        .that_requires('ICAT::Create_Component[authn.simple]')
       should contain_icat__create_component('icat.server')
-        .that_requires('ICAT::Create_Component[authn_ldap]')
+        .that_requires('ICAT::Create_Component[authn.ldap]')
       should contain_icat__create_component('icat.server')
-        .that_requires('ICAT::Create_Component[authn_db]')
+        .that_requires('ICAT::Create_Component[authn.db]')
     end
   end
 
@@ -502,10 +502,10 @@ describe 'icat' do
     let(:params) do
       default_component_params.merge(
         'components' => [{
-            'name'    => 'authn_db',
+            'name'    => 'authn.db',
             'version' => '1.1.2',
           }, {
-            'name'               => 'authn_ldap',
+            'name'               => 'authn.ldap',
             'version'            => '1.1.0',
             'provider_url'       => 'ldap://data.sns.gov:389',
             'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
@@ -520,9 +520,9 @@ describe 'icat' do
 
     it 'should make sure the icat.server module depends on those two authn modules' do
       should contain_icat__create_component('icat.server')
-        .that_requires('ICAT::Create_Component[authn_db]')
+        .that_requires('ICAT::Create_Component[authn.db]')
       should contain_icat__create_component('icat.server')
-        .that_requires('ICAT::Create_Component[authn_ldap]')
+        .that_requires('ICAT::Create_Component[authn.ldap]')
     end
   end
 
@@ -530,7 +530,7 @@ describe 'icat' do
     let(:params) do
       default_component_params.merge(
         'components' => [{
-            'name'        => 'authn_simple',
+            'name'        => 'authn.simple',
             'version'     => '1.0.1',
             'credentials' => {
               'user_a' => 'password_a',

@@ -11,7 +11,7 @@ module Puppet::Parser::Functions
 
     authenticators = components
       .map { |comp| comp['name'] }
-      .reject { |comp_name| comp_name !~ /^(authn_)(.*)$/ }
+      .reject { |comp_name| comp_name !~ /^(authn\.)(.*)$/ }
       .map { |auth_comp_name| auth_comp_name[6..-1] }
 
     return authenticators

@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 test_components = [{
-    'name'    => 'authn_db',
+    'name'    => 'authn.db',
     'version' => '1.1.2',
   }, {
-    'name'               => 'authn_ldap',
+    'name'               => 'authn.ldap',
     'version'            => '1.1.0',
     'provider_url'       => 'ldap://data.sns.gov:389',
     'security_principal' => 'uid=%,ou=Users,dc=sns,dc=ornl,dc=gov',
   }, {
-    'name'        => 'authn_simple',
+    'name'        => 'authn.simple',
     'version'     => '1.0.1',
     'credentials' => {
       'user_a' => 'password_a',

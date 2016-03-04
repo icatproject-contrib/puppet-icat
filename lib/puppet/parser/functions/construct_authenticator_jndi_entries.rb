@@ -11,9 +11,9 @@ module Puppet::Parser::Functions
 
     jndi_entries = components
       .map { |comp| [comp['name'], comp['version']] }
-      .reject { |comp_name, version| comp_name !~ /^(authn_)(.*)$/ }
+      .reject { |comp_name, version| comp_name !~ /^(authn\.)(.*)$/ }
       .map { |auth_comp_name, version| [auth_comp_name[6..-1], version] }
-      .map { |auth_name, version| "authn.#{auth_name}.jndi java:global/authn_#{auth_name}-#{version}/#{auth_name.upcase}_Authenticator" }
+      .map { |auth_name, version| "authn.#{auth_name}.jndi java:global/authn.#{auth_name}-#{version}/#{auth_name.upcase}_Authenticator" }
 
     return jndi_entries
   end
