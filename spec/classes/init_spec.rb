@@ -470,8 +470,8 @@ describe 'icat' do
         "\n" \
         "# Notification setup\n" \
         "notification.list = Dataset Datafile\n" \
-        "notification.Dataset = CUD\n" \
-        "notification.Datafile = CUD\n" \
+        "notification.Dataset = CU\n" \
+        "notification.Datafile = CU\n" \
         "\n" \
         "# Call logging setup\n" \
         "log.list = file table\n" \
