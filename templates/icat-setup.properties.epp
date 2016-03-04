@@ -1,15 +1,16 @@
+secure         = true
+container      = glassfish
+home           = <%=$glassfish_install_dir%>
+port           = <%=$glassfish_admin_port%>
+
+db.vendor      = <%=$db_type%>
+
 <% if $db_type == "oracle" { %>
-# Driver and connection properties for the Oracle database.
-driver=oracle.jdbc.pool.OracleDataSource
-dbProperties=url="'"<%=$db_url%>"'":ImplicitCachingEnabled=true:MaxStatements=200:user=<%=$db_username%>:password=<%=$db_password%>
+db.driver      = oracle.jdbc.pool.OracleDataSource
 <% } elsif $db_type == "mysql" { %>
-# Driver and connection properties for the MySQL database.
-driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-dbProperties=url="'"<%=$db_url%>"'":user=<%=$db_username%>:password=<%=$db_password%>:databaseName=<%=$db_name%>
+db.driver      = com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 <% } %>
 
-# Must contain "glassfish/domains"
-glassfish=<%=$glassfish_install_dir%>
-
-# Port for glassfish admin calls (normally 4848)
-port=<%=$glassfish_admin_port%>
+db.url         = <%=$db_url%>
+db.username    = <%=$db_username%>
+db.password    = <%=$db_password%>

@@ -409,17 +409,20 @@ describe 'icat' do
 
     it 'should generate the templated properties files correctly' do
       should contain_file('/tmp/icat.server-4.5.0-distro/icat.server/icat-setup.properties').with_content(
+        "secure         = true\n" \
+        "container      = glassfish\n" \
+        "home           = /usr/local/glassfish-4.0/\n" \
+        "port           = 4848\n" \
         "\n" \
-        "# Driver and connection properties for the MySQL database.\n" \
-        "driver=com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
-        "dbProperties=url=\"'\"jdbc:mysql://localhost:3306/icat\"'\":user=username:password=password:databaseName=icat\n" \
+        "db.vendor      = mysql\n" \
         "\n" \
         "\n" \
-        "# Must contain \"glassfish/domains\"\n" \
-        "glassfish=/usr/local/glassfish-4.0/\n" \
+        "db.driver      = com.mysql.jdbc.jdbc2.optional.MysqlDataSource\n" \
         "\n" \
-        "# Port for glassfish admin calls (normally 4848)\n" \
-        "port=4848\n"
+        "\n" \
+        "db.url         = jdbc:mysql://localhost:3306/icat\n" \
+        "db.username    = username\n" \
+        "db.password    = password\n"
       )
     end
 
