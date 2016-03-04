@@ -164,7 +164,17 @@ bundle exec rake acceptance
 
 ### Commands
 
-Some typical commands for working with the code:
+#### Basic
+
+To run the unit tests and acceptance tests one after the other:
+
+```bash
+sh test.sh
+```
+
+#### Advanced
+
+More commands for working with the code:
 
 ```bash
 # Run unit tests and linters, using bundle to make sure all necessary gems are
