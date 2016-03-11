@@ -6,7 +6,7 @@ if ENV.key?('PUPPET_VERSION')
   puppetversion = ENV['PUPPET_VERSION']
 else
   # For now, default to version used at ORNL.
-  puppetversion = '~> 3.8.6'
+  puppetversion = '~> 4.3.2'
 end
 
 gem 'rake'
