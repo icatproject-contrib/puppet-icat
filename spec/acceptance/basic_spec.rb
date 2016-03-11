@@ -81,7 +81,7 @@ default_pp = <<-EOS
         },
       }, {
         'name'        => 'icat.server',
-        'version'     => '4.7.0-SNAPSHOT',
+        'version'     => '4.6.0',
         'crud_access_usernames' => ['user_a', 'user_b'],
       }
     ],
