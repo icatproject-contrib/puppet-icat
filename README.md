@@ -150,7 +150,7 @@ rbenv install 2.0.0-p598
 rbenv local 2.0.0-p598
 
 # Install Bundler into the ruby environment.
-gem install bundler
+gem install bundler -v 1.10.6
 
 # Use Bundler to actually install the necessary gems for this module.
 bundle install
