@@ -2,16 +2,15 @@
 language: ruby
 cache: bundler
 rvm:
-  - 1.9.3
   - 2.0
-  - 2.1
+  - 2.1.8
 bundler_args: --without development
 before_install: rm Gemfile.lock || true
 script: bundle exec rake test
 sudo: false
 env:
-  - PUPPET_VERSION="~> 3.8.1"
   - PUPPET_VERSION="~> 3.8.1" PARSER="future"
+  - PUPPET_VERSION="~> 3.8.6" PARSER="future"
   - PUPPET_VERSION="~> 4.3.0"
 matrix:
 notifications:

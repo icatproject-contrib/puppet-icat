@@ -2,8 +2,15 @@
 
 source "https://rubygems.org"
 
+if ENV.key?('PUPPET_VERSION')
+	puppetversion = ENV['PUPPET_VERSION']
+else
+	# For now, default to version used at ORNL.
+	puppetversion = '~> 3.8.6'
+end
+
 gem 'rake'
-gem 'puppet'
+gem 'puppet', puppetversion
 
 gem 'librarian-puppet'
 

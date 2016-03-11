@@ -140,12 +140,22 @@ bundle exec rake acceptance
 #### Mac OSX:
 
 ```bash
-# Use Bundler to install necessary gems.
-sudo gem install bundle
-sudo bundle install
+# Install Homebrew.
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# Use Homebrew to install a ruby environment to use (rather than the system one).
+brew install rbenv ruby-build
+rbenv init
+rbenv install 2.0.0-p598
+rbenv local 2.0.0-p598
+
+# Install Bundler into the ruby environment.
+gem install bundler
+
+# Use Bundler to actually install the necessary gems for this module.
+bundle install
 
 # Install Vagrant and Virtualbox using homebrew.
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew install caskroom/cask/brew-cask
 brew cask install virtualbox
 brew cask install vagrant
