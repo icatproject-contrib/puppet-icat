@@ -9,7 +9,6 @@ before_install: rm Gemfile.lock || true
 script: bundle exec rake test
 sudo: false
 env:
-  - PUPPET_VERSION="~> 3.8.1" PARSER="future"
   - PUPPET_VERSION="~> 3.8.6" PARSER="future"
   - PUPPET_VERSION="~> 4.3.0"
 matrix:
