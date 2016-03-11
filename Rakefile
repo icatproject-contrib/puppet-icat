@@ -40,7 +40,10 @@ desc "Run syntax, lint, and spec tests."
 test_commands = [
   :lint,
   :spec,
-  :syntax,
 ]
+
+if Gem.loaded_specs["puppet"].version >= Gem::Version.create('4.0')
+  test_commands.push(:syntax)
+end
 
 task :test => test_commands
