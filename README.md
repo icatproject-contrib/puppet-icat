@@ -146,8 +146,8 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 # Use Homebrew to install a ruby environment to use (rather than the system one).
 brew install rbenv ruby-build
 rbenv init
-rbenv install 2.0.0-p598
-rbenv local 2.0.0-p598
+rbenv install 2.1.8
+rbenv local 2.1.8
 
 # Install Bundler into the ruby environment.
 gem install bundler -v 1.10.6
